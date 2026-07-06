@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Student profile page for IdeaChat Academy with course details and account management.">
+  <title>Student Profile | IdeaChat Academy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css?v=1.1">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/academy.css">
+  <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="index.html" class="logo-link">
+        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="academy.html" class="nav-link">Academy</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li>
+            <a href="#" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
+              <i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+              <span class="sr-only">Open student profile</span>
+            </a>
+          </li>
+          <li><a href="contact.html" class="nav-link nav-btn">Start Project</a></li>
+        </ul>
+      </nav>
+      <div class="hamburger" aria-expanded="false" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
+    </div>
+  </header>
+
+  <section class="academy-hero">
+    <div class="container">
+      <span class="section-subtitle" style="color: var(--accent);">Student Portal</span>
+      <h1>Student Profile</h1>
+      <p style="max-width: 650px; margin: 0 auto; color: #94A3B8; font-size: 16px;">
+        Review your current course, email, and phone details. Manage your Academy account from one place.
+      </p>
+    </div>
+  </section>
+
+  <section class="academy-account-section section-padding profile-page-section">
+    <div class="container">
+      <div class="profile-page-card">
+        <div class="profile-page-header">
+          <h2>Your Student Profile</h2>
+          <p>All student details are stored securely in your browser and displayed here after login.</p>
+        </div>
+
+        <div class="profile-info" id="profileInfo">
+          <div class="profile-info-row"><span>Email</span><strong id="profileEmail"></strong></div>
+          <div class="profile-info-row"><span>Phone</span><strong id="profilePhone"></strong></div>
+          <div class="profile-info-row"><span>Current course</span><strong id="profileCourse"></strong></div>
+          <div class="profile-info-row"><span>Joined</span><strong id="profileCreated"></strong></div>
+        </div>
+
+        <div class="profile-page-actions">
+          <button type="button" class="btn btn-secondary" id="logoutButton">Sign out</button>
+          <a href="academy.html" class="btn btn-primary">Return to Academy</a>
+        </div>
+      </div>
+
+      <div class="profile-empty" id="profileEmpty" style="display:none;">
+        <h3>No active student profile</h3>
+        <p>You are not logged in yet. Please open the Academy login icon and log in to view your profile.</p>
+        <a href="academy.html" class="btn btn-primary">Go to Academy login</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo-link">
+        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+        <p>Track your learning progress, complete design lessons, and manage your profile through IdeaChat Academy.</p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-links">
+          <li class="footer-link-item"><a href="index.html">Home</a></li>
+          <li class="footer-link-item"><a href="about.html">About Us</a></li>
+          <li class="footer-link-item"><a href="academy.html">Academy LMS</a></li>
+          <li class="footer-link-item"><a href="services.html">Our Services</a></li>
+          <li class="footer-link-item"><a href="portfolio.html">Works Portfolio</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Services</h4>
+        <ul class="footer-links">
+          <li class="footer-link-item"><a href="services.html">Graphic Design</a></li>
+          <li class="footer-link-item"><a href="services.html">Web Development</a></li>
+          <li class="footer-link-item"><a href="services.html">Social Media Handling</a></li>
+          <li class="footer-link-item"><a href="academy.html">Design Courses</a></li>
+          <li class="footer-link-item"><a href="contact.html">Brand Consulting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4 class="footer-heading">Newsletter</h4>
+        <p>Subscribe for news, design tips, and course discounts.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
+          <input type="email" required placeholder="Your email address" aria-label="Email address">
+          <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 IdeaChat. All Rights Reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="contact.html">Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="backToTop" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </a>
+
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>
+
+
+
+
+

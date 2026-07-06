@@ -1,0 +1,228 @@
+/* 
+=========================================
+  IDEACHAT - ABOUT PAGE SPECIFIC STYLES
+=========================================
+*/
+
+/* 1. Header Banner */
+.about-hero {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-dark), #1E293B);
+  color: var(--text-light);
+  padding: 160px 0 100px 0;
+  text-align: center;
+  overflow: hidden;
+}
+
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 15% 30%, rgba(var(--primary-rgb), 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.about-hero h1 {
+  font-size: 48px;
+  color: var(--text-light);
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+/* 2. Timeline Layout */
+.timeline-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 60px auto 0 auto;
+  padding: 20px 0;
+}
+
+/* Central vertical bar */
+.timeline-container::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  padding: 20px 40px;
+  position: relative;
+  width: 50%;
+  box-sizing: border-box;
+}
+
+/* Left / Right placement of items */
+.timeline-item.left {
+  left: 0;
+  text-align: right;
+}
+
+.timeline-item.right {
+  left: 50%;
+  text-align: left;
+}
+
+/* Time markers dots */
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: -10px;
+  background-color: var(--bg-light);
+  border: 4px solid var(--secondary);
+  top: 28px;
+  border-radius: 50%;
+  z-index: 1;
+  transition: var(--transition-fast);
+}
+
+.timeline-item.right::after {
+  left: -10px;
+}
+
+.timeline-item:hover::after {
+  background-color: var(--accent);
+  transform: scale(1.2);
+}
+
+.timeline-date {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.timeline-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  padding: 24px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: inline-block;
+  text-align: left;
+  max-width: 420px;
+}
+
+/* 3. Skills Progress Bars */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.skill-item {
+  margin-bottom: 25px;
+}
+
+.skill-info {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.skill-bar-wrapper {
+  width: 100%;
+  height: 10px;
+  background-color: rgba(0,0,0,0.06);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.skill-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  width: 0; /* Animated dynamically by observer or fallback */
+  transition: width 1.5s cubic-bezier(0.1, 0.8, 0.3, 1);
+  border-radius: 5px;
+}
+
+/* 4. Statistics Grid counter boxes */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.counter-number {
+  font-size: 48px;
+  font-weight: 800;
+  font-family: var(--font-heading);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.stat-suffix {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-left: 2px;
+}
+
+.stat-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Responsive Overrides for Timeline */
+@media (max-width: 768px) {
+  .timeline-container::after {
+    left: 30px;
+  }
+  
+  .timeline-item {
+    width: 100%;
+    padding-left: 60px;
+    padding-right: 20px;
+    text-align: left !important;
+  }
+  
+  .timeline-item.left {
+    left: 0;
+  }
+  
+  .timeline-item.right {
+    left: 0;
+  }
+  
+  .timeline-item::after {
+    left: 20px !important;
+  }
+  
+  .timeline-card {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}

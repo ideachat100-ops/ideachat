@@ -1,0 +1,244 @@
+/* 
+=========================================
+  IDEACHAT - SERVICES PAGE STYLES
+=========================================
+*/
+
+/* 1. Header Hero */
+.services-hero {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-dark), #1E293B);
+  color: var(--text-light);
+  padding: 160px 0 100px 0;
+  text-align: center;
+  overflow: hidden;
+}
+
+.services-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 85% 30%, rgba(var(--secondary-rgb), 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.services-hero h1 {
+  font-size: 48px;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+/* 2. Service Cards Grid */
+.service-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  margin-top: 60px;
+}
+
+.service-card-large {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  padding: 50px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  transition: var(--transition-normal);
+}
+
+.service-card-large:hover {
+  transform: translateY(-5px);
+  border-color: rgba(var(--primary-rgb), 0.25);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.service-card-large:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.service-card-image {
+  flex: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--glass-border);
+}
+
+.service-card-image img {
+  width: 100%;
+  height: auto;
+  transition: var(--transition-slow);
+}
+
+.service-card-large:hover .service-card-image img {
+  transform: scale(1.05);
+}
+
+.service-card-details {
+  flex: 1.2;
+}
+
+.service-price-tag {
+  display: inline-block;
+  background-color: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 6px 16px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 15px;
+}
+
+.service-features-list {
+  list-style: none;
+  margin: 25px 0 35px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.service-feature-item {
+  font-size: 15px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.service-feature-item i {
+  color: var(--accent);
+  font-size: 14px;
+}
+
+/* 3. Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.7); /* Dark semi-transparent background */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content-box {
+  background: var(--bg-light);
+  border: 1px solid var(--glass-border);
+  width: 90%;
+  max-width: 900px;
+  max-height: 85vh;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 40px;
+}
+
+.modal-overlay.active .modal-content-box {
+  transform: scale(1);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0,0,0,0.05);
+  color: var(--text-dark);
+  border-radius: var(--radius-circle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  background-color: var(--text-dark);
+  color: var(--text-light);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.process-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.process-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.step-badge {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: var(--text-light);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Responsive service cards */
+@media (max-width: 992px) {
+  .service-card-large {
+    flex-direction: column !important;
+    gap: 30px;
+    padding: 30px;
+  }
+  
+  .service-card-image {
+    width: 100%;
+  }
+  
+  .modal-body {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .service-features-list {
+    grid-template-columns: 1fr;
+  }
+  .modal-content-box {
+    padding: 24px;
+  }
+}

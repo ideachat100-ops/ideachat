@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin panel for IdeaChat Academy to manage student registrations and payment approvals.">
+  <title>Admin Panel | IdeaChat Academy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css?v=1.1">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="index.html" class="logo-link">
+        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="academy.html" class="nav-link">Academy</a></li>
+          <li>
+            <a href="profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
+              <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+              <span class="sr-only">Open student login</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="hamburger" aria-expanded="false" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <section class="section-padding admin-login-section" id="adminLoginSection">
+      <div class="container admin-card" id="adminLoginCard">
+        <h2>Admin Login</h2>
+        <p>Enter the admin password to view student registrations and payment requests.</p>
+        <form id="adminLoginForm" class="admin-login-form">
+          <label for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+          <button type="submit" class="btn btn-primary">Sign In</button>
+          <p class="form-message" id="adminLoginMessage"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section-padding admin-dashboard-section" id="adminPanel" style="display:none;">
+      <div class="container">
+        <div class="admin-header">
+          <div>
+            <span class="section-subtitle" style="color: var(--accent);">Administrator</span>
+            <h1>Dashboard</h1>
+            <p>Review registered students, pending payment slips, and approve enrollments for course access.</p>
+          </div>
+          <button class="btn btn-secondary" id="adminLogoutButton">Sign Out</button>
+        </div>
+
+        <div class="admin-nav-buttons" style="margin-bottom: 24px; display: flex; gap: 16px; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="navDashboardBtn">Dashboard</button>
+          <button class="btn btn-secondary" id="navPaymentsBtn">Payment Requests</button>
+          <button class="btn btn-secondary" id="navSyllabusBtn">Syllabus Editor</button>
+          <button class="btn btn-secondary" id="navPortfolioBtn">Portfolio Manager</button>
+        </div>
+
+        <div id="adminDashboardView">
+          <div class="admin-summary-grid">
+            <div class="admin-summary-card">
+              <h3 id="summaryStudents">0</h3>
+              <p>Registered Students</p>
+            </div>
+            <div class="admin-summary-card">
+              <h3 id="summaryPayments">0</h3>
+              <p>Payment Requests</p>
+            </div>
+            <div class="admin-summary-card">
+              <h3 id="summaryPending">0</h3>
+              <p>Pending Approvals</p>
+            </div>
+          </div>
+
+          <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
+            <div class="admin-table-card">
+              <div class="admin-table-header">
+                <h2>Student Registry</h2>
+                <p>All students who have created profiles or submitted registration details.</p>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Course</th>
+                      <th>Status</th>
+                      <th>Joined</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studentTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="adminPaymentsView" style="display: none;">
+          <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
+            <div class="admin-table-card">
+              <div class="admin-table-header">
+                <h2>Payment Requests</h2>
+                <p>Review uploaded bank slips and approve student enrollment access.</p>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Course</th>
+                      <th>Slip</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="paymentTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="adminSyllabusView" style="display: none;">
+          <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
+            <div class="admin-table-card">
+              <div class="admin-table-header">
+                <h2>Syllabus Editor</h2>
+                <p>Edit the course syllabus, lecture notes, and practical tools for the selected course.</p>
+              </div>
+              <div class="table-wrap" style="display: grid; gap: 16px;">
+                <label for="syllabusCourseSelect" style="font-weight: 700;">Course</label>
+                <select id="syllabusCourseSelect" style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.35); background: var(--bg-dark); color: var(--text-dark);">
+                  <option value="Adobe Photoshop & Illustrator Mastery">Adobe Photoshop & Illustrator Mastery</option>
+                </select>
+
+                <label for="syllabusMonthSelect" style="font-weight: 700;">Month</label>
+                <select id="syllabusMonthSelect" style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.35); background: var(--bg-dark); color: var(--text-dark);">
+                  <option value="0">Month 1</option>
+                  <option value="1">Month 2</option>
+                  <option value="2">Month 3</option>
+                  <option value="3">Month 4</option>
+                  <option value="4">Month 5</option>
+                  <option value="5">Month 6</option>
+                </select>
+
+                <label for="syllabusDayInput" style="font-weight: 700;">Day</label>
+                <input type="text" id="syllabusDayInput" placeholder="e.g. Day 1" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+
+                <label for="syllabusTitleInput" style="font-weight: 700;">Title</label>
+                <input type="text" id="syllabusTitleInput" placeholder="e.g. Introduction to Vector Grids" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+
+                <h3 style="margin: 10px 0 0; color: var(--text-dark);">Box 2 (Downloads & Links)</h3>
+                <label for="syllabusNoteInput" style="font-weight: 700;">Lecture Note File (PDF, Image)</label>
+                <input type="file" id="syllabusNoteInput" accept=".pdf, image/*" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+                <div id="syllabusNotePreview" style="font-size: 12px; color: #94A3B8; margin-top: -10px; margin-bottom: 10px;"></div>
+
+                <label for="syllabusToolInput" style="font-weight: 700;">Practical Tool File (ZIP, RAR, Image, etc.)</label>
+                <input type="file" id="syllabusToolInput" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+                <div id="syllabusToolPreview" style="font-size: 12px; color: #94A3B8; margin-top: -10px; margin-bottom: 10px;"></div>
+
+                <label for="syllabusZoomInput" style="font-weight: 700;">Zoom Recording Link</label>
+                <input type="url" id="syllabusZoomInput" placeholder="e.g. https://zoom.us/rec/play/..." style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+
+                <button id="addSyllabusButton" class="btn btn-primary">Add Module to Month</button>
+                <p id="syllabusSaveMessage" style="font-size: 13px; color: #A7F3D0; margin: 0;"></p>
+              </div>
+              
+              <div id="adminSyllabusList" style="margin-top: 40px; display: grid; gap: 16px;">
+                <!-- Javascript will render the syllabus list here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="adminPortfolioView" style="display: none;">
+          <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
+            <div class="admin-table-card">
+              <div class="admin-table-header">
+                <h2>Portfolio Image Update</h2>
+                <p>Upload new project images for the portfolio and specify categories.</p>
+              </div>
+              <div class="table-wrap" style="display: grid; gap: 16px;">
+                <label for="portfolioCategorySelect" style="font-weight: 700;">Category</label>
+                <select id="portfolioCategorySelect" style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.35); background: var(--bg-dark); color: var(--text-dark);">
+                  <option value="graphic-design">Graphic Design</option>
+                  <option value="logo">Logo</option>
+                  <option value="social-media">Social Media</option>
+                  <option value="web-design">Web Design</option>
+                  <option value="brand-identity">Brand Identity</option>
+                  <option value="flyers">Flyers</option>
+                  <option value="business-cards">Business Cards</option>
+                </select>
+
+                <label for="portfolioTitleInput" style="font-weight: 700;">Project Title</label>
+                <input type="text" id="portfolioTitleInput" placeholder="e.g. Minimalist Logo" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+
+                <div id="portfolioWebsiteLinkGroup" style="display: none; flex-direction: column; gap: 16px;">
+                  <label for="portfolioWebsiteInput" style="font-weight: 700;">Website Link</label>
+                  <input type="url" id="portfolioWebsiteInput" placeholder="e.g. https://example.com" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+                </div>
+
+                <label for="portfolioImageInput" style="font-weight: 700;">Project Image (JPG, PNG, WebP)</label>
+                <input type="file" id="portfolioImageInput" accept="image/*" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+
+                <button id="addPortfolioButton" class="btn btn-primary">Add to Portfolio</button>
+                <p id="portfolioSaveMessage" style="font-size: 13px; color: #A7F3D0; margin: 0;"></p>
+              </div>
+
+              <div class="admin-table-header" style="margin-top: 40px;">
+                <h2>Uploaded Items</h2>
+              </div>
+              <div id="adminPortfolioList" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+                <!-- Javascript will render the portfolio list here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 IdeaChat. Admin tools are available for payment approval only.</p>
+    </div>
+  </footer>
+
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
+
+
+
+
+

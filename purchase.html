@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Complete your course purchase and upload bank slip for IdeaChat Academy.">
+  <title>Course Purchase | IdeaChat Academy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css?v=1.1">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/academy.css">
+</head>
+<body>
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="index.html" class="logo-link">
+        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="academy.html" class="nav-link">Academy</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li>
+            <a href="profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
+              <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+              <span class="sr-only">Open student login</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="hamburger" aria-expanded="false" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
+    </div>
+  </header>
+
+  <section class="academy-hero">
+    <div class="container">
+      <span class="section-subtitle" style="color: var(--accent);">Course Checkout</span>
+      <h1>Confirm Your Enrollment</h1>
+      <p style="max-width: 650px; margin: 0 auto; color: #94A3B8; font-size: 16px;">
+        Review course details, pay through bank transfer, and upload your bank slip to secure enrollment.
+      </p>
+    </div>
+  </section>
+
+  <section class="academy-account-section section-padding">
+    <div class="container">
+      <div class="purchase-card">
+        <div class="purchase-summary">
+          <h2 id="purchaseCourseName"></h2>
+          <p id="purchaseDescription"></p>
+          <div class="purchase-details">
+            <div><strong>Price:</strong> <span id="purchasePrice"></span></div>
+            <div><strong>Bank Name:</strong> <span id="purchaseBank"></span></div>
+            <div><strong>Account Number:</strong> <span id="purchaseAccount"></span></div>
+            <div><strong>IFSC Code:</strong> <span id="purchaseIfsc"></span></div>
+          </div>
+        </div>
+
+        <div class="upload-card">
+          <h3>Upload Bank Slip</h3>
+          <p>Once your payment is complete, upload the bank transfer slip here for verification.</p>
+          <form id="bankSlipForm">
+            <label for="bankSlipUpload">Bank slip upload</label>
+            <input type="file" id="bankSlipUpload" accept="image/*,.pdf" required>
+            <button type="submit" class="btn btn-primary">Upload Slip</button>
+            <p class="form-message" id="purchaseMessage"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo-link">
+        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+        <p>Complete your enrollment securely and track your onboarding for IdeaChat Academy courses.</p>
+      </div>
+      <div>
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-links">
+          <li class="footer-link-item"><a href="index.html">Home</a></li>
+          <li class="footer-link-item"><a href="academy.html">Academy LMS</a></li>
+          <li class="footer-link-item"><a href="services.html">Our Services</a></li>
+          <li class="footer-link-item"><a href="portfolio.html">Portfolio</a></li>
+          <li class="footer-link-item"><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <h4 class="footer-heading">Newsletter</h4>
+        <p>Subscribe to receive updates on new academy courses and payment support.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
+          <input type="email" required placeholder="Your email address" aria-label="Email address">
+          <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 IdeaChat. All Rights Reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="contact.html">Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></a>
+
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/purchase.js"></script>
+</body>
+</html>
+
+
+
+
+

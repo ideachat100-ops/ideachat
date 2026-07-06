@@ -1,0 +1,533 @@
+/* 
+=========================================
+  IDEACHAT - ACADEMY PAGE SPECIFIC STYLES
+=========================================
+*/
+
+/* 1. LMS Hero Banner */
+.academy-hero {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-dark), #1E293B);
+  color: var(--text-light);
+  padding: 160px 0 100px 0;
+  text-align: center;
+  overflow: hidden;
+}
+
+.academy-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 10% 70%, rgba(var(--primary-rgb), 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.academy-hero h1 {
+  font-size: 48px;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+/* 2. Course Cards Grid */
+.courses-grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.course-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+  transition: var(--transition-normal);
+}
+
+.course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(var(--primary-rgb), 0.25);
+}
+
+.course-card-img-box {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background-color: #f1f5f9;
+}
+
+.course-card-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-slow);
+}
+
+.course-card:hover .course-card-img-box img {
+  transform: scale(1.05);
+}
+
+.course-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: var(--primary);
+  color: var(--text-light);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 30px;
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-sm);
+}
+
+.course-badge.advanced {
+  background-color: var(--secondary);
+}
+
+.course-card-body {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.course-card-title {
+  font-size: 22px;
+  margin-bottom: 12px;
+  line-height: 1.35;
+}
+
+.course-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.course-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.course-meta i {
+  color: var(--accent);
+}
+
+.course-tutor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding-top: 20px;
+  margin-top: auto;
+}
+
+.course-tutor-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--text-light);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+/* Dynamic progress bar style on landing card */
+.course-card-progress-wrapper {
+  margin-bottom: 20px;
+}
+
+.course-card-progress-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 5px;
+}
+
+.course-card-progress-track {
+  width: 100%;
+  height: 6px;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.course-card-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  width: 0%; /* Settled by academy.js */
+  transition: width 1s ease-in-out;
+}
+
+.academy-account-section {
+  background: rgba(255,255,255,0.92);
+  border-top: 1px solid rgba(15,23,42,0.05);
+}
+
+.account-grid {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+  align-items: start;
+  margin-top: 40px;
+}
+
+.account-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--glass-shadow);
+}
+
+.account-card h3 {
+  font-size: 24px;
+  margin-bottom: 18px;
+}
+
+.account-card label {
+  display: block;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.account-card input,
+.account-card select {
+  width: 100%;
+  border: 1px solid rgba(15,23,42,0.12);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 8px;
+  background: #ffffff;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+
+.account-card select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%), linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.form-note {
+  margin-bottom: 20px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.account-link-text {
+  margin-top: 18px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.nav-link.nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(var(--primary-rgb), 0.08);
+  color: var(--text-dark);
+}
+
+.nav-link.nav-icon:hover {
+  background: rgba(var(--primary-rgb), 0.18);
+}
+
+.login-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.login-modal.open {
+  display: flex;
+}
+
+.login-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.login-modal-card {
+  position: relative;
+  width: min(520px, calc(100% - 32px));
+  max-height: min(90vh, 760px);
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 32px 80px rgba(15, 23, 42, 0.18);
+  border-radius: 28px;
+  padding: 32px 34px;
+  backdrop-filter: blur(18px);
+  z-index: 1;
+}
+
+.login-modal-header h2 {
+  margin-bottom: 12px;
+  font-size: 28px;
+}
+
+.login-modal-header p {
+  margin-bottom: 24px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.login-modal-form label {
+  display: block;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.login-modal-form input,
+.login-modal-form select {
+  width: 100%;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-top: 8px;
+  background: #ffffff;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #ffffff;
+  color: var(--text-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.link-button {
+  all: unset;
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.link-button:hover {
+  color: var(--secondary);
+}
+
+.login-modal-card .reset-panel {
+  margin-top: 28px;
+  padding: 24px;
+  border-radius: 20px;
+  background: rgba(248, 250, 252, 0.95);
+}
+
+.login-modal-card .email-reset-notice {
+  margin-top: 20px;
+}
+
+.login-modal-card .form-message {
+  margin-top: 18px;
+  font-size: 14px;
+  color: var(--primary);
+  min-height: 22px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.profile-summary {
+  display: grid;
+  gap: 16px;
+}
+
+.profile-summary-block p {
+  margin: 12px 0;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+
+.profile-summary-notice {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 18px;
+  background: rgba(var(--primary-rgb), 0.08);
+  border-radius: var(--radius-md);
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
+.reset-panel {
+  margin-top: 40px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+
+.reset-panel h3 {
+  margin-bottom: 18px;
+}
+
+.email-reset-notice {
+  margin-top: 24px;
+  padding: 18px 20px;
+  border: 1px solid rgba(var(--primary-rgb), 0.18);
+  border-radius: var(--radius-md);
+  background: rgba(var(--primary-rgb), 0.05);
+}
+
+.form-message {
+  margin-top: 18px;
+  font-size: 14px;
+  color: var(--primary);
+  min-height: 22px;
+}
+
+.purchase-card {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 1.4fr 0.9fr;
+  align-items: start;
+  margin-top: 40px;
+}
+
+.purchase-summary,
+.upload-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--glass-shadow);
+}
+
+.purchase-summary h2 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.purchase-summary p {
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.purchase-details {
+  display: grid;
+  gap: 14px;
+}
+
+.purchase-details div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  color: var(--text-dark);
+}
+
+.upload-card h3 {
+  margin-bottom: 14px;
+}
+
+.upload-card p {
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.upload-card label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.upload-card input[type="file"] {
+  width: 100%;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 16px;
+  padding: 14px 16px;
+  background: #fff;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 992px) {
+  .purchase-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-summary-notice {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 18px;
+  background: rgba(var(--primary-rgb), 0.08);
+  border-radius: var(--radius-md);
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
+.reset-panel {
+  margin-top: 40px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+
+@media (max-width: 992px) {
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .courses-grid-wrapper {
+    grid-template-columns: 1fr;
+  }
+}

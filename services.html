@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IdeaChat Services - Premium solutions in graphic design layout, custom web engineering, social media design, and professional academy learning.">
+  <title>Our Services | IdeaChat - Branding & Web agency</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css?v=1.1">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/services.css">
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="index.html" class="logo-link">
+        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="academy.html" class="nav-link">Academy</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li>
+            <a href="profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
+              <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+              <span class="sr-only">Open student login</span>
+            </a>
+          </li>
+          <li><a href="contact.html" class="nav-link nav-btn">Start Project</a></li>
+        </ul>
+      </nav>
+      <div class="hamburger" aria-expanded="false" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="services-hero">
+    <div class="container">
+      <span class="section-subtitle" style="color: var(--accent);">What We Do</span>
+      <h1>Our Professional Services</h1>
+      <p style="max-width: 650px; margin: 0 auto; color: #94A3B8; font-size: 16px;">
+        Providing custom visual layout guidelines, optimized website codes, and practical mentoring courses.
+      </p>
+    </div>
+  </section>
+
+  <!-- Large Service Cards List Section -->
+  <section class="services-list-section section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">Services Grid</span>
+        <h2 class="section-title">End-to-End Creative Solutions</h2>
+        <p class="section-description">Every service is delivered with high-fidelity detailing and responsive frameworks.</p>
+      </div>
+
+      <div class="service-cards-container">
+        
+        <!-- Service 1: Graphic Design -->
+        <div class="service-card-large reveal fade-up">
+          <div class="service-card-image">
+            <img src="images/services/s1.svg" alt="Graphic Design illustration">
+          </div>
+          <div class="service-card-details">
+            <span class="service-price-tag">Starts from $499</span>
+            <h2 style="font-size: 28px; margin-bottom: 15px;">Graphic &amp; Brand Layout Design</h2>
+            <p style="color: var(--text-muted); line-height: 1.7; font-size: 15px;">
+              Formulating vector assets, typography lockups, brand color systems, and corporate stationary layouts. We build high-impact print flyers, business card layouts, and complete brand identity guidelines.
+            </p>
+            <ul class="service-features-list">
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Logo Guidelines</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Typography Systems</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Print Media Layout</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Business Cards</li>
+            </ul>
+            <button class="btn btn-primary open-modal-btn" data-service="graphic-design">Learn More Details</button>
+          </div>
+        </div>
+
+        <!-- Service 2: Web Development -->
+        <div class="service-card-large reveal fade-up">
+          <div class="service-card-image">
+            <img src="images/services/s2.svg" alt="Web Development illustration">
+          </div>
+          <div class="service-card-details">
+            <span class="service-price-tag">Starts from $999</span>
+            <h2 style="font-size: 28px; margin-bottom: 15px;">Professional Web Development</h2>
+            <p style="color: var(--text-muted); line-height: 1.7; font-size: 15px;">
+              Crafting semantic code in Vanilla JS and CSS. We ensure absolute speed scores, full accessibility (WCAG), responsive rendering across breakpoints, and modern visual design structures.
+            </p>
+            <ul class="service-features-list">
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Responsive HTML/CSS</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Custom Vanilla JS</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Core Web Vitals</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> SEO Optimization</li>
+            </ul>
+            <button class="btn btn-primary open-modal-btn" data-service="web-dev">Learn More Details</button>
+          </div>
+        </div>
+
+        <!-- Service 3: Social Media Handling -->
+        <div class="service-card-large reveal fade-up">
+          <div class="service-card-image">
+            <img src="images/services/s3.svg" alt="Social Media illustration">
+          </div>
+          <div class="service-card-details">
+            <span class="service-price-tag">Starts from $299/mo</span>
+            <h2 style="font-size: 28px; margin-bottom: 15px;">Social Media Handling &amp; Creatives</h2>
+            <p style="color: var(--text-muted); line-height: 1.7; font-size: 15px;">
+              Managing Instagram, Facebook, and LinkedIn feed schedules. Designing thematic grid banners, promotional carousel cards, and interactive post assets that hook users.
+            </p>
+            <ul class="service-features-list">
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Thematic Feed Grid</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Carousel Slides</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Story Templates</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Monthly Analytics</li>
+            </ul>
+            <button class="btn btn-primary open-modal-btn" data-service="social-media">Learn More Details</button>
+          </div>
+        </div>
+
+        <!-- Service 4: Graphic Design Academy -->
+        <div class="service-card-large reveal fade-up">
+          <div class="service-card-image">
+            <img src="images/services/s4.svg" alt="Academy education illustration">
+          </div>
+          <div class="service-card-details">
+            <span class="service-price-tag">Courses from $149</span>
+            <h2 style="font-size: 28px; margin-bottom: 15px;">Graphic Design Learning Academy</h2>
+            <p style="color: var(--text-muted); line-height: 1.7; font-size: 15px;">
+              Tutoring graphic visual guidelines using structured projects. Our lessons cover Adobe Photoshop, Illustrator, layout composition, alignment rules, and color palettes.
+            </p>
+            <ul class="service-features-list">
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Hands-on Projects</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Software Mastery</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> Mentor Feedback</li>
+              <li class="service-feature-item"><i class="fa-solid fa-square-check"></i> LMS Progress Tracker</li>
+            </ul>
+            <a href="academy.html" class="btn btn-accent">Explore Academy</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Details Modal Popup Structure -->
+  <div id="serviceModal" class="modal-overlay" aria-hidden="true" role="dialog">
+    <div class="modal-content-box">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      <div id="modalContent">
+         <!-- Injecting service specs dynamically from popup.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo-link">
+        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+        <p>
+          We design professional graphics, build elegant custom websites, and provide industry-standard learning programs through our structured Graphic Design Academy.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-links">
+          <li class="footer-link-item"><a href="index.html">Home</a></li>
+          <li class="footer-link-item"><a href="about.html">About Us</a></li>
+          <li class="footer-link-item"><a href="academy.html">Academy LMS</a></li>
+          <li class="footer-link-item"><a href="services.html">Our Services</a></li>
+          <li class="footer-link-item"><a href="portfolio.html">Works Portfolio</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Services</h4>
+        <ul class="footer-links">
+          <li class="footer-link-item"><a href="services.html">Graphic Design</a></li>
+          <li class="footer-link-item"><a href="services.html">Web Development</a></li>
+          <li class="footer-link-item"><a href="services.html">Social Media Handling</a></li>
+          <li class="footer-link-item"><a href="academy.html">Design Courses</a></li>
+          <li class="footer-link-item"><a href="contact.html">Brand Consulting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4 class="footer-heading">Newsletter</h4>
+        <p>Subscribe to receive news, design tips, and course discount coupons.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
+          <input type="email" required placeholder="Your email address" aria-label="Email address">
+          <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 IdeaChat. All Rights Reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="contact.html">Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" id="backToTop" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </a>
+
+  <!-- JS Scripts -->
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/popup.js"></script>
+</body>
+</html>
+
+
+
+
+

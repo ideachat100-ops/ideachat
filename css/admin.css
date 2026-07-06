@@ -1,0 +1,157 @@
+/* Admin panel styles */
+
+.admin-main {
+  min-height: calc(100vh - 140px);
+}
+
+.admin-login-section,
+.admin-dashboard-section {
+  padding: 80px 0;
+}
+
+.admin-card,
+.admin-summary-card,
+.admin-table-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+}
+
+.admin-card {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.admin-card h2 {
+  margin-bottom: 16px;
+}
+
+.admin-login-form label,
+.admin-login-form input,
+.admin-login-form button {
+  width: 100%;
+}
+
+.admin-login-form input {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+.admin-login-form .btn {
+  display: inline-block;
+}
+
+.admin-dashboard-section .container {
+  max-width: 1200px;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.admin-summary-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 30px;
+}
+
+.admin-summary-card {
+  padding: 30px;
+  text-align: center;
+}
+
+.admin-summary-card h3 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.admin-tables-grid {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 1fr;
+}
+
+.admin-table-card {
+  padding: 24px;
+}
+
+.admin-table-header {
+  margin-bottom: 18px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+th {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+td {
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
+.status-approved {
+  color: #10B981;
+  font-weight: 700;
+}
+
+.status-pending {
+  color: #F59E0B;
+  font-weight: 700;
+}
+
+.admin-action-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.admin-action-btn.approve {
+  background: #10B981;
+  color: #fff;
+}
+
+.admin-action-btn.reject {
+  background: #EF4444;
+  color: #fff;
+}
+
+.form-message {
+  margin-top: 12px;
+  color: var(--primary);
+}
+
+@media (max-width: 992px) {
+  .admin-summary-grid,
+  .admin-tables-grid {
+    grid-template-columns: 1fr;
+  }
+}

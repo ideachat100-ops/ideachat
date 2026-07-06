@@ -1,0 +1,471 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IdeaChat Portfolio - Check out our 24 creative design layouts, modern logos, social media banners, website interfaces, and business stationeries.">
+  <title>Our Portfolio | IdeaChat - Branding Gallery</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css?v=1.1">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/portfolio.css">
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="index.html" class="logo-link">
+        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="academy.html" class="nav-link">Academy</a></li>
+          <li><a href="services.html" class="nav-link">Services</a></li>
+          <li><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li>
+            <a href="profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
+              <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+              <span class="sr-only">Open student login</span>
+            </a>
+          </li>
+          <li><a href="contact.html" class="nav-link nav-btn">Start Project</a></li>
+        </ul>
+      </nav>
+      <div class="hamburger" aria-expanded="false" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="portfolio-hero">
+    <div class="container">
+      <span class="section-subtitle" style="color: var(--accent);">Our Creations</span>
+      <h1>Our Creative Portfolio</h1>
+      <p style="max-width: 650px; margin: 0 auto; color: #94A3B8; font-size: 16px;">
+        Browse through our 24 premium design layouts, logos, print materials, and custom website user interfaces.
+      </p>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section class="portfolio-gallery-section section-padding">
+    <div class="container">
+      
+      <!-- Filter Controls -->
+      <div class="filter-wrapper">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="graphic-design">Graphic Design</button>
+        <button class="filter-btn" data-filter="logo">Logo</button>
+        <button class="filter-btn" data-filter="social-media">Social Media</button>
+        <button class="filter-btn" data-filter="web-design">Web Design</button>
+        <button class="filter-btn" data-filter="brand-identity">Brand Identity</button>
+        <button class="filter-btn" data-filter="flyers">Flyers</button>
+        <button class="filter-btn" data-filter="business-cards">Business Cards</button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="portfolio-gallery-grid" id="portfolioGrid">
+        
+        <!-- p1 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "graphic-design", "logo"]' data-index="0">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p1.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Geometric Logo">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Geometric Logo</h3>
+              <span class="portfolio-card-category">Logo Design</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p2 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "graphic-design", "social-media"]' data-index="1">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p2.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Sale Campaign">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Sale Campaign</h3>
+              <span class="portfolio-card-category">Social Media Posts</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p3 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "graphic-design", "flyers"]' data-index="2">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p3.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Business Event">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Business Event</h3>
+              <span class="portfolio-card-category">Flyers</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p4 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "web-design"]' data-index="3">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p4.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="SaaS Dashboard">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">SaaS Dashboard</h3>
+              <span class="portfolio-card-category">Website UI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p5 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "brand-identity"]' data-index="4">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p5.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="IdeaChat Branding">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">IdeaChat Branding</h3>
+              <span class="portfolio-card-category">Brand Guidelines</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p6 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "graphic-design", "business-cards"]' data-index="5">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p6.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Premium Card">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Premium Card</h3>
+              <span class="portfolio-card-category">Business Cards</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p7 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "logo"]' data-index="6">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p7.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Apex Tech Icon">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Apex Tech Icon</h3>
+              <span class="portfolio-card-category">Logo Design</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p8 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "social-media"]' data-index="7">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p8.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Instagram Banner">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Instagram Banner</h3>
+              <span class="portfolio-card-category">Social Media Posts</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p9 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "flyers"]' data-index="8">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p9.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Music Festival">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Music Festival</h3>
+              <span class="portfolio-card-category">Flyers</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p10 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "web-design"]' data-index="9">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p10.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="E-Commerce Store">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">E-Commerce Store</h3>
+              <span class="portfolio-card-category">Website UI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p11 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "brand-identity"]' data-index="10">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p11.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Minimalist Logo">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Minimalist Logo</h3>
+              <span class="portfolio-card-category">Brand Identity</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p12 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "business-cards"]' data-index="11">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p12.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Creative Studio">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Creative Studio</h3>
+              <span class="portfolio-card-category">Business Cards</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p13 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "graphic-design", "logo"]' data-index="12">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p13.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Vortex Brandmark">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Vortex Brandmark</h3>
+              <span class="portfolio-card-category">Logo Design</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p14 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "social-media"]' data-index="13">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p14.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Hiring Carousel">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Hiring Carousel</h3>
+              <span class="portfolio-card-category">Social Media Posts</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p15 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "flyers"]' data-index="14">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p15.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Tech Meetup">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Tech Meetup</h3>
+              <span class="portfolio-card-category">Flyers</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p16 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "web-design"]' data-index="15">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p16.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Portfolio Site">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Portfolio Site</h3>
+              <span class="portfolio-card-category">Website UI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p17 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "brand-identity"]' data-index="16">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p17.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Eco Green Logo">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Eco Green Logo</h3>
+              <span class="portfolio-card-category">Brand Identity</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p18 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "business-cards"]' data-index="17">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p18.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Modern Consultant">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Modern Consultant</h3>
+              <span class="portfolio-card-category">Business Cards</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p19 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "graphic-design", "logo"]' data-index="18">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p19.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Quantum Icon">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Quantum Icon</h3>
+              <span class="portfolio-card-category">Logo Design</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p20 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "social-media"]' data-index="19">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p20.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Product Launch">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Product Launch</h3>
+              <span class="portfolio-card-category">Social Media Posts</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p21 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "flyers"]' data-index="20">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p21.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Product Brochure">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Product Brochure</h3>
+              <span class="portfolio-card-category">Flyers</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p22 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "web-design"]' data-index="21">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p22.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="LMS Portal UI">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">LMS Portal UI</h3>
+              <span class="portfolio-card-category">Website UI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p23 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "brand-identity"]' data-index="22">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p23.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Pulse Medical Logo">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Pulse Medical Logo</h3>
+              <span class="portfolio-card-category">Brand Identity</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- p24 -->
+        <div class="portfolio-item-card reveal fade-up" data-categories='["all", "business-cards"]' data-index="23">
+          <div class="portfolio-card-img-box">
+            <img class="lazy" data-src="images/portfolio/p24.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" alt="Architect Layout">
+            <div class="portfolio-card-overlay">
+              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+              <h3 class="portfolio-card-title">Architect Layout</h3>
+              <span class="portfolio-card-category">Business Cards</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pagination Buttons -->
+      <div class="pagination-wrapper" id="portfolioPagination">
+        <!-- Generates dynamically via portfolio.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Image Lightbox Popup Overlay Structure -->
+  <div id="lightboxModal" class="lightbox-overlay" aria-hidden="true" role="dialog">
+    <span class="lightbox-close" aria-label="Close lightbox">&times;</span>
+    <button class="lightbox-nav-btn lightbox-prev" aria-label="Previous image">&#10094;</button>
+    <div class="lightbox-wrapper">
+      <img src="" alt="" class="lightbox-img" id="lightboxImg">
+    </div>
+    <button class="lightbox-nav-btn lightbox-next" aria-label="Next image">&#10095;</button>
+    <div class="lightbox-caption" id="lightboxCaption">
+      <h4 id="lightboxTitle"></h4>
+      <p id="lightboxCat"></p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo-link">
+        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+        <p>
+          We design professional graphics, build elegant custom websites, and provide industry-standard learning programs through our structured Graphic Design Academy.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-links">
+          <li class="footer-link-item"><a href="index.html">Home</a></li>
+          <li class="footer-link-item"><a href="about.html">About Us</a></li>
+          <li class="footer-link-item"><a href="academy.html">Academy LMS</a></li>
+          <li class="footer-link-item"><a href="services.html">Our Services</a></li>
+          <li class="footer-link-item"><a href="portfolio.html">Works Portfolio</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Services</h4>
+        <ul class="footer-links">
+          <li class="footer-link-item"><a href="services.html">Graphic Design</a></li>
+          <li class="footer-link-item"><a href="services.html">Web Development</a></li>
+          <li class="footer-link-item"><a href="services.html">Social Media Handling</a></li>
+          <li class="footer-link-item"><a href="academy.html">Design Courses</a></li>
+          <li class="footer-link-item"><a href="contact.html">Brand Consulting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4 class="footer-heading">Newsletter</h4>
+        <p>Subscribe to receive news, design tips, and course discount coupons.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
+          <input type="email" required placeholder="Your email address" aria-label="Email address">
+          <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 IdeaChat. All Rights Reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="contact.html">Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" id="backToTop" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </a>
+
+  <!-- JS Scripts -->
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/portfolio.js"></script>
+</body>
+</html>
+
+
+
+
+

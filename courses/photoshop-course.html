@@ -1,0 +1,712 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Adobe Photoshop & Illustrator Mastery - Master layer adjustments, vector drawing, brand layout design, and production export presets.">
+  <title>Photoshop &amp; Illustrator Course | IdeaChat Academy</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css?v=1.1">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="../css/academy.css">
+  <style>
+    /* Course Detail Page Specific Layouts */
+    .lms-wrapper {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      gap: 40px;
+      margin-top: 50px;
+    }
+    .video-player-box {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background-color: var(--bg-dark);
+      border-radius: var(--radius-md);
+      overflow: hidden;   
+      position: relative;
+      border: 1px solid var(--glass-border-dark);
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 30px;
+    }
+    .video-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .video-overlay:hover {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    .play-btn-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+      margin-bottom: 15px;
+      transition: var(--transition-normal);
+    }
+    .video-overlay:hover .play-btn-circle {
+      transform: scale(1.1);
+      background-color: var(--secondary);
+    }
+    .lesson-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 16px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .lesson-item:hover {
+      background-color: rgba(79, 70, 229, 0.03);
+    }
+    .course-locked {
+      filter: blur(4px);
+      pointer-events: none;
+      opacity: 0.55;
+    }
+    .lesson-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+    }
+    .lesson-checkbox.checked {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+    .lesson-checkbox i {
+      font-size: 11px;
+      opacity: 0;
+      transition: var(--transition-fast);
+    }
+    .lesson-checkbox.checked i {
+      opacity: 1;
+    }
+    .lesson-item.active {
+      background-color: rgba(79, 70, 229, 0.05);
+      border-left: 4px solid var(--primary);
+      padding-left: 12px;
+    }
+    .accordion-box {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      margin: 0 18px 24px 18px;
+    }
+    .accordion-box .accordion-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 14px;
+      color: #D1D5DB;
+      line-height: 1.8;
+    }
+    .month-panel {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .month-toggle {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 24px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .month-toggle:hover {
+      background: rgba(255,255,255,0.04);
+    }
+    .month-arrow {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .month-arrow::before {
+      content: 'â–¾';
+      font-size: 14px;
+      color: #93C5FD;
+    }
+    .month-panel.open .month-arrow {
+      transform: rotate(180deg);
+    }
+    .month-days {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+      padding: 0 24px;
+      background: rgba(15, 23, 42, 0.95);
+    }
+    .month-panel.open .month-days {
+      max-height: 420px;
+      padding-bottom: 18px;
+    }
+    .day-item {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      color: #E2E8F0;
+      text-align: left;
+      padding: 14px 16px;
+      margin-top: 12px;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .day-item:hover,
+    .day-item.active {
+      background: rgba(59, 130, 246, 0.16);
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+    .day-item span {
+      display: block;
+      color: #E2E8F0;
+    }
+    .lesson-detail-box {
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 20px 24px 24px;
+      color: #CBD5E1;
+    }
+    .lesson-detail-box h5 {
+      margin: 0 0 10px;
+      color: var(--text-dark);
+      font-size: 15px;
+    }
+    .lesson-detail-box p {
+      margin: 0 0 16px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .lesson-detail-box .detail-tool-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.12);
+      color: #93C5FD;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .resource-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-light);
+      padding: 15px 20px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(0,0,0,0.05);
+      margin-bottom: 12px;
+    }
+    @media (max-width: 992px) {
+      .lms-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="../index.html" class="logo-link">
+        <img src="../images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+        <img src="../images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu">
+          <li><a href="../index.html" class="nav-link">Home</a></li>
+          <li><a href="../about.html" class="nav-link">About</a></li>
+          <li><a href="../academy.html" class="nav-link">Academy</a></li>
+          <li><a href="../services.html" class="nav-link">Services</a></li>
+          <li><a href="../portfolio.html" class="nav-link">Portfolio</a></li>
+          <li><a href="../contact.html" class="nav-link">Contact</a></li>
+          <li>
+            <a href="../profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
+              <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+              <span class="sr-only">Open student login</span>
+            </a>
+          </li>
+          <li><a href="../contact.html" class="nav-link nav-btn">Start Project</a></li>
+        </ul>
+      </nav>
+      <div class="hamburger" aria-expanded="false" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="academy-hero" style="padding: 140px 0 60px 0;">
+    <div class="container" style="text-align: left; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px;">
+      <div>
+        <span class="course-badge" style="position: static; margin-bottom: 12px;">Photoshop &amp; Illustrator</span>
+        <h1 style="font-size: 36px; color: var(--text-light); margin-bottom: 10px;">Adobe Photoshop &amp; Illustrator Mastery</h1>
+        <p style="color: #94A3B8; font-size: 15px; margin-bottom: 8px;">Become a professional graphic designer by mastering typography, vector art, and layouts.</p>
+        <p style="color: #A5B4FC; font-size: 14px; font-weight: 600;">This class is an online class.</p>
+      </div>
+      <button class="btn btn-accent" id="enrollBtn" style="padding: 12px 24px;">Enroll In Course</button>
+    </div>
+  </section>
+
+  <!-- LMS Layout -->
+  <section class="lms-content-section section-padding" style="padding-top: 40px;">
+    <div class="container">
+      <div class="lms-wrapper">
+        
+        <!-- Left Side: Video Player, Details, Resources -->
+        <div class="lms-main">
+          
+          <!-- Video Player Mockup -->
+          <div class="video-player-box">
+            <div class="video-overlay" id="videoPlayOverlay">
+              <div class="play-btn-circle"><i class="fa-solid fa-play"></i></div>
+              <h4 style="font-weight: 700;">Lesson 1: Introduction to Vector Grids &amp; Nodes</h4>
+              <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 5px;">Click to Play Lecture Mockup</p>
+            </div>
+            <!-- Dynamic map/image representation of design video -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+              <rect width="800" height="450" fill="#0F172A" />
+              <!-- Graphic layout grids -->
+              <line x1="100" y1="0" x2="100" y2="450" stroke="#1E293B" />
+              <line x1="200" y1="0" x2="200" y2="450" stroke="#1E293B" />
+              <line x1="300" y1="0" x2="300" y2="450" stroke="#1E293B" />
+              <line x1="400" y1="0" x2="400" y2="450" stroke="#1E293B" />
+              <line x1="500" y1="0" x2="500" y2="450" stroke="#1E293B" />
+              <line x1="600" y1="0" x2="600" y2="450" stroke="#1E293B" />
+              <line x1="700" y1="0" x2="700" y2="450" stroke="#1E293B" />
+              
+              <line x1="0" y1="100" x2="800" y2="100" stroke="#1E293B" />
+              <line x1="0" y1="200" x2="800" y2="200" stroke="#1E293B" />
+              <line x1="0" y1="300" x2="800" y2="300" stroke="#1E293B" />
+              <line x1="0" y1="400" x2="800" y2="400" stroke="#1E293B" />
+              
+              <!-- Geometric figures showing Illustrator mockup -->
+              <circle cx="400" cy="225" r="90" fill="none" stroke="#4F46E5" stroke-width="4" stroke-dasharray="8,4" />
+              <rect x="330" y="155" width="140" height="140" fill="none" stroke="#06B6D4" stroke-width="3" />
+              <path d="M300,320 L500,320" stroke="#7C3AED" stroke-width="4" stroke-linecap="round" />
+            </svg>
+          </div>
+
+          <!-- Description and Syllabus details -->
+          <div class="glass-card" style="padding: 30px; margin-bottom: 30px;">
+            <h3 style="font-size: 22px; margin-bottom: 15px;">Course Overview</h3>
+            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
+              This class takes you step-by-step from layout zero to Adobe tool hero. We focus strictly on design implementation. You will learn the layout mechanics behind iconic logos, vector alignments, brand stationaries, and high-fidelity print grids.
+            </p>
+            <h4 style="font-size: 16px; margin-bottom: 10px; font-weight: 700;">What you will learn:</h4>
+            <ul style="padding-left: 20px; color: var(--text-muted); line-height: 1.8; margin-bottom: 25px;">
+              <li>Photoshop adjustments: hue, saturation, lighting layers, and curves.</li>
+              <li>Illustrator tools: pen tool mastery, node anchors, bezier curves, and pathfinders.</li>
+              <li>Layout rules: alignment guidelines, safe margins, and grid frameworks.</li>
+              <li>Production handoff: print bleed setups, CYMK vs RGB, and SVG assets generation.</li>
+            </ul>
+          </div>
+
+
+          <!-- Downloads & Resources Section -->
+          <h3 style="font-size: 20px; margin-bottom: 15px;">Resources &amp; Downloads</h3>
+          <div class="resource-card">
+            <div style="display: flex; align-items: center; gap: 15px;">
+              <i class="fa-solid fa-file-pdf" style="font-size: 28px; color: #EF4444;"></i>
+              <div>
+                <h5 style="font-size: 14px; font-weight:700;">Illustrator Keyboard Shortcuts Guide</h5>
+                <p style="font-size: 11px; color: var(--text-muted);">PDF File - 1.2 MB</p>
+              </div>
+            </div>
+            <a href="#" class="btn btn-secondary" onclick="event.preventDefault(); alert('Downloading Shortcuts Guide...');" style="padding: 8px 16px; font-size: 12px;">Download</a>
+          </div>
+          
+          <div class="resource-card">
+            <div style="display: flex; align-items: center; gap: 15px;">
+              <i class="fa-solid fa-file-zipper" style="font-size: 28px; color: #F59E0B;"></i>
+              <div>
+                <h5 style="font-size: 14px; font-weight:700;">Lesson 1 Practice Grid Templates</h5>
+                <p style="font-size: 11px; color: var(--text-muted);">ZIP File - 8.5 MB</p>
+              </div>
+            </div>
+            <a href="#" class="btn btn-secondary" onclick="event.preventDefault(); alert('Downloading Practice Grid Templates...');" style="padding: 8px 16px; font-size: 12px;">Download</a>
+          </div>
+
+          <!-- Certificate Placeholder -->
+          <div id="certificateContainer" class="glass-card" style="display:none; text-align:center; padding: 40px; margin-top: 40px; border-color: var(--accent); background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(79, 70, 229, 0.05));">
+            <i class="fa-solid fa-award" style="font-size: 60px; color: var(--accent); margin-bottom: 20px; display: inline-block;"></i>
+            <h3 style="font-size: 22px; margin-bottom: 10px;">Congratulations!</h3>
+            <p style="color: var(--text-muted); font-size: 14px; max-width: 500px; margin: 0 auto 25px auto;">
+              You have completed 100% of the course lectures! Your IdeaChat Academy Completion Certificate is ready.
+            </p>
+            <button class="btn btn-primary" onclick="alert('Generating PDF Certificate... Done!')" style="padding: 12px 24px; font-size: 13px;">Download Certificate</button>
+          </div>
+
+        </div>
+
+        <!-- Right Side: Lessons Sidebar Navigation -->
+        <div class="lms-sidebar">
+          
+          <!-- Course Progress Tracker card -->
+          <div class="glass-card" style="padding: 25px; margin-bottom: 30px;">
+            <h4 style="font-size:16px; font-weight: 700; margin-bottom: 12px;">Course Progress</h4>
+            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 8px;">
+              <span id="sidebarProgressText">0 / 32 Lessons</span>
+              <span id="sidebarProgressPercent">0%</span>
+            </div>
+            <div class="course-card-progress-track" style="height: 8px;">
+              <div class="course-card-progress-bar" id="sidebarProgressBar" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="glass-card" style="padding: 0; overflow: hidden;">
+            <div style="background-color: rgba(79, 70, 229, 0.05); padding: 18px 24px; border-bottom: 1px solid rgba(0,0,0,0.06);">
+              <h4 style="font-size: 16px; font-weight: 700;"><i class="fa-solid fa-layer-group" style="margin-right: 8px; color:var(--primary);"></i> Course Modules</h4>
+            </div>
+            
+            <div id="courseMonthsContainer" style="padding: 20px; display: grid; gap: 16px;"></div>
+          </div>
+
+          <!-- Ask questions or WhatsApp details card -->
+          <div class="glass-card" style="padding: 25px; margin-top: 30px; text-align: center;">
+            <h5 style="font-size: 15px; margin-bottom: 8px;">Stuck on a lecture assignment?</h5>
+            <p style="color:var(--text-muted); font-size: 12px; margin-bottom: 15px;">Ask our lead instructors directly on WhatsApp.</p>
+            <a href="https://wa.me/94788009907?text=Hello%2C%20I%20have%20a%20question%20regarding%20Adobe%20Photoshop%20and%20Illustrator%20Mastery%20course." target="_blank" class="btn btn-primary" style="padding: 10px 18px; font-size: 12px; width: 100%;">
+              Ask Instructor <i class="fa-brands fa-whatsapp" style="margin-left: 5px;"></i>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="margin-top: 100px;">
+    <div class="container footer-bottom" style="border: none; padding: 20px 0;">
+      <p>&copy; 2026 IdeaChat Academy. All Rights Reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="../academy.html">Back to Learning Portal</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" id="backToTop" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </a>
+
+  <!-- Scripts -->
+  <script src="../js/navigation.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    // LMS interactive tracking scripts
+    document.addEventListener('DOMContentLoaded', () => {
+      const enrollBtn = document.getElementById('enrollBtn');
+      const lessonItems = document.querySelectorAll('.lesson-item');
+      const progressText = document.getElementById('sidebarProgressText');
+      const progressPercent = document.getElementById('sidebarProgressPercent');
+      const progressBar = document.getElementById('sidebarProgressBar');
+      const certificateContainer = document.getElementById('certificateContainer');
+
+      const totalLessons = 32;
+
+      const selectedCourse = {
+        name: 'Adobe Photoshop & Illustrator Mastery',
+        price: 'Rs 12,000',
+        description: 'Master visual manipulation, vector drawings, custom branding, and export-ready print layouts.',
+        bankName: 'ABC Bank',
+        accountNumber: '123-456-789',
+        ifsc: 'ABCD0123456'
+      };
+
+      const student = JSON.parse(localStorage.getItem('academyStudentProfile') || 'null');
+      const approvedAccess = JSON.parse(localStorage.getItem('academyApprovedAccess') || '[]');
+      const hasAccess = student && approvedAccess.some((item) => item.studentEmail === student.email && item.courseName === selectedCourse.name);
+
+      const accessMessage = document.createElement('div');
+      accessMessage.style = 'padding:18px; border-radius:18px; margin-bottom:24px; background: rgba(15, 186, 129, 0.1); color: #0F172A; font-weight: 700;';
+      accessMessage.textContent = hasAccess ? 'Payment approved. Click Start learning to unlock the course content.' : 'Payment is pending admin approval. Course content will unlock after approval.';
+      const courseWrapper = document.querySelector('.lms-wrapper');
+      if (courseWrapper) courseWrapper.insertAdjacentElement('beforebegin', accessMessage);
+
+      const courseContent = document.querySelector('.lms-wrapper');
+      const contentSections = document.querySelectorAll('.lms-main > .glass-card, .lms-sidebar .glass-card');
+      if (!hasAccess) {
+        contentSections.forEach((section) => {
+          section.classList.add('course-locked');
+        });
+      }
+
+      if (hasAccess) {
+        enrollBtn.textContent = 'Start learning';
+        enrollBtn.disabled = false;
+        enrollBtn.style.opacity = '1';
+      }
+
+      const unlockCourse = () => {
+        if (!hasAccess) {
+          localStorage.setItem('academySelectedCourse', JSON.stringify(selectedCourse));
+          window.location.href = '../purchase.html';
+          return;
+        }
+        contentSections.forEach((section) => {
+          section.classList.remove('course-locked');
+        });
+        if (courseContent) courseContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+
+      enrollBtn.addEventListener('click', unlockCourse);
+
+      const SYLLABUS_STORAGE_KEY = 'academySyllabusData';
+
+      const getSyllabusStore = () => {
+        try {
+          return JSON.parse(localStorage.getItem(SYLLABUS_STORAGE_KEY) || '{}');
+        } catch {
+          return {};
+        }
+      };
+
+      const getSyllabusData = () => {
+        const store = getSyllabusStore();
+        return store['Adobe Photoshop & Illustrator Mastery'] || { months: [] };
+      };
+
+      const container = document.getElementById('courseMonthsContainer');
+
+      const renderSyllabusAccordion = () => {
+        if (!container) return;
+        const data = getSyllabusData();
+        container.innerHTML = '';
+        
+        let months = data.months;
+        if (!months || months.length === 0) {
+          months = Array.from({length: 6}, (_, i) => ({ title: `Month ${i+1}`, days: [] }));
+        }
+
+        const accordionBox = document.createElement('div');
+        accordionBox.className = 'accordion-box';
+        accordionBox.style = 'background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.15); border-radius: 16px; padding: 18px; margin-bottom: 24px;';
+
+        months.forEach((month, monthIndex) => {
+          const monthPanel = document.createElement('div');
+          monthPanel.className = 'month-panel';
+          monthPanel.style = 'margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden;';
+
+          const monthToggle = document.createElement('button');
+          monthToggle.type = 'button';
+          monthToggle.className = 'month-toggle';
+          monthToggle.style = 'width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: rgba(255,255,255,0.03); color: var(--text-dark); border: none; font-size: 14px; font-weight: 700; cursor: pointer; text-align: left;';
+          monthToggle.innerHTML = `${month.title || 'Month ' + (monthIndex + 1)}<span class="month-arrow" style="transition: transform 0.2s;"></span>`;
+          monthPanel.appendChild(monthToggle);
+
+          const monthDays = document.createElement('div');
+          monthDays.className = 'month-days';
+          monthDays.style = 'max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: rgba(0,0,0,0.2);';
+
+          const daysWrapper = document.createElement('div');
+          daysWrapper.style = 'padding: 16px; display: grid; gap: 12px;';
+
+          if (!month.days || month.days.length === 0) {
+            const emptyMsg = document.createElement('p');
+            emptyMsg.style = 'color: #94A3B8; font-size: 13px; margin: 0; text-align: center;';
+            emptyMsg.textContent = 'No modules added yet.';
+            daysWrapper.appendChild(emptyMsg);
+          } else {
+            month.days.forEach(day => {
+              const dayEntry = document.createElement('div');
+              dayEntry.style = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 14px; border-radius: 12px;';
+              
+              const header = document.createElement('div');
+              header.style = 'font-weight: 700; color: #E2E8F0; font-size: 13px; margin-bottom: 8px;';
+              header.textContent = `${day.day}: ${day.title}`;
+              dayEntry.appendChild(header);
+              
+              const linkContainer = document.createElement('div');
+              linkContainer.style = 'display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px;';
+              
+              if (day.note) {
+                const isObj = typeof day.note === 'object';
+                const noteUrl = isObj ? day.note.dataUrl : day.note;
+                const noteName = isObj ? day.note.name : 'Lecture_Note';
+                
+                const noteBtn = document.createElement('a');
+                noteBtn.href = noteUrl;
+                if (isObj) noteBtn.download = noteName;
+                noteBtn.target = '_blank';
+                noteBtn.className = 'btn btn-secondary';
+                noteBtn.style = 'padding: 6px 12px; font-size: 11px;';
+                noteBtn.innerHTML = `<i class="fa-solid fa-file-pdf" style="margin-right: 5px;"></i> ${isObj ? noteName : 'Lecture Note'}`;
+                linkContainer.appendChild(noteBtn);
+              }
+              if (day.tool) {
+                const isObj = typeof day.tool === 'object';
+                const toolUrl = isObj ? day.tool.dataUrl : day.tool;
+                const toolName = isObj ? day.tool.name : 'Practical_Tool';
+                
+                const toolBtn = document.createElement('a');
+                toolBtn.href = toolUrl;
+                if (isObj) toolBtn.download = toolName;
+                toolBtn.target = '_blank';
+                toolBtn.className = 'btn btn-secondary';
+                toolBtn.style = 'padding: 6px 12px; font-size: 11px; border-color: #F59E0B; color: #F59E0B;';
+                toolBtn.innerHTML = `<i class="fa-solid fa-file-zipper" style="margin-right: 5px;"></i> ${isObj ? toolName : 'Practical Tool'}`;
+                linkContainer.appendChild(toolBtn);
+              }
+              if (day.zoomLink) {
+                const zoomBtn = document.createElement('a');
+                zoomBtn.href = day.zoomLink;
+                zoomBtn.target = '_blank';
+                zoomBtn.className = 'btn btn-secondary';
+                zoomBtn.style = 'padding: 6px 12px; font-size: 11px; border-color: #3B82F6; color: #3B82F6;';
+                zoomBtn.innerHTML = '<i class="fa-solid fa-video" style="margin-right: 5px;"></i> View Recording';
+                linkContainer.appendChild(zoomBtn);
+              }
+              if (!day.note && !day.tool && !day.zoomLink) {
+                 const noFiles = document.createElement('span');
+                 noFiles.style = 'color: #64748B; font-size: 11px; font-style: italic;';
+                 noFiles.textContent = 'No materials attached.';
+                 linkContainer.appendChild(noFiles);
+              }
+              dayEntry.appendChild(linkContainer);
+              daysWrapper.appendChild(dayEntry);
+            });
+          }
+          
+          monthDays.appendChild(daysWrapper);
+          monthPanel.appendChild(monthDays);
+          accordionBox.appendChild(monthPanel);
+
+          monthToggle.addEventListener('click', () => {
+            const isOpen = monthPanel.classList.contains('open');
+            // Close all other panels
+            accordionBox.querySelectorAll('.month-panel').forEach(p => {
+              p.classList.remove('open');
+              p.querySelector('.month-days').style.maxHeight = '0';
+              p.querySelector('.month-arrow').style.transform = 'rotate(0deg)';
+            });
+            // Open this if it wasn't already open
+            if (!isOpen) {
+              monthPanel.classList.add('open');
+              monthDays.style.maxHeight = monthDays.scrollHeight + 'px';
+              monthToggle.querySelector('.month-arrow').style.transform = 'rotate(180deg)';
+            }
+          });
+        });
+        
+        container.appendChild(accordionBox);
+      };
+
+      renderSyllabusAccordion();
+
+      // Load completed lessons
+      let completedLessons = JSON.parse(localStorage.getItem('ps_completed_lessons') || '[]');
+
+      // Function to recalculate progress bar heights
+      const updateProgress = () => {
+        const completedCount = completedLessons.length;
+        const percentage = Math.round((completedCount / totalLessons) * 100);
+
+        if (progressText) progressText.textContent = `${completedCount} / ${totalLessons} Lessons`;
+        if (progressPercent) progressPercent.textContent = `${percentage}%`;
+        if (progressBar) progressBar.style.width = `${percentage}%`;
+
+        // If completed all currently visible mock modules, show certificate
+        if (percentage >= 25 && certificateContainer) { // Demo threshold set to 25% (8 lessons) for easy verification
+          certificateContainer.style.display = 'block';
+        } else if (certificateContainer) {
+          certificateContainer.style.display = 'none';
+        }
+      };
+
+      // Set initial checkbox checked statuses from local storage
+      lessonItems.forEach(item => {
+        const lessonId = item.getAttribute('data-lesson-id');
+        const checkbox = item.querySelector('.lesson-checkbox');
+        
+        if (completedLessons.includes(lessonId)) {
+          checkbox.classList.add('checked');
+        }
+
+        // Toggle checkboxes
+        checkbox.addEventListener('click', (e) => {
+          e.stopPropagation(); // Avoid triggering card click highlights
+          
+          if (!hasAccess) {
+            alert('Your payment is pending admin approval before course lessons unlock.');
+            return;
+          }
+
+          if (completedLessons.includes(lessonId)) {
+            // Uncheck
+            completedLessons = completedLessons.filter(id => id !== lessonId);
+            checkbox.classList.remove('checked');
+          } else {
+            // Check
+            completedLessons.push(lessonId);
+            checkbox.classList.add('checked');
+          }
+
+          localStorage.setItem('ps_completed_lessons', JSON.stringify(completedLessons));
+          updateProgress();
+        });
+
+        // Click on entire lesson row sets active video overlay label
+        item.addEventListener('click', () => {
+          lessonItems.forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+
+          const overlayTitle = document.querySelector('#videoPlayOverlay h4');
+          const title = item.querySelector('h5').textContent;
+          if (overlayTitle) overlayTitle.textContent = title;
+        });
+      });
+
+      // Initial progress update
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
