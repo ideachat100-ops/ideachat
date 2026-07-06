@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -296,35 +296,21 @@
         <!-- Left Side: Video Player, Details, Resources -->
         <div class="lms-main">
           
-          <!-- Video Player Mockup -->
+          <!-- Video Player -->
           <div class="video-player-box">
+            <!-- Play overlay shown before video starts -->
             <div class="video-overlay" id="videoPlayOverlay">
               <div class="play-btn-circle"><i class="fa-solid fa-play"></i></div>
-              <h4 style="font-weight: 700;">Lesson 1: Introduction to Vector Grids &amp; Nodes</h4>
-              <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 5px;">Click to Play Lecture Mockup</p>
+              <h4 style="font-weight: 700;">Adobe Photoshop &amp; Illustrator Mastery</h4>
+              <p style="font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 5px;">Click to Play Course Introduction</p>
             </div>
-            <!-- Dynamic map/image representation of design video -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
-              <rect width="800" height="450" fill="#0F172A" />
-              <!-- Graphic layout grids -->
-              <line x1="100" y1="0" x2="100" y2="450" stroke="#1E293B" />
-              <line x1="200" y1="0" x2="200" y2="450" stroke="#1E293B" />
-              <line x1="300" y1="0" x2="300" y2="450" stroke="#1E293B" />
-              <line x1="400" y1="0" x2="400" y2="450" stroke="#1E293B" />
-              <line x1="500" y1="0" x2="500" y2="450" stroke="#1E293B" />
-              <line x1="600" y1="0" x2="600" y2="450" stroke="#1E293B" />
-              <line x1="700" y1="0" x2="700" y2="450" stroke="#1E293B" />
-              
-              <line x1="0" y1="100" x2="800" y2="100" stroke="#1E293B" />
-              <line x1="0" y1="200" x2="800" y2="200" stroke="#1E293B" />
-              <line x1="0" y1="300" x2="800" y2="300" stroke="#1E293B" />
-              <line x1="0" y1="400" x2="800" y2="400" stroke="#1E293B" />
-              
-              <!-- Geometric figures showing Illustrator mockup -->
-              <circle cx="400" cy="225" r="90" fill="none" stroke="#4F46E5" stroke-width="4" stroke-dasharray="8,4" />
-              <rect x="330" y="155" width="140" height="140" fill="none" stroke="#06B6D4" stroke-width="3" />
-              <path d="M300,320 L500,320" stroke="#7C3AED" stroke-width="4" stroke-linecap="round" />
-            </svg>
+            <!-- Actual course video -->
+            <video
+              id="courseVideo"
+              src="../images/academy/Idea Chat org.mp4"
+              style="width:100%; height:100%; object-fit:cover; display:block;"
+              preload="metadata"
+            ></video>
           </div>
 
           <!-- Description and Syllabus details -->
@@ -438,6 +424,26 @@
   <script>
     // LMS interactive tracking scripts
     document.addEventListener('DOMContentLoaded', () => {
+
+      // ── Video player ──────────────────────────────────────────
+      const courseVideo   = document.getElementById('courseVideo');
+      const videoOverlay  = document.getElementById('videoPlayOverlay');
+
+      if (courseVideo && videoOverlay) {
+        videoOverlay.addEventListener('click', () => {
+          courseVideo.controls = true;
+          courseVideo.play();
+          videoOverlay.style.opacity = '0';
+          videoOverlay.style.pointerEvents = 'none';
+        });
+        courseVideo.addEventListener('ended', () => {
+          videoOverlay.style.opacity = '1';
+          videoOverlay.style.pointerEvents = 'auto';
+          courseVideo.controls = false;
+        });
+      }
+      // ─────────────────────────────────────────────────────────
+
       const enrollBtn = document.getElementById('enrollBtn');
       const lessonItems = document.querySelectorAll('.lesson-item');
       const progressText = document.getElementById('sidebarProgressText');
