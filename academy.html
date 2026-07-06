@@ -1,17 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="IdeaChat Academy - Master professional graphic design tools and principles. Browse our interactive Photoshop, Illustrator and Layout Design courses.">
+  <meta name="description"
+    content="IdeaChat Academy - Master professional graphic design tools and principles. Browse our interactive Photoshop, Illustrator and Layout Design courses.">
   <title>Academy LMS | IdeaChat - Professional Design Learning</title>
   <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css?v=1.1">
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/academy.css">
 </head>
+
 <body>
 
   <!-- Preloader -->
@@ -22,9 +25,8 @@
   <!-- Header -->
   <header>
     <div class="container nav-wrapper">
-      <a href="index.html" class="logo-link">
-        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
-        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+      <a href="index.html" class="logo">
+        IdeaChat<span><span class="logo-dot"></span></span>
       </a>
       <nav aria-label="Main Navigation">
         <ul class="nav-menu">
@@ -34,6 +36,7 @@
           <li><a href="services.html" class="nav-link">Services</a></li>
           <li><a href="portfolio.html" class="nav-link">Portfolio</a></li>
           <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <!-- Admin button hidden on academic page -->
           <li>
             <a href="profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
               <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
@@ -66,7 +69,8 @@
   <div class="login-modal" id="loginModal" aria-hidden="true">
     <div class="login-modal-backdrop" id="loginModalBackdrop"></div>
     <div class="login-modal-card" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
-      <button type="button" class="modal-close" id="closeLoginModal" aria-label="Close login form"><i class="fa-solid fa-xmark"></i></button>
+      <button type="button" class="modal-close" id="closeLoginModal" aria-label="Close login form"><i
+          class="fa-solid fa-xmark"></i></button>
       <div class="login-modal-header">
         <h2 id="loginModalTitle">Student Login</h2>
         <p>Use your email and phone number to log in. A profile is created automatically after successful login.</p>
@@ -88,20 +92,23 @@
         </select>
 
         <button type="submit" class="btn btn-primary">Login / Create Profile</button>
-        <p class="account-link-text">Forgot your password? <button type="button" class="link-button" id="forgotPasswordLink">Reset it here</button>.</p>
+        <p class="account-link-text">Forgot your password? <button type="button" class="link-button"
+            id="forgotPasswordLink">Reset it here</button>.</p>
         <p class="form-message" id="loginMessage"></p>
       </form>
 
       <div class="reset-panel" id="resetRequest" style="display:none;">
         <h3>Reset Your Password</h3>
-        <p>Enter the email address connected to your profile. A reset link will appear below so you can continue to the password reset form.</p>
+        <p>Enter the email address connected to your profile. A reset link will appear below so you can continue to the
+          password reset form.</p>
         <form id="resetRequestForm">
           <label for="resetEmail">Email address</label>
           <input type="email" id="resetEmail" required placeholder="john@example.com">
           <button type="submit" class="btn btn-secondary">Send reset link</button>
         </form>
         <div class="email-reset-notice" id="resetNotice" style="display:none;">
-          <p>A reset link was created for <strong id="resetEmailPreview"></strong>. Click the link below to continue.</p>
+          <p>A reset link was created for <strong id="resetEmailPreview"></strong>. Click the link below to continue.
+          </p>
           <a href="#resetPasswordForm" class="btn btn-primary" id="emailResetLink">Open reset password form</a>
         </div>
       </div>
@@ -127,11 +134,12 @@
       <div class="section-header">
         <span class="section-subtitle">Our Programs</span>
         <h2 class="section-title">Master Professional Software &amp; Design Rules</h2>
-        <p class="section-description">Select a course to start learning. Progress tracks are automatically saved inside your browser.</p>
+        <p class="section-description">Select a course to start learning. Progress tracks are automatically saved inside
+          your browser.</p>
       </div>
 
       <div class="courses-grid-wrapper">
-        
+
         <!-- Course 01: Photoshop & Illustrator -->
         <div class="course-card reveal fade-up" id="coursePhotoshopCard">
           <div class="course-card-img-box">
@@ -141,9 +149,10 @@
           <div class="course-card-body">
             <h3 class="course-card-title">Adobe Photoshop &amp; Illustrator Mastery</h3>
             <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
-              Master basic visual manipulation layers, vector drawings, custom logo drafting, and printing layout export presets.
+              Master basic visual manipulation layers, vector drawings, custom logo drafting, and printing layout export
+              presets.
             </p>
-            
+
             <div class="course-meta">
               <span><i class="fa-solid fa-clock"></i> 8 Weeks</span>
               <span><i class="fa-solid fa-book-open"></i> 32 Lessons</span>
@@ -167,7 +176,9 @@
                 <h5 style="font-size:14px; font-weight:700;">John Doe</h5>
                 <p style="font-size:11px; color:var(--text-muted);">Lead Graphic Instructor</p>
               </div>
-              <a href="#" class="btn btn-primary enroll-button" data-course-id="photoshop" data-course-name="Adobe Photoshop & Illustrator Mastery" style="padding:10px 20px; font-size:13px;">Enroll Now</a>
+              <a href="#" class="btn btn-primary enroll-button" data-course-id="photoshop"
+                data-course-name="Adobe Photoshop & Illustrator Mastery"
+                style="padding:10px 20px; font-size:13px;">Enroll Now</a>
             </div>
           </div>
         </div>
@@ -181,9 +192,10 @@
           <div class="course-card-body">
             <h3 class="course-card-title">Graphic Design Core Principles</h3>
             <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
-              Study visual guidelines, contrast rules, alignment grids, font pairings, negative space structures, and golden spiral rules.
+              Study visual guidelines, contrast rules, alignment grids, font pairings, negative space structures, and
+              golden spiral rules.
             </p>
-            
+
             <div class="course-meta">
               <span><i class="fa-solid fa-clock"></i> 6 Weeks</span>
               <span><i class="fa-solid fa-book-open"></i> 24 Lessons</span>
@@ -207,7 +219,9 @@
                 <h5 style="font-size:14px; font-weight:700;">Sarah Smith</h5>
                 <p style="font-size:11px; color:var(--text-muted);">Lead Design Theorist</p>
               </div>
-              <a href="#" class="btn btn-primary enroll-button" data-course-id="principles" data-course-name="Graphic Design Core Principles" style="padding:10px 20px; font-size:13px;">Enroll Now</a>
+              <a href="#" class="btn btn-primary enroll-button" data-course-id="principles"
+                data-course-name="Graphic Design Core Principles" style="padding:10px 20px; font-size:13px;">Enroll
+                Now</a>
             </div>
           </div>
         </div>
@@ -220,12 +234,12 @@
   <footer>
     <div class="container footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo-link">
-        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
-        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
-      </a>
+        <a href="index.html" class="logo">
+          IdeaChat<span><span class="logo-dot"></span></span>
+        </a>
         <p>
-          We design professional graphics, build elegant custom websites, and provide industry-standard learning programs through our structured Graphic Design Academy.
+          We design professional graphics, build elegant custom websites, and provide industry-standard learning
+          programs through our structured Graphic Design Academy.
         </p>
         <div class="social-links">
           <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
@@ -260,7 +274,8 @@
       <div class="footer-newsletter">
         <h4 class="footer-heading">Newsletter</h4>
         <p>Subscribe to receive news, design tips, and course discount coupons.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
+        <form class="newsletter-form"
+          onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
           <input type="email" required placeholder="Your email address" aria-label="Email address">
           <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
         </form>
@@ -287,9 +302,5 @@
   <script src="js/main.js"></script>
   <script src="js/academy.js"></script>
 </body>
+
 </html>
-
-
-
-
-

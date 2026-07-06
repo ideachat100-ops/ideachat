@@ -21,6 +21,11 @@
     padding: 16px 0;
   }
   
+  .logo-img {
+    height: 45px;
+    max-width: 200px;
+  }
+  
   /* Navigation Menu */
   .hamburger {
     display: block;
