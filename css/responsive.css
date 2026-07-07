@@ -23,7 +23,7 @@
 /* ─────────────────────────────────────────
    TABLETS & SMALL LAPTOPS  (max 992px)
 ───────────────────────────────────────── */
-@media (max-width: 992px) {
+@media (max-width: 980px) {
 
   /* ── Header ── */
   header {
