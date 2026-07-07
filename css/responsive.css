@@ -1,68 +1,80 @@
 /* 
 =========================================
   IDEACHAT - RESPONSIVE STYLES
+  Surgical, component-targeted breakpoints.
+  NO wildcard attribute selectors that could
+  destroy layout components like sliders.
 =========================================
 */
 
-/* --- Large Desktops / Laptops (1200px and down) --- */
+/* ─────────────────────────────────────────
+   LARGE DESKTOPS / LAPTOPS  (max 1200px)
+───────────────────────────────────────── */
 @media (max-width: 1200px) {
   .section-padding {
     padding: 80px 0;
   }
-  
+
   .section-title {
     font-size: 36px;
   }
 }
 
-/* --- Tablets & Small Laptops (992px and down) --- */
+/* ─────────────────────────────────────────
+   TABLETS & SMALL LAPTOPS  (max 992px)
+───────────────────────────────────────── */
 @media (max-width: 992px) {
+  /* ── Header ── */
   header {
     padding: 16px 0;
   }
-  
+
   .logo-img {
     height: 45px;
-    max-width: 200px;
+    max-width: 180px;
   }
-  
-  /* Navigation Menu */
+
+  /* ── Hamburger: show and position correctly ── */
   .hamburger {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: absolute;
     top: 50%;
-    right: 24px;
+    right: 20px;
     transform: translateY(-50%);
+    z-index: 1010;
   }
-  
+
+  /* ── Mobile Nav Drawer ── */
   .nav-menu {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 300px;
+    width: min(300px, 80vw);
     height: 100vh;
-    background: rgba(15, 23, 42, 0.95); /* Dark slate glass */
+    background: rgba(15, 23, 42, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-left: 1px solid rgba(255, 255, 255, 0.1);
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 32px;
-    padding: 60px 20px;
-    transition: var(--transition-normal);
+    gap: 28px;
+    padding: 60px 24px;
+    transition: right var(--transition-normal);
     z-index: 1000;
   }
-  
+
   .nav-menu.active {
     right: 0;
   }
-  
+
   .nav-link {
     color: var(--text-light);
     font-size: 18px;
   }
-  
+
   .nav-link::after {
     background: linear-gradient(90deg, var(--accent), var(--secondary));
   }
@@ -77,298 +89,429 @@
     width: 45px;
     height: 45px;
   }
-  
+
   .nav-menu .theme-toggle {
     margin-left: 0;
   }
 
-  /* Transform Hamburger to Close Icon (X) */
+  /* ── Hamburger → X animation ── */
   .hamburger.active .hamburger-line:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
-    background-color: var(--text-light);
+    background-color: #ffffff !important;
   }
   .hamburger.active .hamburger-line:nth-child(2) {
     opacity: 0;
   }
   .hamburger.active .hamburger-line:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
-    background-color: var(--text-light);
+    background-color: #ffffff !important;
   }
-  
-  /* Footer Grid responsive */
+
+  /* ── Section spacing ── */
+  .section-padding {
+    padding: 60px 0;
+  }
+
+  .section-title {
+    font-size: 32px;
+  }
+
+  /* ── Two-column grid sections → single column ── */
+
+  /* Hero section */
+  .hero-content-grid {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+  }
+
+  .hero-image-wrapper {
+    display: none; /* hide hero image on tablet to keep it clean */
+  }
+
+  .hero-buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* About preview */
+  .about-preview-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .about-preview-graphics svg {
+    max-height: 250px;
+  }
+
+  /* Contact section */
+  .contact-main-section .container {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* LMS course layout */
+  .lms-wrapper {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Academy account grid */
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Purchase card */
+  .purchase-card {
+    grid-template-columns: 1fr;
+  }
+
+  /* Services hero title */
+  .services-hero h1,
+  .about-hero h1,
+  .contact-hero h1,
+  .portfolio-hero h1,
+  .academy-hero h1 {
+    font-size: 36px;
+  }
+
+  /* Service cards */
+  .service-card-large {
+    flex-direction: column !important;
+    gap: 30px;
+    padding: 30px;
+  }
+
+  .service-card-large:nth-child(even) {
+    flex-direction: column !important;
+  }
+
+  .service-card-image {
+    width: 100%;
+  }
+
+  /* Modal */
+  .modal-body {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  /* Footer */
   .footer-grid {
     grid-template-columns: 1fr 1fr;
     gap: 30px;
   }
-}
 
-/* --- Mobiles & Small Laptops (992px and down) --- */
-@media (max-width: 992px) {
-  .section-padding {
-    padding: 60px 0;
-  }
-  
-  .section-title {
-    font-size: 32px;
-  }
-
-  /* Collapse common desktop grid layouts to a single column on tablet screens */
-  div[style*="grid-template-columns: 1.2fr 1fr"],
-  div[style*="grid-template-columns: 1fr 1.2fr"],
-  div[style*="grid-template-columns: 1fr 1.3fr"],
-  div[style*="grid-template-columns: 2.2fr 1fr"],
-  div[style*="grid-template-columns: 1fr 1fr"],
-  div[style*="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr))"],
-  div[style*="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))"],
-  div[style*="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))"],
-  div[style*="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr))"],
-  div[style*="display: grid; grid-template-columns: 1fr 1.3fr"],
-  div[style*="display: grid; grid-template-columns: 2.2fr 1fr"] {
-    grid-template-columns: 1fr !important;
-    grid-auto-flow: row !important;
-  }
-
-  *[style*="grid-template-columns"] {
-    max-width: 100% !important;
-    width: 100% !important;
-  }
-
-  .hero-section .container,
-  .about-preview-section .container,
-  .contact-main-section .container,
-  .services-list-section .container,
-  .portfolio-gallery-section .container,
-  .mission-vision-section .container,
-  .skills-stats-section .container,
-  .services-hero .container,
-  .portfolio-hero .container,
-  .about-hero .container,
-  .contact-hero .container {
-    grid-template-columns: 1fr !important;
-  }
-
-  .hero-buttons {
-    justify-content: center;
-  }
-
-  .hero-content,
-  .hero-image-wrapper,
-  .about-preview-content,
-  .about-preview-graphics,
-  .contact-details-box,
-  .contact-form-box,
-  .service-card-large,
-  .modal-body,
-  .portfolio-gallery-grid,
-  .skills-grid,
-  .stats-grid,
-  .filter-wrapper {
-    width: 100%;
-  }
-
-  .hero-section,
-  .contact-hero,
-  .services-hero,
-  .portfolio-hero,
-  .about-hero,
-  .contact-hero {
-    padding: 120px 0 80px;
-  }
-
-  .hero-section h1,
-  .about-hero h1,
-  .contact-hero h1,
-  .portfolio-hero h1,
-  .services-hero h1 {
-    font-size: 32px;
-    line-height: 1.2;
-  }
-
-  .hero-section p,
-  .about-hero p,
-  .contact-hero p,
-  .portfolio-hero p,
-  .services-hero p {
-    max-width: 100%;
-  }
-  
-  
   .footer-bottom {
     flex-direction: column;
     gap: 15px;
     text-align: center;
   }
 
-  /* Extra overrides for inline grid layouts and fixed widths */
-  .container[style*="display: grid"],
-  [style*="grid-template-columns: 1.2fr 1fr"],
-  [style*="grid-template-columns: 1fr 1.2fr"],
-  [style*="grid-template-columns: 1fr 1.3fr"],
-  [style*="grid-template-columns: 2.2fr 1fr"],
-  [style*="grid-template-columns: 1fr 1fr"],
-  [style*="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))"],
-  [style*="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))"],
-  [style*="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr))"] {
-    grid-template-columns: 1fr !important;
-    grid-auto-flow: row !important;
-    gap: 24px !important;
-  }
-
-  [style*="max-width: 800px"] {
-    max-width: 100% !important;
-    width: 100% !important;
-  }
-
-  [style*="display: flex; gap: 16px; flex-wrap: wrap;"] {
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-
-  .hero-buttons a,
-  .service-card-image,
-  .service-card-details,
-  .contact-details-box,
-  .contact-form-wrapper,
-  .contact-form-box,
-  .hero-image-wrapper,
-  .hero-content,
-  .about-preview-graphics,
-  .about-preview-content {
-    width: 100% !important;
-  }
-
-  .hero-buttons {
-    justify-content: center;
-  }
-
-  .hero-buttons a {
-    min-width: 100%;
-  }
-
-  .service-card-large {
-    flex-direction: column !important;
-    gap: 24px !important;
-  }
-
-  .contact-main-section .container,
-  .about-preview-section .container,
-  .hero-section .container,
-  .portfolio-gallery-grid,
-  .service-card-large {
-    grid-template-columns: 1fr !important;
+  /* Hero section headings */
+  .hero-section h1 {
+    font-size: 36px;
+    line-height: 1.2;
   }
 }
 
-/* --- Mobiles / Small Tablets (768px and down) --- */
+/* ─────────────────────────────────────────
+   MOBILE  (max 768px)
+───────────────────────────────────────── */
 @media (max-width: 768px) {
   .section-padding {
     padding: 50px 0;
   }
-  
+
   .section-title {
-    font-size: 30px;
+    font-size: 28px;
   }
-  
+
   .section-header {
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
-  
-  .filter-wrapper {
+
+  /* ── Hero section ── */
+  .hero-section {
+    padding: 120px 0 60px !important;
+    min-height: auto !important;
+  }
+
+  .hero-section h1 {
+    font-size: 30px !important;
+    line-height: 1.25;
+  }
+
+  .hero-section p {
+    font-size: 16px !important;
+  }
+
+  .hero-buttons {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* ── About preview ── */
+  .about-preview-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* ── Reviews / Testimonial Slider ──
+     IMPORTANT: Do NOT apply flex-direction:column to the slider track.
+     The track needs to remain a horizontal flex row for the slide animation. */
+  .reviews-section .slider-container {
+    max-width: 100% !important;
+    padding: 0 8px;
+  }
+
+  .reviews-section .slide {
+    min-width: 100% !important;
+    padding: 8px !important;
+  }
+
+  .reviews-section .glass-card {
+    padding: 30px 20px !important;
+    text-align: center;
+  }
+
+  .reviews-section .glass-card img {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  .reviews-section .glass-card p[style*="font-size: 16px"] {
+    font-size: 14px !important;
+  }
+
+  /* ── Portfolio grid ── */
+  .portfolio-grid,
+  .services-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .portfolio-preview-card img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* ── Contact section two-column grid ── */
+  .contact-preview-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Keep contact detail rows (icon + text) as a horizontal row */
+  .contact-info > div > div[style*="display: flex; gap: 15px"] {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+  }
+
+  /* Map preview */
+  .contact-info > div[style*="height: 220px"] {
+    height: 160px !important;
+  }
+
+  /* ── Form inner grid (name + email row) ── */
+  .form-name-email-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* ── Services page hero ── */
+  .services-hero,
+  .about-hero,
+  .contact-hero,
+  .portfolio-hero,
+  .academy-hero {
+    padding: 120px 0 60px !important;
+  }
+
+  .services-hero h1,
+  .about-hero h1,
+  .contact-hero h1,
+  .portfolio-hero h1,
+  .academy-hero h1 {
+    font-size: 28px !important;
+    line-height: 1.25;
+  }
+
+  /* ── About timeline ── */
+  .timeline-container::after {
+    left: 24px;
+  }
+
+  .timeline-item {
+    width: 100%;
+    padding-left: 56px;
+    padding-right: 16px;
+    text-align: left !important;
+  }
+
+  .timeline-item.left,
+  .timeline-item.right {
+    left: 0;
+  }
+
+  .timeline-item::after {
+    left: 14px !important;
+    right: auto !important;
+  }
+
+  .timeline-card {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* ── Skills grid ── */
+  .skills-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+  }
+
+  /* ── Service features list ── */
+  .service-features-list {
+    grid-template-columns: 1fr !important;
     gap: 10px;
   }
 
-  .service-card-large {
-    padding: 30px;
+  /* ── LMS course page ── */
+  .academy-hero[style*="padding: 140px"] {
+    padding: 100px 0 40px 0 !important;
   }
 
+  .academy-hero .container {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* ── Footer ── */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .footer-bottom-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ── Glass card padding tighten ── */
+  .glass-card {
+    padding: 24px 18px;
+  }
+
+  /* ── Modal ── */
+  .modal-content-box {
+    padding: 24px 18px;
+    width: 95%;
+  }
+
+  /* ── Portfolio gallery ── */
   .portfolio-gallery-grid {
     gap: 20px;
   }
-
-  .contact-form-box,
-  .services-hero .container,
-  .portfolio-hero .container,
-  .about-hero .container {
-    padding: 0;
-  }
-
-  /* Force inline grid containers and flexible blocks to stack cleanly */
-  *[style*="display: grid"],
-  *[style*="grid-template-columns"] {
-    grid-template-columns: 1fr !important;
-    grid-auto-flow: row !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  *[style*="display: flex"] {
-    flex-wrap: wrap !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    width: 100% !important;
-  }
-
-  *[style*="max-width: 650px"],
-  *[style*="max-width: 800px"] {
-    max-width: 100% !important;
-    width: 100% !important;
-  }
-
-  .contact-form-box .form-group input,
-  .contact-form-box .form-group textarea {
-    font-size: 15px;
-  }
-  
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  
-  .footer-bottom {
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
-  }
 }
 
-/* --- Portrait Mobiles (480px and down) --- */
+/* ─────────────────────────────────────────
+   SMALL PHONES  (max 480px)
+───────────────────────────────────────── */
 @media (max-width: 480px) {
-  .section-title {
-    font-size: 26px;
-  }
-  
-  .btn {
-    width: 100%;
-    padding: 14px 28px;
-  }
-  
-  .nav-menu {
-    width: 100%;
-  }
-
-  /* Tighten container padding on very small screens for edge-fit */
   .container {
-    padding: 0 12px;
+    padding: 0 14px;
   }
 
-  /* Reduce header padding to avoid large top/bottom gaps */
   header {
     padding: 10px 0;
   }
 
+  .logo-img {
+    height: 38px;
+  }
+
+  .nav-menu {
+    width: 100%;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+
+  .section-description {
+    font-size: 14px;
+  }
+
+  /* ── Hero ── */
+  .hero-section h1 {
+    font-size: 26px !important;
+  }
+
+  /* ── Reviews slider: ensure slides don't shrink on tiny screens ── */
+  .reviews-section .slider-container {
+    padding: 0 4px;
+  }
+
+  .reviews-section .glass-card {
+    padding: 24px 14px !important;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    padding: 14px 24px;
+    font-size: 14px;
+  }
+
+  /* ── Stats grid ── */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px;
+  }
+
+  .counter-number {
+    font-size: 36px;
+  }
+
+  /* ── Course card ── */
+  .courses-grid-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Academy hero banner ── */
+  .academy-hero h1 {
+    font-size: 24px !important;
+  }
+
+  /* ── Form input font on tiny phones ── */
+  .contact-form-box .form-group input,
+  .contact-form-box .form-group textarea {
+    font-size: 15px;
+  }
+
+  /* ── Keep filter buttons wrapping nicely ── */
+  .filter-wrapper {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* ── Service feature lists ── */
   .service-features-list,
   .skills-grid,
   .stats-grid,
-  .faq-container,
-  .filter-wrapper {
-    gap: 15px !important;
-  }
-
-  .about-preview-section .container,
-  .contact-main-section .container,
-  .hero-section .container,
-  .portfolio-gallery-grid,
-  .service-card-large {
-    grid-template-columns: 1fr !important;
+  .faq-container {
+    gap: 12px !important;
   }
 }
