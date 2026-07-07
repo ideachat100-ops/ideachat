@@ -74,12 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    // Read stored preference or use system preference
+    // Read stored preference; default to light on first visit
     const stored = localStorage.getItem('ideachat_theme');
-    if (stored) applyTheme(stored);
-    else {
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      applyTheme(prefersDark ? 'dark' : 'light');
+    if (stored) {
+      applyTheme(stored);
+    } else {
+      applyTheme('light');
     }
 
     btn.addEventListener('click', () => {

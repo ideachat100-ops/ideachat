@@ -32,7 +32,7 @@
 
   .logo-img {
     height: 45px;
-    max-width: 180px;
+    max-width: 280px;
   }
 
   /* ── Hamburger: show and position correctly ── */
@@ -42,7 +42,7 @@
     justify-content: center;
     position: absolute;
     top: 50%;
-    right: 5px;
+    right: 16px;
     transform: translateY(-50%);
     z-index: 1010;
   }
