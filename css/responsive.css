@@ -24,6 +24,7 @@
    TABLETS & SMALL LAPTOPS  (max 992px)
 ───────────────────────────────────────── */
 @media (max-width: 992px) {
+
   /* ── Header ── */
   header {
     padding: 16px 0;
@@ -41,7 +42,7 @@
     justify-content: center;
     position: absolute;
     top: 50%;
-    right: 20px;
+    right: 10px;
     transform: translateY(-50%);
     z-index: 1010;
   }
@@ -99,9 +100,11 @@
     transform: translateY(8px) rotate(45deg);
     background-color: #ffffff !important;
   }
+
   .hamburger.active .hamburger-line:nth-child(2) {
     opacity: 0;
   }
+
   .hamburger.active .hamburger-line:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
     background-color: #ffffff !important;
@@ -125,7 +128,8 @@
   }
 
   .hero-image-wrapper {
-    display: none; /* hide hero image on tablet to keep it clean */
+    display: none;
+    /* hide hero image on tablet to keep it clean */
   }
 
   .hero-buttons {
@@ -308,7 +312,7 @@
   }
 
   /* Keep contact detail rows (icon + text) as a horizontal row */
-  .contact-info > div > div[style*="display: flex; gap: 15px"] {
+  .contact-info>div>div[style*="display: flex; gap: 15px"] {
     flex-direction: row !important;
     align-items: flex-start !important;
     flex-wrap: nowrap !important;
@@ -316,7 +320,7 @@
   }
 
   /* Map preview */
-  .contact-info > div[style*="height: 220px"] {
+  .contact-info>div[style*="height: 220px"] {
     height: 160px !important;
   }
 
