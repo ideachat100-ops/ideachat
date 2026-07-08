@@ -1,0 +1,632 @@
+{
+  "_meta": {
+    "name": "IdeaChat Site Database",
+    "description": "Central data store for all IdeaChat website content — courses, syllabus modules, services, portfolio, and admin configuration. This file is the single source of truth that the admin panel reads from and writes to.",
+    "version": "1.0.0",
+    "created": "2026-07-08",
+    "lastUpdated": "2026-07-08"
+  },
+
+  "site": {
+    "name": "IdeaChat",
+    "tagline": "Branding, Web & Design Academy",
+    "description": "We design professional graphics, build elegant custom websites, and provide industry-standard learning programs through our structured Graphic Design Academy.",
+    "copyright": "© 2026 IdeaChat. All Rights Reserved.",
+    "contact": {
+      "whatsapp": "+94788009907",
+      "email": "",
+      "location": ""
+    },
+    "socialLinks": {
+      "facebook": "#",
+      "twitter": "#",
+      "instagram": "#",
+      "linkedin": "#"
+    },
+    "navigation": [
+      { "label": "Home",      "href": "index.html" },
+      { "label": "About",     "href": "about.html" },
+      { "label": "Academy",   "href": "academy.html" },
+      { "label": "Services",  "href": "services.html" },
+      { "label": "Portfolio", "href": "portfolio.html" },
+      { "label": "Contact",   "href": "contact.html" }
+    ]
+  },
+
+  "courses": [
+    {
+      "id": "photoshop-illustrator",
+      "slug": "photoshop-course",
+      "title": "Adobe Photoshop & Illustrator Mastery",
+      "badge": "Beginner to Advanced",
+      "category": "Software Mastery",
+      "level": "beginner-to-advanced",
+      "status": "active",
+      "price": "Rs 12,000",
+      "duration": "8 Weeks",
+      "totalLessons": 32,
+      "rating": 4.9,
+      "description": "Master basic visual manipulation layers, vector drawings, custom logo drafting, and printing layout export presets.",
+      "fullDescription": "This class takes you step-by-step from layout zero to Adobe tool hero. We focus strictly on design implementation. You will learn the layout mechanics behind iconic logos, vector alignments, brand stationaries, and high-fidelity print grids.",
+      "onlineOnly": true,
+      "coverImage": "images/academy/photoshop.jpg",
+      "introVideo": "images/academy/Idea Chat org.mp4",
+      "pageUrl": "courses/photoshop-course.html",
+      "instructor": {
+        "name": "John Doe",
+        "initials": "JD",
+        "role": "Lead Graphic Instructor"
+      },
+      "whatYouLearn": [
+        "Photoshop adjustments: hue, saturation, lighting layers, and curves.",
+        "Illustrator tools: pen tool mastery, node anchors, bezier curves, and pathfinders.",
+        "Layout rules: alignment guidelines, safe margins, and grid frameworks.",
+        "Production handoff: print bleed setups, CYMK vs RGB, and SVG assets generation."
+      ],
+      "resources": [
+        {
+          "id": "res-ps-001",
+          "title": "Illustrator Keyboard Shortcuts Guide",
+          "type": "pdf",
+          "size": "1.2 MB",
+          "fileUrl": ""
+        },
+        {
+          "id": "res-ps-002",
+          "title": "Lesson 1 Practice Grid Templates",
+          "type": "zip",
+          "size": "8.5 MB",
+          "fileUrl": ""
+        }
+      ],
+      "bankPayment": {
+        "bankName": "ABC Bank",
+        "accountNumber": "123-456-789",
+        "ifsc": "ABCD0123456"
+      },
+      "syllabus": {
+        "storageKey": "academySyllabusData",
+        "courseKey": "Adobe Photoshop & Illustrator Mastery",
+        "months": [
+          {
+            "monthIndex": 0,
+            "title": "Month 1",
+            "days": []
+          },
+          {
+            "monthIndex": 1,
+            "title": "Month 2",
+            "days": []
+          },
+          {
+            "monthIndex": 2,
+            "title": "Month 3",
+            "days": []
+          },
+          {
+            "monthIndex": 3,
+            "title": "Month 4",
+            "days": []
+          },
+          {
+            "monthIndex": 4,
+            "title": "Month 5",
+            "days": []
+          },
+          {
+            "monthIndex": 5,
+            "title": "Month 6",
+            "days": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "design-principles",
+      "slug": "design-principles",
+      "title": "Graphic Design Core Principles",
+      "badge": "Theory & Layout",
+      "category": "Design Theory",
+      "level": "theory-and-layout",
+      "status": "active",
+      "price": "Rs 8,000",
+      "duration": "6 Weeks",
+      "totalLessons": 24,
+      "rating": 4.8,
+      "description": "Study visual guidelines, contrast rules, alignment grids, font pairings, negative space structures, and golden spiral rules.",
+      "fullDescription": "Graphic Design Core Principles covers the foundational theories and rules that all great designers follow. From color theory and typography to golden ratio grids and negative space composition.",
+      "onlineOnly": true,
+      "coverImage": "images/academy/principles.jpg",
+      "introVideo": "",
+      "pageUrl": "courses/design-principles.html",
+      "instructor": {
+        "name": "Sarah Smith",
+        "initials": "SS",
+        "role": "Lead Design Theorist"
+      },
+      "whatYouLearn": [
+        "Visual contrast and hierarchy rules for professional layouts.",
+        "Grid systems and alignment frameworks used in print and digital.",
+        "Font pairing logic and typographic scale.",
+        "Negative space and the golden spiral composition technique.",
+        "Color theory: palettes, hue relationships, and brand color systems."
+      ],
+      "resources": [],
+      "syllabus": {
+        "storageKey": "academySyllabusData",
+        "courseKey": "Graphic Design Core Principles",
+        "months": [
+          { "monthIndex": 0, "title": "Month 1", "days": [] },
+          { "monthIndex": 1, "title": "Month 2", "days": [] },
+          { "monthIndex": 2, "title": "Month 3", "days": [] },
+          { "monthIndex": 3, "title": "Month 4", "days": [] },
+          { "monthIndex": 4, "title": "Month 5", "days": [] },
+          { "monthIndex": 5, "title": "Month 6", "days": [] }
+        ]
+      }
+    }
+  ],
+
+  "syllabusModuleSchema": {
+    "_note": "This describes the shape of each day/module object as used in the admin panel and localStorage.",
+    "fields": {
+      "id": "string — unique ID generated at creation time (Date.now() + Math.random())",
+      "day": "string — e.g. 'Day 1'",
+      "title": "string — module title, e.g. 'Introduction to Vector Grids'",
+      "note": {
+        "name": "string — original filename of the uploaded PDF/image",
+        "dataUrl": "string — base64 encoded data URL of the file"
+      },
+      "tool": {
+        "name": "string — original filename of the uploaded ZIP/image/etc.",
+        "dataUrl": "string — base64 encoded data URL of the file"
+      },
+      "zoomLink": "string — URL of the Zoom recording, e.g. https://zoom.us/rec/play/..."
+    }
+  },
+
+  "services": [
+    {
+      "id": "graphic-design",
+      "title": "Graphic & Brand Layout Design",
+      "priceTag": "Starts from $499",
+      "image": "images/services/s1.svg",
+      "description": "Formulating vector assets, typography lockups, brand color systems, and corporate stationary layouts. We build high-impact print flyers, business card layouts, and complete brand identity guidelines.",
+      "features": [
+        "Logo Guidelines",
+        "Typography Systems",
+        "Print Media Layout",
+        "Business Cards"
+      ]
+    },
+    {
+      "id": "web-dev",
+      "title": "Professional Web Development",
+      "priceTag": "Starts from $999",
+      "image": "images/services/s2.svg",
+      "description": "Crafting semantic code in Vanilla JS and CSS. We ensure absolute speed scores, full accessibility (WCAG), responsive rendering across breakpoints, and modern visual design structures.",
+      "features": [
+        "Responsive HTML/CSS",
+        "Custom Vanilla JS",
+        "Core Web Vitals",
+        "SEO Optimization"
+      ]
+    },
+    {
+      "id": "social-media",
+      "title": "Social Media Handling & Creatives",
+      "priceTag": "Starts from $299/mo",
+      "image": "images/services/s3.svg",
+      "description": "Managing Instagram, Facebook, and LinkedIn feed schedules. Designing thematic grid banners, promotional carousel cards, and interactive post assets that hook users.",
+      "features": [
+        "Thematic Feed Grid",
+        "Carousel Slides",
+        "Story Templates",
+        "Monthly Analytics"
+      ]
+    },
+    {
+      "id": "academy",
+      "title": "Graphic Design Learning Academy",
+      "priceTag": "Courses from $149",
+      "image": "images/services/s4.svg",
+      "description": "Tutoring graphic visual guidelines using structured projects. Our lessons cover Adobe Photoshop, Illustrator, layout composition, alignment rules, and color palettes.",
+      "features": [
+        "Live Zoom Classes",
+        "Downloadable Resources",
+        "Certificate on Completion",
+        "WhatsApp Support"
+      ]
+    }
+  ],
+
+  "portfolioCategories": [
+    { "id": "graphic-design",  "label": "Graphic Design" },
+    { "id": "logo",            "label": "Logo" },
+    { "id": "social-media",    "label": "Social Media" },
+    { "id": "web-design",      "label": "Web Design" },
+    { "id": "brand-identity",  "label": "Brand Identity" },
+    { "id": "flyers",          "label": "Flyers" },
+    { "id": "business-cards",  "label": "Business Cards" }
+  ],
+
+  "portfolioItemSchema": {
+    "_note": "Shape of each item stored in localStorage under 'academyPortfolioData'.",
+    "fields": {
+      "id": "string — Date.now().toString()",
+      "title": "string — project title",
+      "category": "string — one of the portfolioCategories[].id values",
+      "image": "string — base64 data URL of the project image",
+      "websiteLink": "string — external URL (only for web-design category, otherwise empty string)"
+    }
+  },
+
+  "studentSchema": {
+    "_note": "Shape of the student profile object stored in localStorage under 'academyStudentProfile'.",
+    "fields": {
+      "email": "string — student email (acts as unique identifier)",
+      "phone": "string — student phone number",
+      "password": "string — hashed or plain password set on registration",
+      "course": "string — selected course name from the course list",
+      "createdAt": "ISO-8601 datetime string — e.g. 2026-07-08T17:00:00.000Z"
+    }
+  },
+
+  "purchaseRequestSchema": {
+    "_note": "Shape of each purchase/payment request stored in localStorage under 'academyPurchases'.",
+    "fields": {
+      "id": "string — 'purchase_' + Date.now()",
+      "studentEmail": "string",
+      "studentPhone": "string",
+      "courseName": "string",
+      "coursePrice": "string",
+      "courseDescription": "string",
+      "bankSlip": "string — 'Uploaded' (placeholder; actual file not stored yet)",
+      "status": "string — 'pending' | 'approved' | 'rejected'",
+      "requestedAt": "ISO-8601 datetime string"
+    }
+  },
+
+  "approvedAccessSchema": {
+    "_note": "Shape of each approved access record stored in localStorage under 'academyApprovedAccess'.",
+    "fields": {
+      "studentEmail": "string",
+      "courseName": "string",
+      "approvedAt": "ISO-8601 datetime string"
+    }
+  },
+
+  "admin": {
+    "localStorageKeys": {
+      "studentProfile": "academyStudentProfile",
+      "purchases": "academyPurchases",
+      "approvedAccess": "academyApprovedAccess",
+      "syllabusData": "academySyllabusData",
+      "portfolioData": "academyPortfolioData",
+      "selectedCourse": "academySelectedCourse",
+      "courseAccess": "academyCourseAccess"
+    },
+    "sections": [
+      {
+        "id": "dashboard",
+        "label": "Dashboard",
+        "description": "Summary of registered students, payment requests, and pending approvals."
+      },
+      {
+        "id": "payments",
+        "label": "Payment Requests",
+        "description": "Review uploaded bank slips and approve or reject student enrollment access.",
+        "tableColumns": ["Student", "Course", "Slip", "Status", "Actions"]
+      },
+      {
+        "id": "syllabus",
+        "label": "Syllabus Editor",
+        "description": "Add, edit, or delete course modules (days) per month per course.",
+        "formFields": ["course", "month", "day", "title", "lectureNoteFile", "practicalToolFile", "zoomRecordingLink"]
+      },
+      {
+        "id": "portfolio",
+        "label": "Portfolio Manager",
+        "description": "Upload new project images and assign them to portfolio categories.",
+        "formFields": ["category", "title", "websiteLink (web-design only)", "projectImage"]
+      }
+    ],
+    "studentTableColumns": ["Email", "Phone", "Course", "Status", "Joined"]
+  },
+
+  "sampleSyllabusModules": {
+    "_note": "Example modules an admin might add via the Syllabus Editor. These are NOT live data; they serve as content templates.",
+    "Adobe Photoshop & Illustrator Mastery": {
+      "months": [
+        {
+          "title": "Month 1 — Foundations",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Introduction to Adobe Photoshop Interface",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Layer Panels, Blend Modes, and Smart Objects",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 3",
+              "title": "Selection Tools: Lasso, Marquee, and Quick Selection",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 4",
+              "title": "Introduction to Adobe Illustrator & Artboards",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 5",
+              "title": "Pen Tool Fundamentals & Bezier Curves",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 2 — Colour & Typography",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Hue, Saturation & Color Grading in Photoshop",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Typography Systems & Font Pairing",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 3",
+              "title": "CMYK vs RGB & Export Presets for Print",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 3 — Vector & Brand Identity",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Pathfinder Tools & Boolean Operations",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Logo Grid Construction & Proportions",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 3",
+              "title": "Brand Color Palette & Style Guide Layout",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 4 — Print & Production",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Business Card Layout & Bleed Setup",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Flyer & Poster Grid Frameworks",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 3",
+              "title": "SVG Generation & File Export for Web",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 5 — Digital Media Design",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Social Media Post & Story Templates",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Carousel Design in Illustrator",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 3",
+              "title": "Mock-up Presentation Layouts",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 6 — Final Projects & Portfolio",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Complete Brand Identity Project",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Portfolio Presentation & Critique Session",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 3",
+              "title": "Certification & Career Path Guidance",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        }
+      ]
+    },
+    "Graphic Design Core Principles": {
+      "months": [
+        {
+          "title": "Month 1 — Visual Foundations",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Principles of Visual Hierarchy",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Contrast, Balance & Emphasis",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 2 — Grid & Alignment",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Column Grids and Baseline Systems",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Safe Margins and Alignment Rules",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 3 — Typography",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Type Scale and Modular Scale Systems",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Font Pairing Logic & Readability",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 4 — Color Theory",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Color Wheel, Hue Relationships & Tints",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Brand Color Systems & Accessibility Contrast",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 5 — Composition",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Negative Space Structures",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Golden Spiral & Rule of Thirds",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        },
+        {
+          "title": "Month 6 — Applied Projects",
+          "days": [
+            {
+              "day": "Day 1",
+              "title": "Layout Critique & Principle Review",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            },
+            {
+              "day": "Day 2",
+              "title": "Final Design Project Submission",
+              "note": null,
+              "tool": null,
+              "zoomLink": ""
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
