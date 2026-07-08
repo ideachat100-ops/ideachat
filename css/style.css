@@ -440,21 +440,21 @@ header.sticky {
   width: 28px;
   height: 3px;
   margin: 5px auto;
-  /* White by default — always visible on dark hero backgrounds.
-     Switches to dark once the sticky glass header appears. */
-  background-color: #ffffff;
+  /* Dark by default to be visible on light hero backgrounds */
+  background-color: var(--text-dark);
   transition: var(--transition-fast);
   border-radius: 2px;
 }
 
-/* Once the sticky glass header kicks in, switch hamburger lines to dark */
+/* Once the sticky glass header kicks in, keep it dark */
 header.sticky .hamburger-line {
   background-color: var(--text-dark);
 }
 
 /* Dark theme: keep white at all times */
+.dark-theme .hamburger-line,
 .dark-theme header.sticky .hamburger-line {
-  background-color: #ffffff;
+  background-color: #ffffff !important;
 }
 
 /* 3. Common Button Typography & Ripple Styles */
