@@ -3,21 +3,23 @@
  * Handles grid categorization filters, pagination rendering, and image lightbox.
  */
 
+import { database, ref, get, child } from './firebase-config.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
   const portfolioGrid = document.getElementById('portfolioGrid');
   
   if (portfolioGrid) {
     try {
-      const response = await fetch('api/get_portfolio.php');
-      const storedData = await response.json();
-      
-      if (!storedData.error) {
+      const snap = await get(child(ref(database), 'portfolio'));
+      if (snap.exists()) {
+        const storedData = [];
+        snap.forEach(childSnap => {
+          storedData.push({ id: childSnap.key, ...childSnap.val() });
+        });
+        
         storedData.forEach((item, index) => {
           const card = document.createElement('div');
           const categories = ['all', item.category];
-          if (['logo', 'social-media', 'flyers', 'business-cards'].includes(item.category)) {
-              categories.push('graphic-design');
-          }
           card.className = 'portfolio-item-card reveal fade-up';
           card.setAttribute('data-categories', JSON.stringify(categories));
           card.setAttribute('data-index', 'dynamic-' + index);
@@ -29,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           card.innerHTML = `
             <div class="portfolio-card-img-box">
-              <img class="lazy" data-src="${item.image}" src="${item.image}" alt="${item.title}">
+              <img class="lazy" data-src="${item.imageUrl}" src="${item.imageUrl}" alt="${item.title}">
               <div class="portfolio-card-overlay">
                 <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
                 <h3 class="portfolio-card-title">${item.title}</h3>
@@ -46,8 +48,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  const cards = Array.from(document.querySelectorAll('.portfolio-item-card'));
   const filterButtons = document.querySelectorAll('.filter-btn');
+  const allCards = Array.from(document.querySelectorAll('.portfolio-item-card'));
   const paginationWrapper = document.getElementById('portfolioPagination');
   
   // Lightbox selectors
@@ -59,16 +61,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const lightboxPrev = document.querySelector('.lightbox-prev');
   const lightboxNext = document.querySelector('.lightbox-next');
 
-  if (cards.length === 0) return;
+  if (allCards.length === 0) return;
 
-  const itemsPerPage = 8;
+  const itemsPerPage = 6;
   let currentFilter = 'all';
   let currentPage = 1;
-  let filteredCards = [...cards];
+  let filteredCards = [...allCards];
   let lightboxActiveIndex = 0; // Index relative to currently visible filtered list
 
   // 1. Pagination and Grid Render Logic
-  const renderGallery = () => {
+  const renderGallery = (cards = Array.from(document.querySelectorAll('.portfolio-item-card'))) => {
     // Hide all first
     cards.forEach(card => card.classList.add('hidden'));
 
@@ -84,10 +86,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       card.classList.add('revealed');
     });
 
-    renderPagination();
+    renderPagination(cards);
   };
 
-  const renderPagination = () => {
+  const renderPagination = (cards) => {
     if (!paginationWrapper) return;
     paginationWrapper.innerHTML = '';
 
@@ -102,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       pageBtn.addEventListener('click', (e) => {
         e.preventDefault();
         currentPage = i;
-        renderGallery();
+        renderGallery(cards);
         // Scroll back to top of section
         document.querySelector('.portfolio-gallery-section').scrollIntoView({ behavior: 'smooth' });
       });
@@ -115,6 +117,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   filterButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+      
+      // ALWAYS recalculate cards in case they were dynamically added
+      const cards = Array.from(document.querySelectorAll('.portfolio-item-card'));
       
       // Update active button state
       filterButtons.forEach(b => b.classList.remove('active'));
@@ -129,7 +134,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return categories.includes(currentFilter);
       });
 
-      renderGallery();
+      renderGallery(cards);
     });
   });
 
@@ -180,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   // Bind trigger links on each card
-  cards.forEach(card => {
+  allCards.forEach(card => {
     const trigger = card.querySelector('.lightbox-trigger-btn');
     if (trigger) {
       trigger.addEventListener('click', (e) => {
@@ -237,6 +242,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // Init grid
-  filteredCards = [...cards];
-  renderGallery();
+  const initialCards = Array.from(document.querySelectorAll('.portfolio-item-card'));
+  if (initialCards.length > 0) {
+    filteredCards = [...initialCards];
+    renderGallery(initialCards);
+  }
 });

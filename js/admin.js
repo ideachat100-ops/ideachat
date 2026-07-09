@@ -1,92 +1,81 @@
+import { database, ref, set, get, push, remove, update, child, IMGBB_API_KEY, onValue } from './firebase-config.js';
+
 /**
  * Admin panel script
- * Handles admin login, student registry, and payment approvals.
+ * Handles admin login, student registry, syllabus, portfolio, and payment approvals via Firebase.
  */
 
 const ADMIN_PASSWORD = 'admin123';
-const STUDENT_STORAGE_KEY = 'academyStudentProfile';
-const PURCHASES_STORAGE_KEY = 'academyPurchases';
-const ACCESS_STORAGE_KEY = 'academyApprovedAccess';
-const SYLLABUS_STORAGE_KEY = 'academySyllabusData';
-const getStoredStudent = () => {
+
+// Firebase References
+const dbRef = ref(database);
+const studentsRef = ref(database, 'students');
+const purchasesRef = ref(database, 'purchases');
+const syllabusRef = ref(database, 'syllabus');
+const portfolioRef = ref(database, 'portfolio');
+
+// Utility to upload images to ImgBB
+const uploadToImgBB = async (file) => {
+  const formData = new FormData();
+  formData.append('image', file);
+  
   try {
-    return JSON.parse(localStorage.getItem(STUDENT_STORAGE_KEY) || 'null');
-  } catch {
-    return null;
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+      method: 'POST',
+      body: formData
+    });
+    const result = await res.json();
+    if (result.success) {
+      return result.data.url; // The direct image link
+    } else {
+      throw new Error(result.error.message || 'ImgBB upload failed');
+    }
+  } catch (err) {
+    console.error('ImgBB Error:', err);
+    throw err;
   }
 };
 
-const getPurchases = () => {
-  try {
-    return JSON.parse(localStorage.getItem(PURCHASES_STORAGE_KEY) || '[]');
-  } catch {
-    return [];
-  }
-};
+// State
+let students = [];
+let purchases = [];
+let portfolioItems = [];
 
-const savePurchases = (purchases) => {
-  localStorage.setItem(PURCHASES_STORAGE_KEY, JSON.stringify(purchases));
-};
-
-const getApprovedAccess = () => {
-  try {
-    return JSON.parse(localStorage.getItem(ACCESS_STORAGE_KEY) || '[]');
-  } catch {
-    return [];
-  }
-};
-
-const saveApprovedAccess = (accessRecords) => {
-  localStorage.setItem(ACCESS_STORAGE_KEY, JSON.stringify(accessRecords));
-};
-
-const grantCourseAccess = (studentEmail, courseName) => {
-  if (!studentEmail || !courseName) return;
-  const accessRecords = getApprovedAccess();
-  const existing = accessRecords.find((item) => item.studentEmail === studentEmail && item.courseName === courseName);
-  if (existing) return;
-  accessRecords.push({
-    studentEmail,
-    courseName,
-    approvedAt: new Date().toISOString()
+// Fetch data on load
+const setupListeners = () => {
+  onValue(studentsRef, (snapshot) => {
+    students = [];
+    snapshot.forEach(child => {
+      students.push({ id: child.key, ...child.val() });
+    });
+    renderAdminMetrics();
+    renderStudentTable();
   });
-  saveApprovedAccess(accessRecords);
-};
 
-const hasCourseAccess = (studentEmail, courseName) => {
-  if (!studentEmail || !courseName) return false;
-  const accessRecords = getApprovedAccess();
-  return accessRecords.some((item) => item.studentEmail === studentEmail && item.courseName === courseName);
-};
-
-const addPurchaseRequest = (course, student) => {
-  if (!course || !student) return;
-  const purchases = getPurchases();
-  const existing = purchases.find((item) => item.studentEmail === student.email && item.courseName === course.name);
-  if (existing) return;
-
-  purchases.push({
-    id: `purchase_${Date.now()}`,
-    studentEmail: student.email,
-    studentPhone: student.phone,
-    courseName: course.name,
-    coursePrice: course.price,
-    courseDescription: course.description,
-    bankSlip: 'Uploaded',
-    status: 'pending',
-    requestedAt: new Date().toISOString()
+  onValue(purchasesRef, (snapshot) => {
+    purchases = [];
+    snapshot.forEach(child => {
+      purchases.push({ id: child.key, ...child.val() });
+    });
+    renderAdminMetrics();
+    renderPaymentTable();
   });
-  savePurchases(purchases);
+
+  onValue(portfolioRef, (snapshot) => {
+    portfolioItems = [];
+    snapshot.forEach(child => {
+      portfolioItems.push({ id: child.key, ...child.val() });
+    });
+    renderPortfolioList();
+  });
 };
 
 const renderAdminMetrics = () => {
-  const student = getStoredStudent();
-  const purchases = getPurchases();
   const summaryStudents = document.getElementById('summaryStudents');
   const summaryPayments = document.getElementById('summaryPayments');
   const summaryPending = document.getElementById('summaryPending');
 
-  if (summaryStudents) summaryStudents.textContent = student ? '1' : '0';
+  if (summaryStudents) summaryStudents.textContent = students.length.toString();
   if (summaryPayments) summaryPayments.textContent = purchases.length.toString();
   if (summaryPending) summaryPending.textContent = purchases.filter((item) => item.status === 'pending').length.toString();
 };
@@ -94,31 +83,46 @@ const renderAdminMetrics = () => {
 const renderStudentTable = () => {
   const studentTableBody = document.getElementById('studentTableBody');
   if (!studentTableBody) return;
-
-  const student = getStoredStudent();
+  
   studentTableBody.innerHTML = '';
 
-  if (!student) {
+  if (students.length === 0) {
     studentTableBody.innerHTML = '<tr><td colspan="5">No registered students yet.</td></tr>';
     return;
   }
 
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td>${student.email}</td>
-    <td>${student.phone}</td>
-    <td>${student.course}</td>
-    <td class="status-pending">Registered</td>
-    <td>${new Date(student.createdAt).toLocaleDateString()}</td>
-  `;
-  studentTableBody.appendChild(row);
+  students.forEach(student => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${student.email}</td>
+      <td>${student.phone}</td>
+      <td>${student.course || 'N/A'}</td>
+      <td class="status-pending">Registered</td>
+      <td>${new Date(student.createdAt).toLocaleDateString()}</td>
+    `;
+    studentTableBody.appendChild(row);
+  });
+};
+
+const grantCourseAccess = async (studentEmail, courseName) => {
+  if (!studentEmail || !courseName) return;
+  // Update student's approved access array in Firebase
+  const student = students.find(s => s.email === studentEmail);
+  if (student) {
+    const accessList = student.approvedCourses || [];
+    if (!accessList.includes(courseName)) {
+      accessList.push(courseName);
+      await update(ref(database, `students/${student.id}`), {
+        approvedCourses: accessList
+      });
+    }
+  }
 };
 
 const renderPaymentTable = () => {
   const paymentTableBody = document.getElementById('paymentTableBody');
   if (!paymentTableBody) return;
-
-  const purchases = getPurchases();
+  
   paymentTableBody.innerHTML = '';
 
   if (purchases.length === 0) {
@@ -128,50 +132,53 @@ const renderPaymentTable = () => {
 
   purchases.forEach((purchase) => {
     const row = document.createElement('tr');
+    
+    // Display Bank Slip as Link/Image
+    let slipHtml = purchase.bankSlip;
+    if (purchase.bankSlip.startsWith('http')) {
+      slipHtml = `<a href="${purchase.bankSlip}" target="_blank" style="color:#93C5FD; text-decoration:underline;">View Slip</a>`;
+    }
+
     row.innerHTML = `
       <td>${purchase.studentEmail}</td>
       <td>${purchase.courseName}</td>
-      <td><span class="status-${purchase.status}">${purchase.bankSlip}</span></td>
+      <td>${slipHtml}</td>
       <td><span class="status-${purchase.status}">${purchase.status}</span></td>
       <td>
-        <button class="admin-action-btn approve" data-id="${purchase.id}">Approve</button>
-        <button class="admin-action-btn reject" data-id="${purchase.id}">Reject</button>
+        ${purchase.status === 'pending' ? `
+          <button class="admin-action-btn approve" data-id="${purchase.id}">Approve</button>
+          <button class="admin-action-btn reject" data-id="${purchase.id}">Reject</button>
+        ` : 'N/A'}
       </td>
     `;
     paymentTableBody.appendChild(row);
   });
 };
 
-const getDefaultSyllabusData = (courseName) => ({
-  courseName: courseName,
-  months: [
-    { title: 'Month 1', days: [] },
-    { title: 'Month 2', days: [] },
-    { title: 'Month 3', days: [] },
-    { title: 'Month 4', days: [] },
-    { title: 'Month 5', days: [] },
-    { title: 'Month 6', days: [] }
-  ]
-});
+const attachPaymentActions = () => {
+  const paymentTableBody = document.getElementById('paymentTableBody');
+  if (!paymentTableBody) return;
 
-const getSyllabusStore = () => {
-  try {
-    return JSON.parse(localStorage.getItem(SYLLABUS_STORAGE_KEY) || '{}');
-  } catch {
-    return {};
-  }
+  paymentTableBody.addEventListener('click', async (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const id = target.getAttribute('data-id');
+    if (!id) return;
+
+    const purchase = purchases.find((item) => item.id === id);
+    if (!purchase) return;
+
+    if (target.classList.contains('approve')) {
+      await update(ref(database, `purchases/${id}`), { status: 'approved' });
+      await grantCourseAccess(purchase.studentEmail, purchase.courseName);
+    }
+    if (target.classList.contains('reject')) {
+      await update(ref(database, `purchases/${id}`), { status: 'rejected' });
+    }
+  });
 };
 
-const getSyllabusData = (courseName = 'Adobe Photoshop & Illustrator Mastery') => {
-  const store = getSyllabusStore();
-  return store[courseName] || getDefaultSyllabusData(courseName);
-};
-
-const saveSyllabusData = (data) => {
-  const store = getSyllabusStore();
-  store[data.courseName] = data;
-  localStorage.setItem(SYLLABUS_STORAGE_KEY, JSON.stringify(store));
-};
+// ================= SYLLABUS EDITOR (FIREBASE) =================
 
 const attachSyllabusEditor = () => {
   const addButton = document.getElementById('addSyllabusButton');
@@ -183,242 +190,164 @@ const attachSyllabusEditor = () => {
   const noteInput = document.getElementById('syllabusNoteInput');
   const toolInput = document.getElementById('syllabusToolInput');
   const zoomInput = document.getElementById('syllabusZoomInput');
-  const notePreview = document.getElementById('syllabusNotePreview');
-  const toolPreview = document.getElementById('syllabusToolPreview');
   const listContainer = document.getElementById('adminSyllabusList');
 
   if (!addButton || !saveMessage) return;
 
   let editingDayId = null;
-  let existingNoteData = null;
-  let existingToolData = null;
 
-  const renderList = () => {
-    if (!listContainer || !courseSelect) return;
-    const data = getSyllabusData(courseSelect.value);
-    listContainer.innerHTML = '';
-    
-    let needsSave = false;
-    if (!data.months) {
-      data.months = [
-        { title: 'Month 1', days: [] },
-        { title: 'Month 2', days: [] },
-        { title: 'Month 3', days: [] },
-        { title: 'Month 4', days: [] },
-        { title: 'Month 5', days: [] },
-        { title: 'Month 6', days: [] }
-      ];
-      needsSave = true;
-    }
-
-    data.months.forEach((month, mIndex) => {
-      if (!month.days || month.days.length === 0) return;
+  const renderSyllabusList = (courseName) => {
+    onValue(child(syllabusRef, courseName.replace(/[^a-zA-Z0-9]/g, '_')), (snapshot) => {
+      listContainer.innerHTML = '';
+      const data = snapshot.val();
       
-      const monthDiv = document.createElement('div');
-      monthDiv.style = 'background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.35); border-radius: 14px; padding: 16px;';
-      
-      const header = document.createElement('h3');
-      header.style = 'margin: 0 0 12px; color: #93C5FD; font-size: 14px;';
-      header.textContent = month.title;
-      monthDiv.appendChild(header);
+      if (!data || !data.months) {
+        listContainer.innerHTML = '<p style="color: #94A3B8;">No syllabus data for this course yet.</p>';
+        return;
+      }
 
-      month.days.forEach((day, dIndex) => {
-        if (!day.id) {
-          day.id = Date.now().toString() + Math.random();
-          needsSave = true;
-        }
+      data.months.forEach((month, mIndex) => {
+        if (!month.days) return;
         
-        const dayDiv = document.createElement('div');
-        dayDiv.style = 'display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 8px;';
-        dayDiv.innerHTML = `
-          <div>
-            <strong style="color: #F8FAFC; display: block; font-size: 14px;">${day.day}: ${day.title}</strong>
-            <span style="font-size: 12px; color: #94A3B8;">
-              Note: ${day.note ? 'Yes' : 'No'} | Tool: ${day.tool ? 'Yes' : 'No'} | Zoom: ${day.zoomLink ? 'Yes' : 'No'}
-            </span>
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn btn-secondary edit-day" data-id="${day.id}" style="padding: 6px 12px; font-size: 12px;">Edit</button>
-            <button class="btn btn-secondary delete-day" data-id="${day.id}" style="padding: 6px 12px; font-size: 12px; border-color: #EF4444; color: #EF4444;">Delete</button>
-          </div>
-        `;
-        monthDiv.appendChild(dayDiv);
+        const monthDiv = document.createElement('div');
+        monthDiv.style = 'background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.35); border-radius: 14px; padding: 16px;';
+        
+        const header = document.createElement('h3');
+        header.style = 'margin: 0 0 12px; color: #93C5FD; font-size: 14px;';
+        header.textContent = month.title;
+        monthDiv.appendChild(header);
+
+        // Convert days object to array
+        const daysArray = Object.keys(month.days).map(key => ({ id: key, ...month.days[key] }));
+
+        daysArray.forEach((day) => {
+          const dayDiv = document.createElement('div');
+          dayDiv.style = 'display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 8px;';
+          dayDiv.innerHTML = `
+            <div>
+              <strong style="color: #F8FAFC; display: block; font-size: 14px;">${day.day}: ${day.title}</strong>
+              <span style="font-size: 12px; color: #94A3B8;">
+                Note: ${day.noteUrl ? 'Yes' : 'No'} | Tool: ${day.toolUrl ? 'Yes' : 'No'} | Zoom: ${day.zoomLink ? 'Yes' : 'No'}
+              </span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary edit-day" data-mindex="${mIndex}" data-id="${day.id}" style="padding: 6px 12px; font-size: 12px;">Edit</button>
+              <button class="btn btn-secondary delete-day" data-mindex="${mIndex}" data-id="${day.id}" style="padding: 6px 12px; font-size: 12px; border-color: #EF4444; color: #EF4444;">Delete</button>
+            </div>
+          `;
+          monthDiv.appendChild(dayDiv);
+        });
+        if(daysArray.length > 0) {
+          listContainer.appendChild(monthDiv);
+        }
       });
-      listContainer.appendChild(monthDiv);
-    });
 
-    if (needsSave) {
-      saveSyllabusData(data);
-    }
-
-    listContainer.querySelectorAll('.edit-day').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = e.target.getAttribute('data-id');
-        const data = getSyllabusData(courseSelect.value);
-        for (let m = 0; m < data.months.length; m++) {
-          const day = data.months[m].days.find(d => d.id === id);
-          if (day) {
-            if(monthSelect) monthSelect.value = m;
-            if(dayInput) dayInput.value = day.day;
-            if(titleInput) titleInput.value = day.title;
-            if (noteInput) noteInput.value = '';
-            if (toolInput) toolInput.value = '';
-            if (zoomInput) zoomInput.value = day.zoomLink || '';
+      // Attach edit/delete listeners
+      listContainer.querySelectorAll('.edit-day').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const id = e.target.getAttribute('data-id');
+          const mIndex = e.target.getAttribute('data-mindex');
+          const courseSafe = courseSelect.value.replace(/[^a-zA-Z0-9]/g, '_');
+          
+          const snapshot = await get(child(syllabusRef, `${courseSafe}/months/${mIndex}/days/${id}`));
+          if (snapshot.exists()) {
+            const dayData = snapshot.val();
+            monthSelect.value = mIndex;
+            dayInput.value = dayData.day;
+            titleInput.value = dayData.title;
+            noteInput.value = dayData.noteUrl || '';
+            toolInput.value = dayData.toolUrl || '';
+            zoomInput.value = dayData.zoomLink || '';
             
-            existingNoteData = day.note || null;
-            existingToolData = day.tool || null;
-            
-            if (notePreview) {
-              notePreview.textContent = existingNoteData ? `Current: ${existingNoteData.name || 'File attached'}` : '';
-            }
-            if (toolPreview) {
-              toolPreview.textContent = existingToolData ? `Current: ${existingToolData.name || 'File attached'}` : '';
-            }
-            
-            editingDayId = id;
+            editingDayId = { id, mIndex };
             addButton.textContent = 'Update Module';
-            const tableWrap = document.querySelector('.table-wrap');
-            if (tableWrap) tableWrap.scrollIntoView({ behavior: 'smooth' });
-            break;
+            document.querySelector('.table-wrap').scrollIntoView({ behavior: 'smooth' });
           }
-        }
+        });
       });
-    });
 
-    listContainer.querySelectorAll('.delete-day').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        if (!confirm('Are you sure you want to delete this module?')) return;
-        const id = e.target.getAttribute('data-id');
-        const data = getSyllabusData(courseSelect.value);
-        for (let m = 0; m < data.months.length; m++) {
-          const dIndex = data.months[m].days.findIndex(d => d.id === id);
-          if (dIndex !== -1) {
-            data.months[m].days.splice(dIndex, 1);
-            break;
-          }
-        }
-        saveSyllabusData(data);
-        renderList();
+      listContainer.querySelectorAll('.delete-day').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          if (!confirm('Delete this module?')) return;
+          const id = e.target.getAttribute('data-id');
+          const mIndex = e.target.getAttribute('data-mindex');
+          const courseSafe = courseSelect.value.replace(/[^a-zA-Z0-9]/g, '_');
+          
+          await remove(child(syllabusRef, `${courseSafe}/months/${mIndex}/days/${id}`));
+        });
       });
     });
   };
 
   if (courseSelect && listContainer) {
-    courseSelect.addEventListener('change', renderList);
-    renderList();
+    courseSelect.addEventListener('change', () => renderSyllabusList(courseSelect.value));
+    renderSyllabusList(courseSelect.value);
   }
 
-  const readFileAsDataURL = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve({ name: file.name, dataUrl: reader.result });
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
   addButton.addEventListener('click', async () => {
-    if (!courseSelect || !monthSelect || !dayInput || !titleInput) return;
-    
     if (!dayInput.value.trim() || !titleInput.value.trim()) {
       saveMessage.style.color = '#FCA5A5';
       saveMessage.textContent = 'Please fill in Day and Title.';
       return;
     }
 
+    addButton.disabled = true;
+    addButton.textContent = 'Saving...';
+
     try {
-      let noteData = existingNoteData;
-      if (noteInput && noteInput.files.length > 0) {
-        noteData = await readFileAsDataURL(noteInput.files[0]);
-      }
+      const courseSafe = courseSelect.value.replace(/[^a-zA-Z0-9]/g, '_');
+      const mIndex = monthSelect.value;
+      
+      const payload = {
+        day: dayInput.value.trim(),
+        title: titleInput.value.trim(),
+        noteUrl: noteInput.value.trim(),
+        toolUrl: toolInput.value.trim(),
+        zoomLink: zoomInput.value.trim()
+      };
 
-      let toolData = existingToolData;
-      if (toolInput && toolInput.files.length > 0) {
-        toolData = await readFileAsDataURL(toolInput.files[0]);
-      }
-      
-      const zoomLink = zoomInput ? zoomInput.value.trim() : '';
-      
-      const courseName = courseSelect.value;
-      const data = getSyllabusData(courseName);
-      
-      if (!data.months) {
-        data.months = [];
-      }
+      // Ensure month exists (Firebase creates it automatically, but we want the title)
+      await update(child(syllabusRef, `${courseSafe}/months/${mIndex}`), {
+        title: `Month ${parseInt(mIndex) + 1}`
+      });
 
-      while (data.months.length < 6) {
-        data.months.push({ title: `Month ${data.months.length + 1}`, days: [] });
-      }
-      
-      const monthIndex = parseInt(monthSelect.value, 10);
-      
       if (editingDayId) {
-        for (let m = 0; m < data.months.length; m++) {
-          const dIndex = data.months[m].days.findIndex(d => d.id === editingDayId);
-          if (dIndex !== -1) {
-            data.months[m].days.splice(dIndex, 1);
-            break;
-          }
+        // If they changed the month, we have to move it
+        if (editingDayId.mIndex !== mIndex) {
+          await remove(child(syllabusRef, `${courseSafe}/months/${editingDayId.mIndex}/days/${editingDayId.id}`));
+          await set(child(syllabusRef, `${courseSafe}/months/${mIndex}/days/${editingDayId.id}`), payload);
+        } else {
+          await update(child(syllabusRef, `${courseSafe}/months/${mIndex}/days/${editingDayId.id}`), payload);
         }
-        data.months[monthIndex].days.push({
-          id: editingDayId,
-          day: dayInput.value.trim(),
-          title: titleInput.value.trim(),
-          note: noteData,
-          tool: toolData,
-          zoomLink: zoomLink
-        });
         editingDayId = null;
-        existingNoteData = null;
-        existingToolData = null;
-        if (notePreview) notePreview.textContent = '';
-        if (toolPreview) toolPreview.textContent = '';
         addButton.textContent = 'Add Module to Month';
       } else {
-        data.months[monthIndex].days.push({
-          id: Date.now().toString(),
-          day: dayInput.value.trim(),
-          title: titleInput.value.trim(),
-          note: noteData,
-          tool: toolData,
-          zoomLink: zoomLink
-        });
+        const newDayRef = push(child(syllabusRef, `${courseSafe}/months/${mIndex}/days`));
+        await set(newDayRef, payload);
       }
-      
-      saveSyllabusData(data);
       
       dayInput.value = '';
       titleInput.value = '';
-      if (noteInput) noteInput.value = '';
-      if (toolInput) toolInput.value = '';
-      if (zoomInput) zoomInput.value = '';
+      noteInput.value = '';
+      toolInput.value = '';
+      zoomInput.value = '';
       
       saveMessage.style.color = '#A7F3D0';
-      saveMessage.textContent = 'Module saved successfully! Students will see it immediately.';
-      setTimeout(() => { saveMessage.textContent = ''; }, 3000);
-      
-      renderList();
+      saveMessage.textContent = 'Module saved to Firebase!';
     } catch (err) {
       console.error(err);
       saveMessage.style.color = '#FCA5A5';
-      saveMessage.textContent = 'Error processing file. Storage limit might be reached.';
+      saveMessage.textContent = 'Error saving to database.';
+    } finally {
+      addButton.disabled = false;
+      setTimeout(() => { saveMessage.textContent = ''; }, 3000);
     }
   });
 };
 
-const PORTFOLIO_STORAGE_KEY = 'academyPortfolioData';
+// ================= PORTFOLIO EDITOR (IMGBB + FIREBASE) =================
 
-const getPortfolioData = () => {
-  try {
-    return JSON.parse(localStorage.getItem(PORTFOLIO_STORAGE_KEY) || '[]');
-  } catch {
-    return [];
-  }
-};
-
-const savePortfolioData = (data) => {
-  localStorage.setItem(PORTFOLIO_STORAGE_KEY, JSON.stringify(data));
-};
+let renderPortfolioList;
 
 const attachPortfolioEditor = () => {
   const categorySelect = document.getElementById('portfolioCategorySelect');
@@ -441,89 +370,61 @@ const attachPortfolioEditor = () => {
     }
   });
 
-  const renderList = async () => {
-    try {
-      const res = await fetch('/api/portfolio');
-      const result = await res.json();
+  renderPortfolioList = () => {
+    listContainer.innerHTML = '';
+    if (portfolioItems.length === 0) {
+      listContainer.innerHTML = '<p style="color: #94A3B8; text-align: center; grid-column: 1/-1;">No portfolio items yet.</p>';
+      return;
+    }
+    
+    portfolioItems.forEach((item) => {
+      const itemDiv = document.createElement('div');
+      itemDiv.style = 'background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.35); border-radius: 14px; padding: 16px; position: relative;';
       
-      listContainer.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = item.imageUrl;
+      img.style = 'width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; cursor: pointer;';
+      img.alt = item.title;
       
-      if (!result.success || !result.data || result.data.length === 0) {
-        listContainer.innerHTML = '<p style="color: #94A3B8; text-align: center; grid-column: 1/-1;">No portfolio items yet. Upload one to get started!</p>';
-        return;
+      const title = document.createElement('h3');
+      title.style = 'color: #F8FAFC; font-size: 16px; margin: 0 0 4px;';
+      title.textContent = item.title;
+      
+      const category = document.createElement('p');
+      category.style = 'color: #94A3B8; font-size: 12px; margin: 0 0 12px; text-transform: capitalize;';
+      category.textContent = item.category.replace('-', ' ');
+      
+      itemDiv.appendChild(img);
+      itemDiv.appendChild(title);
+      itemDiv.appendChild(category);
+      
+      if (item.link) {
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.target = '_blank';
+        link.style = 'display: inline-block; color: #93C5FD; font-size: 12px; margin-bottom: 12px; word-break: break-all; text-decoration: underline;';
+        link.textContent = 'Link: ' + item.link;
+        itemDiv.appendChild(link);
       }
       
-      result.data.forEach((item) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.style = 'background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.35); border-radius: 14px; padding: 16px; position: relative;';
-        
-        const img = document.createElement('img');
-        img.src = `/api/portfolio/${item._id}`;
-        img.style = 'width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; cursor: pointer;';
-        img.alt = item.title;
-        
-        const title = document.createElement('h3');
-        title.style = 'color: #F8FAFC; font-size: 16px; margin: 0 0 4px;';
-        title.textContent = item.title;
-        
-        const category = document.createElement('p');
-        category.style = 'color: #94A3B8; font-size: 12px; margin: 0 0 12px; text-transform: capitalize;';
-        category.textContent = item.category.replace('-', ' ');
-        
-        itemDiv.appendChild(img);
-        itemDiv.appendChild(title);
-        itemDiv.appendChild(category);
-        
-        if (item.link) {
-          const link = document.createElement('a');
-          link.href = item.link;
-          link.target = '_blank';
-          link.style = 'display: inline-block; color: #93C5FD; font-size: 12px; margin-bottom: 12px; word-break: break-all; text-decoration: underline;';
-          link.textContent = 'Link: ' + item.link;
-          itemDiv.appendChild(link);
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'btn btn-secondary';
+      deleteBtn.style = 'padding: 6px 12px; font-size: 12px; border-color: #EF4444; color: #EF4444; width: 100%;';
+      deleteBtn.textContent = 'Delete';
+      
+      deleteBtn.addEventListener('click', async () => {
+        if (!confirm('Are you sure you want to delete this item?')) return;
+        try {
+          await remove(child(portfolioRef, item.id));
+        } catch (err) {
+          console.error(err);
         }
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'btn btn-secondary';
-        deleteBtn.style = 'padding: 6px 12px; font-size: 12px; border-color: #EF4444; color: #EF4444; width: 100%;';
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.setAttribute('data-id', item._id);
-        
-        deleteBtn.addEventListener('click', async (e) => {
-          if (!confirm('Are you sure you want to delete this item?')) return;
-          
-          try {
-            const deleteRes = await fetch(`/api/portfolio/${item._id}`, {
-              method: 'DELETE'
-            });
-            const deleteResult = await deleteRes.json();
-            
-            if (deleteResult.success) {
-              saveMessage.style.color = '#A7F3D0';
-              saveMessage.textContent = 'Item deleted successfully!';
-              setTimeout(() => { saveMessage.textContent = ''; }, 3000);
-              renderList();
-            } else {
-              saveMessage.style.color = '#FCA5A5';
-              saveMessage.textContent = deleteResult.error || 'Error deleting item.';
-            }
-          } catch (err) {
-            console.error(err);
-            saveMessage.style.color = '#FCA5A5';
-            saveMessage.textContent = 'Error deleting item.';
-          }
-        });
-        
-        itemDiv.appendChild(deleteBtn);
-        listContainer.appendChild(itemDiv);
       });
-    } catch(err) {
-      console.error(err);
-      listContainer.innerHTML = '<p style="color: #EF4444; text-align: center; grid-column: 1/-1;">Error loading portfolio items.</p>';
-    }
+      
+      itemDiv.appendChild(deleteBtn);
+      listContainer.appendChild(itemDiv);
+    });
   };
-
-  renderList();
 
   addButton.addEventListener('click', async () => {
     if (!titleInput.value.trim() || !imageInput.files || imageInput.files.length === 0) {
@@ -532,40 +433,37 @@ const attachPortfolioEditor = () => {
       return;
     }
 
-    try {
-      const formData = new FormData();
-      formData.append('title', titleInput.value.trim());
-      formData.append('category', categorySelect.value);
-      formData.append('image', imageInput.files[0]);
-      
-      if (categorySelect.value === 'web-design' && websiteInput.value.trim()) {
-        formData.append('link', websiteInput.value.trim());
-      }
+    addButton.disabled = true;
+    addButton.textContent = 'Uploading...';
 
-      const res = await fetch('/api/portfolio', {
-        method: 'POST',
-        body: formData
-      });
-      const result = await res.json();
+    try {
+      // 1. Upload to ImgBB
+      const imageUrl = await uploadToImgBB(imageInput.files[0]);
       
-      if (result.success) {
-        titleInput.value = '';
-        imageInput.value = '';
-        websiteInput.value = '';
-        
-        saveMessage.style.color = '#A7F3D0';
-        saveMessage.textContent = 'Portfolio item added successfully!';
-        setTimeout(() => { saveMessage.textContent = ''; }, 3000);
-        
-        renderList();
-      } else {
-        saveMessage.style.color = '#FCA5A5';
-        saveMessage.textContent = result.error || 'Error saving item.';
-      }
+      // 2. Save to Firebase
+      const newItemRef = push(portfolioRef);
+      await set(newItemRef, {
+        title: titleInput.value.trim(),
+        category: categorySelect.value,
+        imageUrl: imageUrl,
+        link: categorySelect.value === 'web-design' ? websiteInput.value.trim() : '',
+        createdAt: new Date().toISOString()
+      });
+
+      titleInput.value = '';
+      imageInput.value = '';
+      websiteInput.value = '';
+      
+      saveMessage.style.color = '#A7F3D0';
+      saveMessage.textContent = 'Portfolio item added successfully!';
     } catch (err) {
       console.error(err);
       saveMessage.style.color = '#FCA5A5';
-      saveMessage.textContent = 'Error processing request.';
+      saveMessage.textContent = err.message || 'Error saving item.';
+    } finally {
+      addButton.disabled = false;
+      addButton.textContent = 'Add to Portfolio';
+      setTimeout(() => { saveMessage.textContent = ''; }, 3000);
     }
   });
 };
@@ -577,39 +475,10 @@ const showAdminPanel = () => {
     adminLoginSection.style.display = 'none';
     adminPanel.style.display = 'block';
   }
-  renderAdminMetrics();
-  renderStudentTable();
-  renderPaymentTable();
+  setupListeners();
   attachSyllabusEditor();
   attachPortfolioEditor();
-};
-
-const attachPaymentActions = () => {
-  const paymentTableBody = document.getElementById('paymentTableBody');
-  if (!paymentTableBody) return;
-
-  paymentTableBody.addEventListener('click', (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
-    const id = target.getAttribute('data-id');
-    if (!id) return;
-
-    const purchases = getPurchases();
-    const index = purchases.findIndex((item) => item.id === id);
-    if (index === -1) return;
-
-    if (target.classList.contains('approve')) {
-      purchases[index].status = 'approved';
-      grantCourseAccess(purchases[index].studentEmail, purchases[index].courseName);
-    }
-    if (target.classList.contains('reject')) {
-      purchases[index].status = 'rejected';
-    }
-
-    savePurchases(purchases);
-    renderAdminMetrics();
-    renderPaymentTable();
-  });
+  attachPaymentActions();
 };
 
 const adminLogin = () => {
@@ -628,7 +497,6 @@ const adminLogin = () => {
     }
     if (adminLoginMessage) adminLoginMessage.textContent = '';
     showAdminPanel();
-    attachPaymentActions();
   });
 };
 
@@ -643,22 +511,6 @@ const adminLogout = () => {
       adminPanel.style.display = 'none';
     }
   });
-};
-
-const guardPurchaseApproval = () => {
-  const course = JSON.parse(localStorage.getItem('academySelectedCourse') || 'null');
-  const student = getStoredStudent();
-  const purchases = getPurchases();
-
-  if (!course || !student) return;
-
-  const pending = purchases.find((item) => item.studentEmail === student.email && item.courseName === course.name && item.status === 'approved');
-  if (!pending) return;
-
-  localStorage.setItem('academyCourseAccess', JSON.stringify({
-    courseName: course.name,
-    grantedAt: new Date().toISOString()
-  }));
 };
 
 const setupAdminNavigation = () => {
@@ -724,23 +576,6 @@ const initAdmin = () => {
   setupAdminNavigation();
 };
 
-const registerPurchaseRequest = () => {
-  const course = JSON.parse(localStorage.getItem('academySelectedCourse') || 'null');
-  const student = getStoredStudent();
-  const purchases = getPurchases();
-  const found = purchases.find((item) => item.studentEmail === student?.email && item.courseName === course?.name);
-  if (!student || !course || found) return;
-  addPurchaseRequest(course, student);
-};
-
-const runAdminHelpers = () => {
-  const currentUrl = window.location.pathname.toLowerCase();
-  if (currentUrl.endsWith('/purchase.html') || currentUrl.endsWith('purchase.html')) {
-    registerPurchaseRequest();
-  }
-};
-
 document.addEventListener('DOMContentLoaded', () => {
   initAdmin();
-  runAdminHelpers();
 });
