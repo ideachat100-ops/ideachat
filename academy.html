@@ -138,8 +138,94 @@
           your browser.</p>
       </div>
 
-      <div class="courses-grid-wrapper" id="academyCoursesGrid">
-        <!-- Courses will be dynamically injected here via JS from the PHP API -->
+      <div class="courses-grid-wrapper">
+
+        <!-- Course 01: Photoshop & Illustrator -->
+        <div class="course-card reveal fade-up" id="coursePhotoshopCard">
+          <div class="course-card-img-box">
+            <span class="course-badge">Beginner to Advanced</span>
+            <img src="images/academy/photoshop.jpg" alt="Adobe Photoshop &amp; Illustrator Course Cover">
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">Adobe Photoshop &amp; Illustrator Mastery</h3>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
+              Master basic visual manipulation layers, vector drawings, custom logo drafting, and printing layout export
+              presets.
+            </p>
+
+            <div class="course-meta">
+              <span><i class="fa-solid fa-clock"></i> 8 Weeks</span>
+              <span><i class="fa-solid fa-book-open"></i> 32 Lessons</span>
+              <span><i class="fa-solid fa-star" style="color:#F59E0B;"></i> 4.9 Rating</span>
+            </div>
+
+            <!-- Dynamic progress tracker element -->
+            <div class="course-card-progress-wrapper" id="progressPhotoshopContainer" style="display:none;">
+              <div class="course-card-progress-text">
+                <span>Course Progress</span>
+                <span id="progressPhotoshopValue">0%</span>
+              </div>
+              <div class="course-card-progress-track">
+                <div class="course-card-progress-bar" id="progressPhotoshopBar"></div>
+              </div>
+            </div>
+
+            <div class="course-tutor">
+              <div class="course-tutor-img">JD</div>
+              <div style="flex-grow:1;">
+                <h5 style="font-size:14px; font-weight:700;">John Doe</h5>
+                <p style="font-size:11px; color:var(--text-muted);">Lead Graphic Instructor</p>
+              </div>
+              <a href="#" class="btn btn-primary enroll-button" data-course-id="photoshop"
+                data-course-name="Adobe Photoshop & Illustrator Mastery"
+                style="padding:10px 20px; font-size:13px;">Enroll Now</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 02: Graphic Design Principles -->
+        <div class="course-card reveal fade-up delay-100" id="coursePrinciplesCard">
+          <div class="course-card-img-box">
+            <span class="course-badge advanced">Theory &amp; Layout</span>
+            <img src="images/academy/principles.jpg" alt="Graphic Design Principles Course Cover">
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">Graphic Design Core Principles</h3>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
+              Study visual guidelines, contrast rules, alignment grids, font pairings, negative space structures, and
+              golden spiral rules.
+            </p>
+
+            <div class="course-meta">
+              <span><i class="fa-solid fa-clock"></i> 6 Weeks</span>
+              <span><i class="fa-solid fa-book-open"></i> 24 Lessons</span>
+              <span><i class="fa-solid fa-star" style="color:#F59E0B;"></i> 4.8 Rating</span>
+            </div>
+
+            <!-- Dynamic progress tracker element -->
+            <div class="course-card-progress-wrapper" id="progressPrinciplesContainer" style="display:none;">
+              <div class="course-card-progress-text">
+                <span>Course Progress</span>
+                <span id="progressPrinciplesValue">0%</span>
+              </div>
+              <div class="course-card-progress-track">
+                <div class="course-card-progress-bar" id="progressPrinciplesBar"></div>
+              </div>
+            </div>
+
+            <div class="course-tutor">
+              <div class="course-tutor-img" style="background-color: var(--secondary);">SS</div>
+              <div style="flex-grow:1;">
+                <h5 style="font-size:14px; font-weight:700;">Sarah Smith</h5>
+                <p style="font-size:11px; color:var(--text-muted);">Lead Design Theorist</p>
+              </div>
+              <a href="#" class="btn btn-primary enroll-button" data-course-id="principles"
+                data-course-name="Graphic Design Core Principles" style="padding:10px 20px; font-size:13px;">Enroll
+                Now</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
