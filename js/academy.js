@@ -162,74 +162,141 @@ const initLoginAndReset = () => {
     });
   }
 
-  const courseDetails = {
-    photoshop: {
-      name: 'Adobe Photoshop & Illustrator Mastery',
-      price: 'Rs 12,000',
-      description: 'Master visual manipulation, vector drawings, custom branding, and export-ready print layouts.',
-      bankName: 'ABC Bank',
-      accountNumber: '123-456-789',
-      ifsc: 'ABCD0123456',
-      page: 'courses/photoshop-course.html'
-    },
-    principles: {
-      name: 'Graphic Design Core Principles',
-      price: 'Rs 10,000',
-      description: 'Learn visual hierarchy, grids, typography, contrast, spacing, and layout systems.',
-      bankName: 'ABC Bank',
-      accountNumber: '123-456-789',
-      ifsc: 'ABCD0123456',
-      page: 'courses/design-principles.html'
+  const loadDynamicCourses = async () => {
+    try {
+      const res = await fetch('api/get_courses.php');
+      const courses = await res.json();
+      
+      const grid = document.getElementById('academyCoursesGrid');
+      if (!grid) return;
+      
+      grid.innerHTML = '';
+      
+      const student = getStoredStudent();
+      const approvedAccess = JSON.parse(localStorage.getItem('academyApprovedAccess') || '[]');
+      
+      courses.forEach((course, index) => {
+        const hasAccess = student && approvedAccess.some((item) => item.studentEmail === student.email && item.courseName === course.title);
+        
+        let enrollBtnText = 'Enroll Now';
+        let enrollBtnStyle = '';
+        if (hasAccess) {
+          enrollBtnText = 'Start learning';
+          enrollBtnStyle = 'opacity: 1;';
+        }
+        
+        // Progress Tracking Keys
+        let progressPrefix = '';
+        let totalLessons = course.totalLessons;
+        if (course.id === 'photoshop-illustrator') progressPrefix = 'ps_';
+        if (course.slug === 'design-principles') progressPrefix = 'pr_';
+        
+        let progressHtml = '';
+        if (progressPrefix) {
+           const completed = JSON.parse(localStorage.getItem(`${progressPrefix}completed_lessons`) || '[]');
+           const isEnrolled = localStorage.getItem(`${progressPrefix}enrolled`) === 'true';
+           
+           if (completed.length > 0 || isEnrolled) {
+             const percentage = Math.round((completed.length / totalLessons) * 100);
+             progressHtml = `
+              <div class="course-card-progress-wrapper">
+                <div class="course-card-progress-text">
+                  <span>Course Progress</span>
+                  <span>${percentage}%</span>
+                </div>
+                <div class="course-card-progress-track">
+                  <div class="course-card-progress-bar" style="width: ${percentage}%"></div>
+                </div>
+              </div>
+             `;
+           }
+        }
+
+        const delayClass = index % 2 !== 0 ? 'delay-100' : '';
+        const badgeClass = course.badge.toLowerCase().includes('advanced') ? 'advanced' : '';
+        
+        const card = document.createElement('div');
+        card.className = `course-card reveal fade-up ${delayClass}`;
+        card.innerHTML = `
+          <div class="course-card-img-box">
+            <span class="course-badge ${badgeClass}">${course.badge}</span>
+            <img src="${course.coverImage}" alt="${course.title}">
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">${course.title}</h3>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
+              ${course.description}
+            </p>
+
+            <div class="course-meta">
+              <span><i class="fa-solid fa-clock"></i> ${course.duration}</span>
+              <span><i class="fa-solid fa-book-open"></i> ${course.totalLessons} Lessons</span>
+              <span><i class="fa-solid fa-star" style="color:#F59E0B;"></i> ${course.rating} Rating</span>
+            </div>
+
+            ${progressHtml}
+
+            <div class="course-tutor">
+              <div class="course-tutor-img" ${index % 2 !== 0 ? 'style="background-color: var(--secondary);"' : ''}>
+                ${course.instructor.initials}
+              </div>
+              <div style="flex-grow:1;">
+                <h5 style="font-size:14px; font-weight:700;">${course.instructor.name}</h5>
+                <p style="font-size:11px; color:var(--text-muted);">${course.instructor.role}</p>
+              </div>
+              <a href="#" class="btn btn-primary dynamic-enroll-button" data-course='${JSON.stringify(course)}' style="padding:10px 20px; font-size:13px; ${enrollBtnStyle}">${enrollBtnText}</a>
+            </div>
+          </div>
+        `;
+        
+        grid.appendChild(card);
+      });
+      
+      // Attach click listeners to new enroll buttons
+      document.querySelectorAll('.dynamic-enroll-button').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+          event.preventDefault();
+          const currentCourse = JSON.parse(btn.getAttribute('data-course'));
+          const currentStudent = getStoredStudent();
+          const approvedAccessList = JSON.parse(localStorage.getItem('academyApprovedAccess') || '[]');
+          const currentHasAccess = currentStudent && approvedAccessList.some((item) => item.studentEmail === currentStudent.email && item.courseName === currentCourse.title);
+
+          const mappedCourse = {
+            name: currentCourse.title,
+            price: currentCourse.price,
+            description: currentCourse.description,
+            bankName: currentCourse.bankPayment.bankName,
+            accountNumber: currentCourse.bankPayment.accountNumber,
+            ifsc: currentCourse.bankPayment.ifsc,
+            page: currentCourse.pageUrl
+          };
+
+          if (currentHasAccess && mappedCourse.page) {
+            localStorage.setItem('academySelectedCourse', JSON.stringify(mappedCourse));
+            window.location.href = mappedCourse.page;
+            return;
+          }
+
+          localStorage.setItem('academyEnrollPendingCourse', JSON.stringify(mappedCourse));
+
+          if (!currentStudent) {
+            const courseSelect = document.getElementById('courseSelect');
+            if (courseSelect) courseSelect.value = mappedCourse.name;
+            openLoginModal();
+            return;
+          }
+
+          localStorage.setItem('academySelectedCourse', JSON.stringify(mappedCourse));
+          window.location.href = 'purchase.html';
+        });
+      });
+      
+    } catch (err) {
+      console.error('Error fetching courses from API:', err);
     }
   };
 
-  const approvedAccess = JSON.parse(localStorage.getItem('academyApprovedAccess') || '[]');
-  const student = getStoredStudent();
-
-  enrollButtons.forEach((button) => {
-    const courseId = button.getAttribute('data-course-id');
-    const selectedCourse = courseDetails[courseId] || {
-      name: button.getAttribute('data-course-name') || 'Selected Course',
-      price: 'Rs 9,999',
-      description: 'Complete the course enrollment through the bank slip upload page.',
-      bankName: 'ABC Bank',
-      accountNumber: '123-456-789',
-      ifsc: 'ABCD0123456',
-      page: 'purchase.html'
-    };
-
-    const hasAccess = student && approvedAccess.some((item) => item.studentEmail === student.email && item.courseName === selectedCourse.name);
-    if (hasAccess) {
-      button.textContent = 'Start learning';
-      button.style.opacity = '1';
-      button.dataset.access = 'approved';
-    }
-
-    button.addEventListener('click', (event) => {
-      event.preventDefault();
-      const currentStudent = getStoredStudent();
-      const currentCourse = courseDetails[courseId] || selectedCourse;
-      const currentHasAccess = currentStudent && approvedAccess.some((item) => item.studentEmail === currentStudent.email && item.courseName === currentCourse.name);
-
-      if (currentHasAccess && currentCourse.page) {
-        localStorage.setItem('academySelectedCourse', JSON.stringify(currentCourse));
-        window.location.href = currentCourse.page;
-        return;
-      }
-
-      localStorage.setItem('academyEnrollPendingCourse', JSON.stringify(currentCourse));
-
-      if (!currentStudent) {
-        const courseSelect = document.getElementById('courseSelect');
-        if (courseSelect) courseSelect.value = currentCourse.name;
-        openLoginModal();
-        return;
-      }
-
-      localStorage.setItem('academySelectedCourse', JSON.stringify(currentCourse));
-      window.location.href = 'purchase.html';
-    });
-  });
+  loadDynamicCourses();
 
   const loginModalBackdrop = document.getElementById('loginModalBackdrop');
   const closeLoginModalButton = document.getElementById('closeLoginModal');
@@ -305,46 +372,7 @@ const initLoginAndReset = () => {
 };
 
 const updateProgress = () => {
-  const psContainer = document.getElementById('progressPhotoshopContainer');
-  const psVal = document.getElementById('progressPhotoshopValue');
-  const psBar = document.getElementById('progressPhotoshopBar');
-  const prContainer = document.getElementById('progressPrinciplesContainer');
-  const prVal = document.getElementById('progressPrinciplesValue');
-  const prBar = document.getElementById('progressPrinciplesBar');
-  const totalPsLessons = 32;
-  const totalPrLessons = 24;
-
-  const completedPs = JSON.parse(localStorage.getItem('ps_completed_lessons') || '[]');
-  if (psContainer && psVal && psBar) {
-    if (completedPs.length > 0) {
-      const psPercentage = Math.round((completedPs.length / totalPsLessons) * 100);
-      psContainer.style.display = 'block';
-      psVal.textContent = `${psPercentage}%`;
-      setTimeout(() => {
-        psBar.style.width = `${psPercentage}%`;
-      }, 300);
-    } else if (localStorage.getItem('ps_enrolled') === 'true') {
-      psContainer.style.display = 'block';
-      psVal.textContent = '0%';
-      psBar.style.width = '0%';
-    }
-  }
-
-  const completedPr = JSON.parse(localStorage.getItem('pr_completed_lessons') || '[]');
-  if (prContainer && prVal && prBar) {
-    if (completedPr.length > 0) {
-      const prPercentage = Math.round((completedPr.length / totalPrLessons) * 100);
-      prContainer.style.display = 'block';
-      prVal.textContent = `${prPercentage}%`;
-      setTimeout(() => {
-        prBar.style.width = `${prPercentage}%`;
-      }, 300);
-    } else if (localStorage.getItem('pr_enrolled') === 'true') {
-      prContainer.style.display = 'block';
-      prVal.textContent = '0%';
-      prBar.style.width = '0%';
-    }
-  }
+  // Progress is now dynamically injected in loadDynamicCourses
 };
 
 document.addEventListener('DOMContentLoaded', () => {
