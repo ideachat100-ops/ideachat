@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import { getDatabase, ref, set, get, push, remove, update, child, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 
 // TODO: Replace this with your actual Firebase config object
 // You can find this in your Firebase Console -> Project Settings
@@ -17,8 +18,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 // ImgBB API Key
 export const IMGBB_API_KEY = 'bf7a5ef08123bdb799fa62ded551cf3e';
 
-export { app, database, ref, set, get, push, remove, update, child, onValue };
+export { app, database, auth, googleProvider, signInWithPopup, signOut, onAuthStateChanged, ref, set, get, push, remove, update, child, onValue };

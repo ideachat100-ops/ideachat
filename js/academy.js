@@ -1,78 +1,27 @@
-import { database, ref, get, set, child, onValue, update } from './firebase-config.js';
+import { database, ref, get, child, onValue } from './firebase-config.js';
+import { loginWithGoogle, onStudentAuthChanged, setNavAccountState } from './auth.js';
 
 /**
- * IDEACHAT - Academy LMS Core Javascript
- * Handles progress display, student login, profile, and syllabus loading via Firebase.
+ * IDEACHAT — Academy LMS Core Javascript
+ * Handles progress display, Google login modal, enroll routing, and syllabus via Firebase.
  */
 
-const STUDENT_STORAGE_KEY = 'academyStudentProfile';
+// ================= GOOGLE LOGIN MODAL =================
 
-const getStoredStudent = () => {
-  try {
-    return JSON.parse(localStorage.getItem(STUDENT_STORAGE_KEY) || 'null');
-  } catch {
-    return null;
-  }
-};
-
-const saveStoredStudent = (student) => {
-  localStorage.setItem(STUDENT_STORAGE_KEY, JSON.stringify(student));
-};
-
-const formatPhone = (phone) => phone.trim();
-const validateEmail = (email) => {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email.trim().toLowerCase());
-};
-const validatePhone = (phone) => {
-  const cleaned = phone.replace(/[^\d+]/g, '');
-  return cleaned.length >= 10 && cleaned.length <= 16;
-};
-
-const setAccountIcon = (isLoggedIn) => {
-  const accountToggle = document.getElementById('navAccountToggle');
-  if (!accountToggle) return;
-  const icon = accountToggle.querySelector('i');
-  const srText = accountToggle.querySelector('.sr-only');
-  if (icon) {
-    icon.className = isLoggedIn ? 'fa-solid fa-user-circle' : 'fa-solid fa-right-to-bracket';
-  }
-  if (srText) {
-    srText.textContent = isLoggedIn ? 'Open student profile' : 'Open student login';
-  }
-  accountToggle.setAttribute('aria-label', isLoggedIn ? 'Open student profile' : 'Open student login');
-  accountToggle.setAttribute('href', isLoggedIn ? 'profile.html' : '#');
-};
-
-const openLoginModal = () => {
-  const loginModal = document.getElementById('loginModal');
-  if (!loginModal) return;
-  loginModal.classList.add('open');
-  loginModal.setAttribute('aria-hidden', 'false');
+const openGoogleLoginModal = () => {
+  const modal = document.getElementById('googleLoginModal');
+  if (!modal) return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
 };
 
-const closeLoginModal = () => {
-  const loginModal = document.getElementById('loginModal');
-  if (!loginModal) return;
-  loginModal.classList.remove('open');
-  loginModal.setAttribute('aria-hidden', 'true');
+const closeGoogleLoginModal = () => {
+  const modal = document.getElementById('googleLoginModal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
-};
-
-const showElement = (id) => {
-  const el = document.getElementById(id);
-  if (el) el.style.display = 'block';
-};
-
-const hideElement = (id) => {
-  const el = document.getElementById(id);
-  if (el) el.style.display = 'none';
-};
-
-const scrollToElement = (id) => {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
 // ================= SYLLABUS RENDERING (FIREBASE) =================
@@ -197,152 +146,94 @@ const fetchAndRenderSyllabus = async (courseName) => {
   });
 };
 
-// ================= AUTHENTICATION (FIREBASE) =================
+// ================= COURSE DETAILS =================
 
-const initLoginAndReset = () => {
-  const loginForm = document.getElementById('loginForm');
-  const resetRequestForm = document.getElementById('resetRequestForm');
-  const resetPasswordSubmitForm = document.getElementById('resetPasswordSubmitForm');
-  const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+const courseDetails = {
+  photoshop: {
+    name: 'Adobe Photoshop & Illustrator Mastery',
+    price: 'Rs 12,000',
+    description: 'Master visual manipulation, vector drawings, custom branding, and export-ready print layouts.',
+    bankName: 'ABC Bank',
+    accountNumber: '123-456-789',
+    ifsc: 'ABCD0123456',
+    page: 'courses/photoshop-course.html'
+  },
+  principles: {
+    name: 'Graphic Design Core Principles',
+    price: 'Rs 10,000',
+    description: 'Learn visual hierarchy, grids, typography, contrast, spacing, and layout systems.',
+    bankName: 'ABC Bank',
+    accountNumber: '123-456-789',
+    ifsc: 'ABCD0123456',
+    page: 'courses/design-principles.html'
+  }
+};
+
+// ================= INIT =================
+
+// Track a pending enroll intent so the Google login modal knows where to redirect
+let _pendingEnrollIntent = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  // --- Auth state listener: update nav icon + enroll button labels ---
+  let currentAuthData = null;
+
+  onStudentAuthChanged(async (authData) => {
+    currentAuthData = authData;
+
+    if (authData && authData.student) {
+      setNavAccountState(true);
+      await updateEnrollButtons(authData.student);
+    } else {
+      setNavAccountState(false);
+      await updateEnrollButtons(null);
+    }
+  });
+
+  // --- Nav profile icon click ---
   const navAccountToggle = document.getElementById('navAccountToggle');
+  if (navAccountToggle) {
+    navAccountToggle.addEventListener('click', (e) => {
+      if (currentAuthData && currentAuthData.student) {
+        // Already logged in — let the default href (profile.html) handle it
+        return;
+      }
+      e.preventDefault();
+      _pendingEnrollIntent = null; // Not an enroll flow
+      openGoogleLoginModal();
+    });
+  }
+
+  // --- Google Sign-In button inside the modal ---
+  const googleSignInBtn = document.getElementById('googleSignInBtn');
+  if (googleSignInBtn) {
+    googleSignInBtn.addEventListener('click', async () => {
+      const msg = document.getElementById('googleLoginMessage');
+      if (msg) { msg.textContent = 'Opening Google Sign-In...'; msg.style.color = '#fff'; }
+
+      const intent = _pendingEnrollIntent
+        ? { type: 'enroll', course: _pendingEnrollIntent }
+        : { type: 'profile' };
+
+      closeGoogleLoginModal();
+      await loginWithGoogle(intent);
+    });
+  }
+
+  // --- Modal close handlers ---
+  const backdrop = document.getElementById('googleLoginBackdrop');
+  const closeBtn = document.getElementById('closeGoogleLoginModal');
+  if (backdrop) backdrop.addEventListener('click', closeGoogleLoginModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeGoogleLoginModal);
+
+  // --- Enroll buttons ---
   const enrollButtons = document.querySelectorAll('.enroll-button');
 
-  const loginMessage = document.getElementById('loginMessage');
-  const resetNotice = document.getElementById('resetNotice');
-  const resetEmailPreview = document.getElementById('resetEmailPreview');
-  const resetMessage = document.getElementById('resetMessage');
-
-  let localStudent = getStoredStudent();
-
-  if (localStudent) {
-    setAccountIcon(true);
-    hideElement('loginForm');
-  } else {
-    setAccountIcon(false);
-  }
-
-  if (navAccountToggle) {
-    navAccountToggle.addEventListener('click', (event) => {
-      const storedStudent = getStoredStudent();
-      if (!storedStudent) {
-        event.preventDefault();
-        openLoginModal();
-      }
-    });
-  }
-
-  if (loginForm) {
-    loginForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-
-      const emailInput = document.getElementById('loginEmail');
-      const phoneInput = document.getElementById('loginPhone');
-      const passwordInput = document.getElementById('loginPassword');
-      const courseSelect = document.getElementById('courseSelect');
-      const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
-      const phone = phoneInput ? phoneInput.value.trim() : '';
-      const password = passwordInput ? passwordInput.value : '';
-      const selectedCourseName = courseSelect ? courseSelect.value : '';
-
-      if (!validateEmail(email)) {
-        if (loginMessage) loginMessage.textContent = 'Enter a valid email address.';
-        return;
-      }
-
-      if (!password || password.length < 6) {
-        if (loginMessage) loginMessage.textContent = 'Password must be at least 6 characters long.';
-        return;
-      }
-
-      if (loginMessage) {
-        loginMessage.textContent = 'Verifying...';
-        loginMessage.style.color = '#fff';
-      }
-      
-      const emailSafe = email.replace(/[^a-zA-Z0-9]/g, '_');
-      const studentRef = child(ref(database), `students/${emailSafe}`);
-      
-      try {
-        const snapshot = await get(studentRef);
-        let studentData;
-        if (snapshot.exists()) {
-          // Login existing
-          studentData = snapshot.val();
-          if (studentData.password !== password) {
-            if (loginMessage) {
-              loginMessage.textContent = 'Incorrect password.';
-              loginMessage.style.color = '#FCA5A5';
-            }
-            return;
-          }
-        } else {
-          // Register new
-          studentData = {
-            email,
-            phone,
-            password,
-            course: selectedCourseName || 'None selected',
-            createdAt: new Date().toISOString(),
-            approvedCourses: [],
-            progress: {}
-          };
-          await set(studentRef, studentData);
-        }
-
-        // Store local copy for session
-        saveStoredStudent({ email: studentData.email, phone: studentData.phone, id: emailSafe });
-        setAccountIcon(true);
-
-        const pendingCourse = JSON.parse(localStorage.getItem('academyEnrollPendingCourse') || 'null');
-        if (pendingCourse) {
-          localStorage.setItem('academySelectedCourse', JSON.stringify(pendingCourse));
-          localStorage.removeItem('academyEnrollPendingCourse');
-          window.location.href = 'purchase.html';
-          return;
-        }
-
-        if (loginMessage) {
-          loginMessage.textContent = 'Login successful!';
-          loginMessage.style.color = '#A7F3D0';
-        }
-        setTimeout(() => closeLoginModal(), 1000);
-        
-      } catch (err) {
-        console.error(err);
-        if (loginMessage) {
-          loginMessage.textContent = 'Database error. Try again.';
-          loginMessage.style.color = '#FCA5A5';
-        }
-      }
-    });
-  }
-
-  // Course Details and Access
-  const courseDetails = {
-    photoshop: {
-      name: 'Adobe Photoshop & Illustrator Mastery',
-      price: 'Rs 12,000',
-      description: 'Master visual manipulation, vector drawings, custom branding, and export-ready print layouts.',
-      bankName: 'ABC Bank',
-      accountNumber: '123-456-789',
-      ifsc: 'ABCD0123456',
-      page: 'courses/photoshop-course.html'
-    },
-    principles: {
-      name: 'Graphic Design Core Principles',
-      price: 'Rs 10,000',
-      description: 'Learn visual hierarchy, grids, typography, contrast, spacing, and layout systems.',
-      bankName: 'ABC Bank',
-      accountNumber: '123-456-789',
-      ifsc: 'ABCD0123456',
-      page: 'courses/design-principles.html'
-    }
-  };
-
-  const processEnrollButtons = async () => {
+  const updateEnrollButtons = async (student) => {
     let approvedCourses = [];
-    if (localStudent && localStudent.id) {
-      const snap = await get(child(ref(database), `students/${localStudent.id}/approvedCourses`));
+    if (student && student.uid) {
+      const snap = await get(child(ref(database), `students/${student.uid}/approvedCourses`));
       if (snap.exists()) {
         approvedCourses = snap.val() || [];
       }
@@ -350,7 +241,7 @@ const initLoginAndReset = () => {
 
     enrollButtons.forEach((button) => {
       const courseId = button.getAttribute('data-course-id');
-      const selectedCourse = courseDetails[courseId] || {
+      const course = courseDetails[courseId] || {
         name: button.getAttribute('data-course-name') || 'Selected Course',
         price: 'Rs 9,999',
         description: 'Complete the course enrollment through the bank slip upload page.',
@@ -360,66 +251,66 @@ const initLoginAndReset = () => {
         page: 'purchase.html'
       };
 
-      const hasAccess = localStudent && approvedCourses.includes(selectedCourse.name);
-      
+      const hasAccess = student && approvedCourses.includes(course.name);
+
       if (hasAccess) {
-        button.textContent = 'Start learning';
+        button.textContent = 'Start Course';
         button.style.opacity = '1';
         button.dataset.access = 'approved';
       }
-
-      button.addEventListener('click', (event) => {
-        event.preventDefault();
-        
-        if (hasAccess && selectedCourse.page) {
-          localStorage.setItem('academySelectedCourse', JSON.stringify(selectedCourse));
-          window.location.href = selectedCourse.page;
-          return;
-        }
-
-        localStorage.setItem('academyEnrollPendingCourse', JSON.stringify(selectedCourse));
-
-        if (!localStudent) {
-          const courseSelect = document.getElementById('courseSelect');
-          if (courseSelect) courseSelect.value = selectedCourse.name;
-          openLoginModal();
-          return;
-        }
-
-        localStorage.setItem('academySelectedCourse', JSON.stringify(selectedCourse));
-        window.location.href = 'purchase.html';
-      });
     });
   };
 
-  processEnrollButtons();
-
-  const loginModalBackdrop = document.getElementById('loginModalBackdrop');
-  const closeLoginModalButton = document.getElementById('closeLoginModal');
-
-  if (forgotPasswordLink) {
-    forgotPasswordLink.addEventListener('click', (event) => {
+  enrollButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
       event.preventDefault();
-      showElement('resetRequest');
-      hideElement('resetPasswordForm');
-      hideElement('resetNotice');
-      const resetRequestSection = document.getElementById('resetRequest');
-      if (resetRequestSection) resetRequestSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  }
 
-  if (loginModalBackdrop) {
-    loginModalBackdrop.addEventListener('click', () => {
-      closeLoginModal();
-    });
-  }
+      const courseId = button.getAttribute('data-course-id');
+      const course = courseDetails[courseId] || {
+        name: button.getAttribute('data-course-name') || 'Selected Course',
+        price: 'Rs 9,999',
+        description: 'Complete the course enrollment through the bank slip upload page.',
+        bankName: 'ABC Bank',
+        accountNumber: '123-456-789',
+        ifsc: 'ABCD0123456',
+        page: 'purchase.html'
+      };
 
-  if (closeLoginModalButton) {
-    closeLoginModalButton.addEventListener('click', () => {
-      closeLoginModal();
+      // If already logged in
+      if (currentAuthData && currentAuthData.student) {
+        const student = currentAuthData.student;
+        const approved = (student.approvedCourses || []).includes(course.name);
+
+        if (approved && course.page) {
+          window.location.href = course.page;
+        } else {
+          localStorage.setItem('academySelectedCourse', JSON.stringify(course));
+          window.location.href = 'purchase.html';
+        }
+        return;
+      }
+
+      // Not logged in — open Google login modal with enroll intent
+      _pendingEnrollIntent = course;
+      openGoogleLoginModal();
     });
+  });
+
+  // --- Progress bars ---
+  updateProgress();
+
+  // --- Syllabus (only on course detail pages) ---
+  const isPhotoshop = window.location.pathname.includes('photoshop-course');
+  const isPrinciples = window.location.pathname.includes('design-principles');
+  
+  if (isPhotoshop) {
+    fetchAndRenderSyllabus('Adobe Photoshop & Illustrator Mastery');
+  } else if (isPrinciples) {
+    fetchAndRenderSyllabus('Graphic Design Core Principles');
   }
-};
+});
+
+// ================= PROGRESS =================
 
 const updateProgress = async () => {
   const psContainer = document.getElementById('progressPhotoshopContainer');
@@ -427,9 +318,10 @@ const updateProgress = async () => {
   const psBar = document.getElementById('progressPhotoshopBar');
   const totalPsLessons = 32;
 
-  const localStudent = getStoredStudent();
-  if (localStudent && localStudent.id && psContainer && psVal && psBar) {
-    const snap = await get(child(ref(database), `students/${localStudent.id}/progress`));
+  // Try from localStorage session (quick)
+  const session = JSON.parse(localStorage.getItem('academyStudentProfile') || 'null');
+  if (session && session.uid && psContainer && psVal && psBar) {
+    const snap = await get(child(ref(database), `students/${session.uid}/progress`));
     if (snap.exists()) {
       const progressData = snap.val();
       const completedPs = progressData.photoshop || [];
@@ -442,20 +334,3 @@ const updateProgress = async () => {
     }
   }
 };
-
-document.addEventListener('DOMContentLoaded', () => {
-  updateProgress();
-  initLoginAndReset();
-  
-  // If we are on a course page, fetch the syllabus for it
-  const isPhotoshop = window.location.pathname.includes('photoshop-course');
-  const isPrinciples = window.location.pathname.includes('design-principles');
-  
-  if (isPhotoshop) {
-    fetchAndRenderSyllabus('Adobe Photoshop & Illustrator Mastery');
-  } else if (isPrinciples) {
-    fetchAndRenderSyllabus('Graphic Design Core Principles');
-  } else {
-    // If we're on the main academy page, maybe we render for a default or we don't need it.
-  }
-});

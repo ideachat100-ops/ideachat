@@ -1,4 +1,11 @@
+/**
+ * course.js — Course Content Page Logic
+ * Handles video player, progress tracking, and access control.
+ * Uses Firebase Auth via the shared auth.js module.
+ */
+
 import { database, ref, get, child, update } from './firebase-config.js';
+import { getCurrentStudent, setNavAccountState } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -33,45 +40,72 @@ document.addEventListener('DOMContentLoaded', async () => {
   const courseKey = isPhotoshop ? 'photoshop' : 'principles';
   const courseName = isPhotoshop ? 'Adobe Photoshop & Illustrator Mastery' : 'Graphic Design Core Principles';
 
-  // Get student from local storage session
-  const student = JSON.parse(localStorage.getItem('academyStudentProfile') || 'null');
-  
+  // ---- Auth check ----
+  const authData = await getCurrentStudent();
+  let student = authData?.student || null;
+  let studentUid = authData?.user?.uid || null;
+
+  setNavAccountState(!!(authData && authData.student));
+
   let hasAccess = false;
   let completedLessons = [];
 
-  if (student && student.id) {
-    // Fetch user access from Firebase
-    const snap = await get(child(ref(database), `students/${student.id}`));
-    if (snap.exists()) {
-      const data = snap.val();
-      const approved = data.approvedCourses || [];
-      hasAccess = approved.includes(courseName);
-      completedLessons = data.progress?.[courseKey] || [];
+  if (student && studentUid) {
+    const approved = student.approvedCourses || [];
+    hasAccess = approved.includes(courseName);
+    completedLessons = student.progress?.[courseKey] || [];
+  }
+
+  // ---- Access control gate ----
+  const courseWrapper = document.querySelector('.lms-wrapper');
+  const contentSections = document.querySelectorAll('.lms-main > .glass-card, .lms-sidebar .glass-card');
+
+  if (!hasAccess) {
+    // Show a locked overlay instead of the course content
+    const lockedBanner = document.createElement('div');
+    lockedBanner.style.cssText = `
+      padding: 40px; border-radius: 16px; margin: 30px 0;
+      background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2);
+      text-align: center;
+    `;
+    lockedBanner.innerHTML = `
+      <i class="fa-solid fa-lock" style="font-size: 40px; color: #EF4444; margin-bottom: 16px;"></i>
+      <h3 style="color: #E2E8F0; margin-bottom: 12px;">Course Locked</h3>
+      <p style="color: #94A3B8; margin-bottom: 20px; max-width: 500px; margin-left: auto; margin-right: auto;">
+        ${student ? 'Your payment is pending admin approval. Course content will unlock after the admin verifies your bank slip.'
+                  : 'You need to enroll and complete payment to access this course content.'}
+      </p>
+      <a href="../academy.html" class="btn btn-primary" style="padding: 12px 28px;">
+        <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Back to Academy
+      </a>
+    `;
+
+    if (courseWrapper) {
+      courseWrapper.insertAdjacentElement('beforebegin', lockedBanner);
+      courseWrapper.style.display = 'none';
+    }
+  } else {
+    // Show a success banner
+    const accessMessage = document.createElement('div');
+    accessMessage.style.cssText = `
+      padding: 18px; border-radius: 12px; margin-bottom: 24px;
+      background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2);
+      color: #10B981; font-weight: 600; text-align: center;
+    `;
+    accessMessage.textContent = '✓ Payment approved. You have full access to this course content.';
+    if (courseWrapper) courseWrapper.insertAdjacentElement('beforebegin', accessMessage);
+
+    if (enrollBtn) {
+      enrollBtn.textContent = 'Start Course';
+      enrollBtn.disabled = false;
+      enrollBtn.style.opacity = '1';
     }
   }
 
-  const accessMessage = document.createElement('div');
-  accessMessage.style = 'padding:18px; border-radius:18px; margin-bottom:24px; background: rgba(15, 186, 129, 0.1); color: #0F172A; font-weight: 700;';
-  accessMessage.textContent = hasAccess ? 'Payment approved. Click Start learning to unlock the course content.' : 'Payment is pending admin approval. Course content will unlock after approval.';
-  const courseWrapper = document.querySelector('.lms-wrapper');
-  if (courseWrapper) courseWrapper.insertAdjacentElement('beforebegin', accessMessage);
-
-  const courseContent = document.querySelector('.lms-wrapper');
-  const contentSections = document.querySelectorAll('.lms-main > .glass-card, .lms-sidebar .glass-card');
-  
-  if (!hasAccess) {
-    contentSections.forEach((section) => {
-      section.classList.add('course-locked');
-    });
-  } else if (enrollBtn) {
-    enrollBtn.textContent = 'Start learning';
-    enrollBtn.disabled = false;
-    enrollBtn.style.opacity = '1';
-  }
-
+  // ---- Enroll / Start Learning button ----
   const unlockCourse = () => {
     if (!hasAccess) {
-      const selectedCourse = { name: courseName }; // Add full details if needed
+      const selectedCourse = { name: courseName };
       localStorage.setItem('academySelectedCourse', JSON.stringify(selectedCourse));
       window.location.href = '../purchase.html';
       return;
@@ -79,14 +113,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     contentSections.forEach((section) => {
       section.classList.remove('course-locked');
     });
-    if (courseContent) courseContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (courseWrapper) courseWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   if (enrollBtn) {
     enrollBtn.addEventListener('click', unlockCourse);
   }
 
-  // Update progress UI
+  // ---- Progress UI ----
   const updateProgress = () => {
     const completedCount = completedLessons.length;
     const percentage = Math.round((completedCount / totalLessons) * 100);
@@ -95,35 +129,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (progressPercent) progressPercent.textContent = `${percentage}%`;
     if (progressBar) progressBar.style.width = `${percentage}%`;
 
-    if (percentage >= 25 && certificateContainer) { // Demo threshold
+    if (percentage >= 25 && certificateContainer) {
       certificateContainer.style.display = 'block';
     } else if (certificateContainer) {
       certificateContainer.style.display = 'none';
     }
   };
 
-  // Sync progress to Firebase
+  // ---- Save progress to Firebase ----
   const saveProgress = async () => {
-    if (student && student.id) {
-      await update(ref(database, `students/${student.id}/progress`), {
+    if (studentUid) {
+      await update(ref(database, `students/${studentUid}/progress`), {
         [courseKey]: completedLessons
       });
     }
   };
 
-  // Note: the syllabus accordion rendering is already handled by academy.js
-  // But we need to handle the mock lesson items if they still exist statically in the HTML
+  // ---- Lesson item checkboxes ----
   lessonItems.forEach(item => {
     const lessonId = item.getAttribute('data-lesson-id');
     const checkbox = item.querySelector('.lesson-checkbox');
-    
+
     if (completedLessons.includes(lessonId)) {
       checkbox.classList.add('checked');
     }
 
     checkbox.addEventListener('click', async (e) => {
       e.stopPropagation();
-      
+
       if (!hasAccess) {
         alert('Your payment is pending admin approval before course lessons unlock.');
         return;

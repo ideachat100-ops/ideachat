@@ -87,27 +87,31 @@ const renderStudentTable = () => {
   studentTableBody.innerHTML = '';
 
   if (students.length === 0) {
-    studentTableBody.innerHTML = '<tr><td colspan="5">No registered students yet.</td></tr>';
+    studentTableBody.innerHTML = '<tr><td colspan="6">No registered students yet.</td></tr>';
     return;
   }
 
   students.forEach(student => {
     const row = document.createElement('tr');
+    const approvedList = (student.approvedCourses || []).join(', ') || 'None';
     row.innerHTML = `
-      <td>${student.email}</td>
-      <td>${student.phone}</td>
-      <td>${student.course || 'N/A'}</td>
+      <td>${student.name || 'N/A'}</td>
+      <td>${student.email || 'N/A'}</td>
+      <td>${student.phone || 'N/A'}</td>
+      <td>${approvedList}</td>
       <td class="status-pending">Registered</td>
-      <td>${new Date(student.createdAt).toLocaleDateString()}</td>
+      <td>${student.createdAt ? new Date(student.createdAt).toLocaleDateString() : 'N/A'}</td>
     `;
     studentTableBody.appendChild(row);
   });
 };
 
-const grantCourseAccess = async (studentEmail, courseName) => {
-  if (!studentEmail || !courseName) return;
-  // Update student's approved access array in Firebase
-  const student = students.find(s => s.email === studentEmail);
+const grantCourseAccess = async (studentIdentifier, courseName) => {
+  if (!studentIdentifier || !courseName) return;
+  // studentIdentifier can be a uid (the DB key) or an email.
+  // Try to find by uid first (id === key), then fall back to email match.
+  let student = students.find(s => s.id === studentIdentifier)
+             || students.find(s => s.email === studentIdentifier);
   if (student) {
     const accessList = student.approvedCourses || [];
     if (!accessList.includes(courseName)) {
@@ -170,7 +174,9 @@ const attachPaymentActions = () => {
 
     if (target.classList.contains('approve')) {
       await update(ref(database, `purchases/${id}`), { status: 'approved' });
-      await grantCourseAccess(purchase.studentEmail, purchase.courseName);
+      // Use studentUid if available (new records), fall back to studentEmail (old records)
+      const identifier = purchase.studentUid || purchase.studentEmail;
+      await grantCourseAccess(identifier, purchase.courseName);
     }
     if (target.classList.contains('reject')) {
       await update(ref(database, `purchases/${id}`), { status: 'rejected' });
