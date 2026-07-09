@@ -6,7 +6,6 @@
     "created": "2026-07-08",
     "lastUpdated": "2026-07-08"
   },
-
   "site": {
     "name": "IdeaChat",
     "tagline": "Branding, Web & Design Academy",
@@ -24,15 +23,32 @@
       "linkedin": "#"
     },
     "navigation": [
-      { "label": "Home",      "href": "index.html" },
-      { "label": "About",     "href": "about.html" },
-      { "label": "Academy",   "href": "academy.html" },
-      { "label": "Services",  "href": "services.html" },
-      { "label": "Portfolio", "href": "portfolio.html" },
-      { "label": "Contact",   "href": "contact.html" }
+      {
+        "label": "Home",
+        "href": "index.html"
+      },
+      {
+        "label": "About",
+        "href": "about.html"
+      },
+      {
+        "label": "Academy",
+        "href": "academy.html"
+      },
+      {
+        "label": "Services",
+        "href": "services.html"
+      },
+      {
+        "label": "Portfolio",
+        "href": "portfolio.html"
+      },
+      {
+        "label": "Contact",
+        "href": "contact.html"
+      }
     ]
   },
-
   "courses": [
     {
       "id": "photoshop-illustrator",
@@ -156,17 +172,40 @@
         "storageKey": "academySyllabusData",
         "courseKey": "Graphic Design Core Principles",
         "months": [
-          { "monthIndex": 0, "title": "Month 1", "days": [] },
-          { "monthIndex": 1, "title": "Month 2", "days": [] },
-          { "monthIndex": 2, "title": "Month 3", "days": [] },
-          { "monthIndex": 3, "title": "Month 4", "days": [] },
-          { "monthIndex": 4, "title": "Month 5", "days": [] },
-          { "monthIndex": 5, "title": "Month 6", "days": [] }
+          {
+            "monthIndex": 0,
+            "title": "Month 1",
+            "days": []
+          },
+          {
+            "monthIndex": 1,
+            "title": "Month 2",
+            "days": []
+          },
+          {
+            "monthIndex": 2,
+            "title": "Month 3",
+            "days": []
+          },
+          {
+            "monthIndex": 3,
+            "title": "Month 4",
+            "days": []
+          },
+          {
+            "monthIndex": 4,
+            "title": "Month 5",
+            "days": []
+          },
+          {
+            "monthIndex": 5,
+            "title": "Month 6",
+            "days": []
+          }
         ]
       }
     }
   ],
-
   "syllabusModuleSchema": {
     "_note": "This describes the shape of each day/module object as used in the admin panel and localStorage.",
     "fields": {
@@ -184,7 +223,6 @@
       "zoomLink": "string — URL of the Zoom recording, e.g. https://zoom.us/rec/play/..."
     }
   },
-
   "services": [
     {
       "id": "graphic-design",
@@ -239,17 +277,36 @@
       ]
     }
   ],
-
   "portfolioCategories": [
-    { "id": "graphic-design",  "label": "Graphic Design" },
-    { "id": "logo",            "label": "Logo" },
-    { "id": "social-media",    "label": "Social Media" },
-    { "id": "web-design",      "label": "Web Design" },
-    { "id": "brand-identity",  "label": "Brand Identity" },
-    { "id": "flyers",          "label": "Flyers" },
-    { "id": "business-cards",  "label": "Business Cards" }
+    {
+      "id": "graphic-design",
+      "label": "Graphic Design"
+    },
+    {
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "id": "social-media",
+      "label": "Social Media"
+    },
+    {
+      "id": "web-design",
+      "label": "Web Design"
+    },
+    {
+      "id": "brand-identity",
+      "label": "Brand Identity"
+    },
+    {
+      "id": "flyers",
+      "label": "Flyers"
+    },
+    {
+      "id": "business-cards",
+      "label": "Business Cards"
+    }
   ],
-
   "portfolioItemSchema": {
     "_note": "Shape of each item stored in localStorage under 'academyPortfolioData'.",
     "fields": {
@@ -260,7 +317,6 @@
       "websiteLink": "string — external URL (only for web-design category, otherwise empty string)"
     }
   },
-
   "studentSchema": {
     "_note": "Shape of the student profile object stored in localStorage under 'academyStudentProfile'.",
     "fields": {
@@ -271,7 +327,6 @@
       "createdAt": "ISO-8601 datetime string — e.g. 2026-07-08T17:00:00.000Z"
     }
   },
-
   "purchaseRequestSchema": {
     "_note": "Shape of each purchase/payment request stored in localStorage under 'academyPurchases'.",
     "fields": {
@@ -286,7 +341,6 @@
       "requestedAt": "ISO-8601 datetime string"
     }
   },
-
   "approvedAccessSchema": {
     "_note": "Shape of each approved access record stored in localStorage under 'academyApprovedAccess'.",
     "fields": {
@@ -295,7 +349,6 @@
       "approvedAt": "ISO-8601 datetime string"
     }
   },
-
   "admin": {
     "localStorageKeys": {
       "studentProfile": "academyStudentProfile",
@@ -316,24 +369,48 @@
         "id": "payments",
         "label": "Payment Requests",
         "description": "Review uploaded bank slips and approve or reject student enrollment access.",
-        "tableColumns": ["Student", "Course", "Slip", "Status", "Actions"]
+        "tableColumns": [
+          "Student",
+          "Course",
+          "Slip",
+          "Status",
+          "Actions"
+        ]
       },
       {
         "id": "syllabus",
         "label": "Syllabus Editor",
         "description": "Add, edit, or delete course modules (days) per month per course.",
-        "formFields": ["course", "month", "day", "title", "lectureNoteFile", "practicalToolFile", "zoomRecordingLink"]
+        "formFields": [
+          "course",
+          "month",
+          "day",
+          "title",
+          "lectureNoteFile",
+          "practicalToolFile",
+          "zoomRecordingLink"
+        ]
       },
       {
         "id": "portfolio",
         "label": "Portfolio Manager",
         "description": "Upload new project images and assign them to portfolio categories.",
-        "formFields": ["category", "title", "websiteLink (web-design only)", "projectImage"]
+        "formFields": [
+          "category",
+          "title",
+          "websiteLink (web-design only)",
+          "projectImage"
+        ]
       }
     ],
-    "studentTableColumns": ["Email", "Phone", "Course", "Status", "Joined"]
+    "studentTableColumns": [
+      "Email",
+      "Phone",
+      "Course",
+      "Status",
+      "Joined"
+    ]
   },
-
   "sampleSyllabusModules": {
     "_note": "Example modules an admin might add via the Syllabus Editor. These are NOT live data; they serve as content templates.",
     "Adobe Photoshop & Illustrator Mastery": {

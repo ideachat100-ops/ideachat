@@ -441,67 +441,57 @@ const attachPortfolioEditor = () => {
     }
   });
 
-  const renderList = () => {
-    const data = getPortfolioData();
-    listContainer.innerHTML = '';
-    
-    data.forEach((item, index) => {
-      const itemDiv = document.createElement('div');
-      itemDiv.style = 'background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.35); border-radius: 14px; padding: 16px; position: relative;';
+  const renderList = async () => {
+    try {
+      const res = await fetch('api/get_portfolio.php');
+      const data = await res.json();
       
-      const img = document.createElement('img');
-      img.src = item.image;
-      img.style = 'width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 12px;';
+      listContainer.innerHTML = '';
+      if(data.error) return;
       
-      const title = document.createElement('h3');
-      title.style = 'color: #F8FAFC; font-size: 16px; margin: 0 0 4px;';
-      title.textContent = item.title;
-      
-      const category = document.createElement('p');
-      category.style = 'color: #94A3B8; font-size: 12px; margin: 0 0 12px; text-transform: capitalize;';
-      category.textContent = item.category.replace('-', ' ');
-      
-      itemDiv.appendChild(img);
-      itemDiv.appendChild(title);
-      itemDiv.appendChild(category);
-      
-      if (item.websiteLink) {
-        const link = document.createElement('a');
-        link.href = item.websiteLink;
-        link.target = '_blank';
-        link.style = 'display: inline-block; color: #93C5FD; font-size: 12px; margin-bottom: 12px; word-break: break-all;';
-        link.textContent = 'Link: ' + item.websiteLink;
-        itemDiv.appendChild(link);
-      }
-      
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'btn btn-secondary';
-      deleteBtn.style = 'padding: 6px 12px; font-size: 12px; border-color: #EF4444; color: #EF4444; width: 100%;';
-      deleteBtn.textContent = 'Delete';
-      deleteBtn.addEventListener('click', () => {
-        if (confirm('Are you sure you want to delete this portfolio item?')) {
-          const newData = getPortfolioData();
-          newData.splice(index, 1);
-          savePortfolioData(newData);
-          renderList();
+      data.forEach((item) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.style = 'background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.35); border-radius: 14px; padding: 16px; position: relative;';
+        
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.style = 'width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 12px;';
+        
+        const title = document.createElement('h3');
+        title.style = 'color: #F8FAFC; font-size: 16px; margin: 0 0 4px;';
+        title.textContent = item.title;
+        
+        const category = document.createElement('p');
+        category.style = 'color: #94A3B8; font-size: 12px; margin: 0 0 12px; text-transform: capitalize;';
+        category.textContent = item.category.replace('-', ' ');
+        
+        itemDiv.appendChild(img);
+        itemDiv.appendChild(title);
+        itemDiv.appendChild(category);
+        
+        if (item.link) {
+          const link = document.createElement('a');
+          link.href = item.link;
+          link.target = '_blank';
+          link.style = 'display: inline-block; color: #93C5FD; font-size: 12px; margin-bottom: 12px; word-break: break-all;';
+          link.textContent = 'Link: ' + item.link;
+          itemDiv.appendChild(link);
         }
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-secondary';
+        deleteBtn.style = 'padding: 6px 12px; font-size: 12px; border-color: #EF4444; color: #EF4444; width: 100%;';
+        deleteBtn.textContent = 'Delete (Not Implemented)';
+        
+        itemDiv.appendChild(deleteBtn);
+        listContainer.appendChild(itemDiv);
       });
-      
-      itemDiv.appendChild(deleteBtn);
-      listContainer.appendChild(itemDiv);
-    });
+    } catch(err) {
+      console.error(err);
+    }
   };
 
   renderList();
-
-  const readFileAsDataURL = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
 
   addButton.addEventListener('click', async () => {
     if (!titleInput.value.trim() || !imageInput.files || imageInput.files.length === 0) {
@@ -511,33 +501,39 @@ const attachPortfolioEditor = () => {
     }
 
     try {
-      const imageDataUrl = await readFileAsDataURL(imageInput.files[0]);
+      const formData = new FormData();
+      formData.append('action', 'add_portfolio');
+      formData.append('title', titleInput.value.trim());
+      formData.append('category', categorySelect.value);
+      formData.append('image', imageInput.files[0]);
+      if (categorySelect.value === 'web-design') {
+        formData.append('link', websiteInput.value.trim());
+      }
+
+      const res = await fetch('api/admin_actions.php', {
+        method: 'POST',
+        body: formData
+      });
+      const result = await res.json();
       
-      const newItem = {
-        id: Date.now().toString(),
-        title: titleInput.value.trim(),
-        category: categorySelect.value,
-        image: imageDataUrl,
-        websiteLink: categorySelect.value === 'web-design' ? websiteInput.value.trim() : ''
-      };
-      
-      const data = getPortfolioData();
-      data.unshift(newItem);
-      savePortfolioData(data);
-      
-      titleInput.value = '';
-      imageInput.value = '';
-      websiteInput.value = '';
-      
-      saveMessage.style.color = '#A7F3D0';
-      saveMessage.textContent = 'Portfolio item added successfully!';
-      setTimeout(() => { saveMessage.textContent = ''; }, 3000);
-      
-      renderList();
+      if (result.success) {
+        titleInput.value = '';
+        imageInput.value = '';
+        websiteInput.value = '';
+        
+        saveMessage.style.color = '#A7F3D0';
+        saveMessage.textContent = 'Portfolio item added successfully!';
+        setTimeout(() => { saveMessage.textContent = ''; }, 3000);
+        
+        renderList();
+      } else {
+        saveMessage.style.color = '#FCA5A5';
+        saveMessage.textContent = result.error || 'Error saving item.';
+      }
     } catch (err) {
       console.error(err);
       saveMessage.style.color = '#FCA5A5';
-      saveMessage.textContent = 'Error processing image. Storage limit might be reached.';
+      saveMessage.textContent = 'Error processing request.';
     }
   });
 };
