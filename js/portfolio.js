@@ -3,40 +3,44 @@
  * Handles grid categorization filters, pagination rendering, and image lightbox.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const portfolioGrid = document.getElementById('portfolioGrid');
   
   if (portfolioGrid) {
     try {
-      const storedData = JSON.parse(localStorage.getItem('academyPortfolioData') || '[]');
-      storedData.reverse().forEach((item, index) => {
-        const card = document.createElement('div');
-        const categories = ['all', item.category];
-        if (['logo', 'social-media', 'flyers', 'business-cards'].includes(item.category)) {
-            categories.push('graphic-design');
-        }
-        card.className = 'portfolio-item-card reveal fade-up';
-        card.setAttribute('data-categories', JSON.stringify(categories));
-        card.setAttribute('data-index', 'dynamic-' + index);
-        
-        let websiteBtnHtml = '';
-        if (item.category === 'web-design' && item.websiteLink) {
-          websiteBtnHtml = `<a href="${item.websiteLink}" target="_blank" class="btn btn-primary" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">View website</a>`;
-        }
+      const response = await fetch('api/get_portfolio.php');
+      const storedData = await response.json();
+      
+      if (!storedData.error) {
+        storedData.forEach((item, index) => {
+          const card = document.createElement('div');
+          const categories = ['all', item.category];
+          if (['logo', 'social-media', 'flyers', 'business-cards'].includes(item.category)) {
+              categories.push('graphic-design');
+          }
+          card.className = 'portfolio-item-card reveal fade-up';
+          card.setAttribute('data-categories', JSON.stringify(categories));
+          card.setAttribute('data-index', 'dynamic-' + index);
+          
+          let websiteBtnHtml = '';
+          if (item.category === 'web-design' && item.link) {
+            websiteBtnHtml = `<a href="${item.link}" target="_blank" class="btn btn-primary" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">View website</a>`;
+          }
 
-        card.innerHTML = `
-          <div class="portfolio-card-img-box">
-            <img class="lazy" data-src="${item.image}" src="${item.image}" alt="${item.title}">
-            <div class="portfolio-card-overlay">
-              <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
-              <h3 class="portfolio-card-title">${item.title}</h3>
-              <span class="portfolio-card-category" style="text-transform: capitalize;">${item.category.replace('-', ' ')}</span>
-              ${websiteBtnHtml}
+          card.innerHTML = `
+            <div class="portfolio-card-img-box">
+              <img class="lazy" data-src="${item.image}" src="${item.image}" alt="${item.title}">
+              <div class="portfolio-card-overlay">
+                <div class="lightbox-trigger-btn"><i class="fa-solid fa-expand"></i></div>
+                <h3 class="portfolio-card-title">${item.title}</h3>
+                <span class="portfolio-card-category" style="text-transform: capitalize;">${item.category.replace('-', ' ')}</span>
+                ${websiteBtnHtml}
+              </div>
             </div>
-          </div>
-        `;
-        portfolioGrid.insertBefore(card, portfolioGrid.firstChild);
-      });
+          `;
+          portfolioGrid.appendChild(card);
+        });
+      }
     } catch (err) {
       console.error('Error loading portfolio data', err);
     }

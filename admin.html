@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -42,6 +42,8 @@
   </header>
 
   <main class="admin-main">
+
+    <!-- ── Login Gate ────────────────────────────────────────────────── -->
     <section class="section-padding admin-login-section" id="adminLoginSection">
       <div class="container admin-card" id="adminLoginCard">
         <h2>Admin Login</h2>
@@ -55,24 +57,34 @@
       </div>
     </section>
 
+    <!-- ── Dashboard (hidden until login) ───────────────────────────── -->
     <section class="section-padding admin-dashboard-section" id="adminPanel" style="display:none;">
       <div class="container">
+
+        <!-- Header row -->
         <div class="admin-header">
           <div>
             <span class="section-subtitle" style="color: var(--accent);">Administrator</span>
             <h1>Dashboard</h1>
             <p>Review registered students, pending payment slips, and approve enrollments for course access.</p>
           </div>
-          <button class="btn btn-secondary" id="adminLogoutButton">Sign Out</button>
+          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+            <button class="btn btn-secondary" id="adminExportBtn" title="Download a JSON backup of all site data">
+              <i class="fa-solid fa-download" style="margin-right:6px;"></i>Export Backup
+            </button>
+            <button class="btn btn-secondary" id="adminLogoutButton">Sign Out</button>
+          </div>
         </div>
 
+        <!-- Tab navigation -->
         <div class="admin-nav-buttons" style="margin-bottom: 24px; display: flex; gap: 16px; flex-wrap: wrap;">
-          <button class="btn btn-primary" id="navDashboardBtn">Dashboard</button>
+          <button class="btn btn-primary"   id="navDashboardBtn">Dashboard</button>
           <button class="btn btn-secondary" id="navPaymentsBtn">Payment Requests</button>
           <button class="btn btn-secondary" id="navSyllabusBtn">Syllabus Editor</button>
           <button class="btn btn-secondary" id="navPortfolioBtn">Portfolio Manager</button>
         </div>
 
+        <!-- ── View: Dashboard ──────────────────────────────────────── -->
         <div id="adminDashboardView">
           <div class="admin-summary-grid">
             <div class="admin-summary-card">
@@ -113,6 +125,7 @@
           </div>
         </div>
 
+        <!-- ── View: Payment Requests ───────────────────────────────── -->
         <div id="adminPaymentsView" style="display: none;">
           <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
             <div class="admin-table-card">
@@ -138,6 +151,7 @@
           </div>
         </div>
 
+        <!-- ── View: Syllabus Editor ────────────────────────────────── -->
         <div id="adminSyllabusView" style="display: none;">
           <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
             <div class="admin-table-card">
@@ -148,7 +162,8 @@
               <div class="table-wrap" style="display: grid; gap: 16px;">
                 <label for="syllabusCourseSelect" style="font-weight: 700;">Course</label>
                 <select id="syllabusCourseSelect" style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.35); background: var(--bg-dark); color: var(--text-dark);">
-                  <option value="Adobe Photoshop & Illustrator Mastery">Adobe Photoshop & Illustrator Mastery</option>
+                  <option value="Adobe Photoshop &amp; Illustrator Mastery">Adobe Photoshop &amp; Illustrator Mastery</option>
+                  <option value="Graphic Design Core Principles">Graphic Design Core Principles</option>
                 </select>
 
                 <label for="syllabusMonthSelect" style="font-weight: 700;">Month</label>
@@ -167,7 +182,7 @@
                 <label for="syllabusTitleInput" style="font-weight: 700;">Title</label>
                 <input type="text" id="syllabusTitleInput" placeholder="e.g. Introduction to Vector Grids" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
 
-                <h3 style="margin: 10px 0 0; color: var(--text-dark);">Box 2 (Downloads & Links)</h3>
+                <h3 style="margin: 10px 0 0; color: var(--text-dark);">Box 2 (Downloads &amp; Links)</h3>
                 <label for="syllabusNoteInput" style="font-weight: 700;">Lecture Note File (PDF, Image)</label>
                 <input type="file" id="syllabusNoteInput" accept=".pdf, image/*" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
                 <div id="syllabusNotePreview" style="font-size: 12px; color: #94A3B8; margin-top: -10px; margin-bottom: 10px;"></div>
@@ -182,14 +197,15 @@
                 <button id="addSyllabusButton" class="btn btn-primary">Add Module to Month</button>
                 <p id="syllabusSaveMessage" style="font-size: 13px; color: #A7F3D0; margin: 0;"></p>
               </div>
-              
+
               <div id="adminSyllabusList" style="margin-top: 40px; display: grid; gap: 16px;">
-                <!-- Javascript will render the syllabus list here -->
+                <!-- JavaScript will render the syllabus list here -->
               </div>
             </div>
           </div>
         </div>
 
+        <!-- ── View: Portfolio Manager ───────────────────────────────── -->
         <div id="adminPortfolioView" style="display: none;">
           <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
             <div class="admin-table-card">
@@ -228,11 +244,12 @@
                 <h2>Uploaded Items</h2>
               </div>
               <div id="adminPortfolioList" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
-                <!-- Javascript will render the portfolio list here -->
+                <!-- JavaScript will render the portfolio list here -->
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   </main>
@@ -243,13 +260,19 @@
     </div>
   </footer>
 
+
   <script src="js/navigation.js"></script>
   <script src="js/main.js"></script>
   <script src="js/admin.js"></script>
+
+  <!-- Wire the Export Backup button to IdeaChatDB -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const exportBtn = document.getElementById('adminExportBtn');
+      if (exportBtn && window.IdeaChatDB) {
+        exportBtn.addEventListener('click', () => IdeaChatDB.exportSnapshot());
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
