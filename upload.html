@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MongoDB Upload Test - IdeaChat</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 32px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      color: #667eea;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="file"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    input[type="file"] {
+      padding: 5px;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #5568d3;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+
+    .gallery {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .gallery h2 {
+      color: #667eea;
+      margin-bottom: 20px;
+    }
+
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .image-item {
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f0f0f0;
+      height: 150px;
+    }
+
+    .image-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #667eea;
+      display: none;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .tab-btn {
+      background: none;
+      color: #667eea;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-weight: 600;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      color: #667eea;
+      border-bottom-color: #667eea;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 MongoDB Upload Center</h1>
+
+    <div class="grid">
+      <!-- Contact Form -->
+      <div class="card">
+        <h2>📧 Save Contact</h2>
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="contactName">Name</label>
+            <input type="text" id="contactName" required>
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email</label>
+            <input type="email" id="contactEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="contactPhone">Phone</label>
+            <input type="tel" id="contactPhone">
+          </div>
+          <div class="form-group">
+            <label for="contactSubject">Subject</label>
+            <input type="text" id="contactSubject">
+          </div>
+          <div class="form-group">
+            <label for="contactMessage">Message</label>
+            <textarea id="contactMessage" required></textarea>
+          </div>
+          <button type="submit">Save Contact</button>
+          <div class="message" id="contactMessage"></div>
+        </form>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="card">
+        <h2>🖼️ Upload Image</h2>
+        <form id="imageForm">
+          <div class="form-group">
+            <label for="imageFile">Select Image</label>
+            <input type="file" id="imageFile" accept="image/*" required>
+          </div>
+          <div class="form-group">
+            <label for="imageName">Uploaded By</label>
+            <input type="text" id="imageName" value="admin">
+          </div>
+          <div class="form-group">
+            <label for="imageCategory">Category</label>
+            <input type="text" id="imageCategory" value="portfolio">
+          </div>
+          <div class="form-group">
+            <label for="imageDesc">Description</label>
+            <input type="text" id="imageDesc" placeholder="Image description">
+          </div>
+          <button type="submit">Upload Image</button>
+          <div class="message" id="imageMessage"></div>
+        </form>
+      </div>
+
+      <!-- PDF Upload -->
+      <div class="card">
+        <h2>📄 Upload PDF</h2>
+        <form id="pdfForm">
+          <div class="form-group">
+            <label for="pdfFile">Select PDF</label>
+            <input type="file" id="pdfFile" accept=".pdf" required>
+          </div>
+          <div class="form-group">
+            <label for="pdfUploadedBy">Uploaded By</label>
+            <input type="text" id="pdfUploadedBy" value="admin">
+          </div>
+          <div class="form-group">
+            <label for="pdfTitle">Title</label>
+            <input type="text" id="pdfTitle" placeholder="PDF title">
+          </div>
+          <div class="form-group">
+            <label for="pdfCategory">Category</label>
+            <input type="text" id="pdfCategory" value="document">
+          </div>
+          <button type="submit">Upload PDF</button>
+          <div class="message" id="pdfMessage"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="gallery">
+      <h2>📸 Gallery</h2>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="images">Images</button>
+        <button class="tab-btn" data-tab="pdfs">PDFs</button>
+      </div>
+
+      <div id="images" class="tab-content active">
+        <div class="loading" id="imagesLoading">
+          <div class="spinner"></div>
+          <p>Loading images...</p>
+        </div>
+        <div class="images-grid" id="imagesGrid"></div>
+      </div>
+
+      <div id="pdfs" class="tab-content">
+        <div class="loading" id="pdfsLoading">
+          <div class="spinner"></div>
+          <p>Loading PDFs...</p>
+        </div>
+        <div id="pdfsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:5000/api';
+
+    // Helper function to show messages
+    function showMessage(elementId, message, type = 'success') {
+      const el = document.getElementById(elementId);
+      if (el) {
+        el.textContent = message;
+        el.className = `message ${type}`;
+        setTimeout(() => {
+          el.className = 'message';
+        }, 4000);
+      }
+    }
+
+    // ==================== CONTACT FORM ====================
+    document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const data = {
+        name: document.getElementById('contactName').value,
+        email: document.getElementById('contactEmail').value,
+        phone: document.getElementById('contactPhone').value,
+        subject: document.getElementById('contactSubject').value,
+        message: document.getElementById('contactMessage').value,
+      };
+
+      try {
+        const response = await fetch(`${API_URL}/contacts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          showMessage('contactMessage', '✅ Contact saved successfully!', 'success');
+          document.getElementById('contactForm').reset();
+        } else {
+          showMessage('contactMessage', `❌ ${result.message}`, 'error');
+        }
+      } catch (error) {
+        showMessage('contactMessage', '❌ Connection error', 'error');
+      }
+    });
+
+    // ==================== IMAGE UPLOAD ====================
+    document.getElementById('imageForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append('image', document.getElementById('imageFile').files[0]);
+      formData.append('uploadedBy', document.getElementById('imageName').value);
+      formData.append('category', document.getElementById('imageCategory').value);
+      formData.append('description', document.getElementById('imageDesc').value);
+
+      try {
+        const response = await fetch(`${API_URL}/images`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          showMessage('imageMessage', '✅ Image uploaded successfully!', 'success');
+          document.getElementById('imageForm').reset();
+          loadImages();
+        } else {
+          showMessage('imageMessage', `❌ ${result.message}`, 'error');
+        }
+      } catch (error) {
+        showMessage('imageMessage', '❌ Upload failed', 'error');
+      }
+    });
+
+    // ==================== PDF UPLOAD ====================
+    document.getElementById('pdfForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append('pdf', document.getElementById('pdfFile').files[0]);
+      formData.append('uploadedBy', document.getElementById('pdfUploadedBy').value);
+      formData.append('title', document.getElementById('pdfTitle').value);
+      formData.append('category', document.getElementById('pdfCategory').value);
+
+      try {
+        const response = await fetch(`${API_URL}/pdfs`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          showMessage('pdfMessage', '✅ PDF uploaded successfully!', 'success');
+          document.getElementById('pdfForm').reset();
+          loadPDFs();
+        } else {
+          showMessage('pdfMessage', `❌ ${result.message}`, 'error');
+        }
+      } catch (error) {
+        showMessage('pdfMessage', '❌ Upload failed', 'error');
+      }
+    });
+
+    // ==================== LOAD IMAGES ====================
+    async function loadImages() {
+      const grid = document.getElementById('imagesGrid');
+      const loading = document.getElementById('imagesLoading');
+      
+      loading.style.display = 'block';
+      grid.innerHTML = '';
+
+      try {
+        const response = await fetch(`${API_URL}/images`);
+        const result = await response.json();
+
+        if (result.success && result.data.length > 0) {
+          result.data.forEach(img => {
+            const div = document.createElement('div');
+            div.className = 'image-item';
+            div.innerHTML = `<img src="${API_URL}/images/${img._id}" alt="${img.originalName}" title="${img.originalName}">`;
+            grid.appendChild(div);
+          });
+        } else {
+          grid.innerHTML = '<p>No images uploaded yet</p>';
+        }
+      } catch (error) {
+        grid.innerHTML = '<p>Error loading images</p>';
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+
+    // ==================== LOAD PDFs ====================
+    async function loadPDFs() {
+      const list = document.getElementById('pdfsList');
+      const loading = document.getElementById('pdfsLoading');
+      
+      loading.style.display = 'block';
+      list.innerHTML = '';
+
+      try {
+        const response = await fetch(`${API_URL}/pdfs`);
+        const result = await response.json();
+
+        if (result.success && result.data.length > 0) {
+          const html = result.data.map(pdf => `
+            <div style="padding: 15px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4>${pdf.title || pdf.originalName}</h4>
+                <p style="color: #666; font-size: 12px;">${(pdf.size / 1024).toFixed(2)} KB • ${new Date(pdf.createdAt).toLocaleDateString()}</p>
+              </div>
+              <a href="${API_URL}/pdfs/${pdf._id}" download style="padding: 8px 12px; background: #667eea; color: white; border-radius: 4px; text-decoration: none; font-size: 12px;">Download</a>
+            </div>
+          `).join('');
+          list.innerHTML = html;
+        } else {
+          list.innerHTML = '<p>No PDFs uploaded yet</p>';
+        }
+      } catch (error) {
+        list.innerHTML = '<p>Error loading PDFs</p>';
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+
+    // ==================== TAB SWITCHING ====================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const tab = e.target.dataset.tab;
+        
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        e.target.classList.add('active');
+        document.getElementById(tab).classList.add('active');
+
+        if (tab === 'images') loadImages();
+        if (tab === 'pdfs') loadPDFs();
+      });
+    });
+
+    // Load initial data
+    window.addEventListener('load', () => {
+      loadImages();
+      loadPDFs();
+    });
+  </script>
+</body>
+</html>
