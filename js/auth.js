@@ -326,3 +326,22 @@ export const setNavAccountState = (isLoggedIn) => {
   toggle.setAttribute('aria-label', isLoggedIn ? 'Open student profile' : 'Open student login');
   toggle.setAttribute('href', isLoggedIn ? 'profile.html' : '#');
 };
+
+export const loginWithGoogleCredential = async (idToken, redirectIntent = { type: 'profile' }) => {
+  try {
+    const { signInWithCredential, GoogleAuthProvider } = await import('https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js');
+    const credential = GoogleAuthProvider.credential(idToken);
+    const result = await signInWithCredential(auth, credential);
+    const user = result.user;
+    let student = await fetchStudentRecord(user.uid);
+    if (student && student.phone) {
+      _persistSession(user, student);
+      _performRedirect(redirectIntent, student);
+      return;
+    }
+    await _collectPhoneAndSave(user, student, redirectIntent);
+  } catch (error) {
+    console.error(error);
+    alert('Failed to authenticate');
+  }
+};

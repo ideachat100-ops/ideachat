@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Not logged in — open Google login modal with enroll intent
-      _pendingEnrollIntent = course;
+      window._pendingEnrollIntent = course; _pendingEnrollIntent = course;
       openGoogleLoginModal();
     });
   });
@@ -337,24 +337,30 @@ const updateProgress = async () => {
 
 
 
-window.handleGoogleSignIn = (response) => {
+window.handleGoogleSignIn = async (response) => {
   try {
     const loginMessage = document.getElementById('googleLoginMessage');
-    const base64Url = response.credential.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    const decoded = JSON.parse(jsonPayload);
-    const storedStudent = JSON.parse(localStorage.getItem('academyStudentProfile') || 'null') || { createdAt: new Date().toISOString() };
-    storedStudent.email = decoded.email;
-    storedStudent.phone = 'Google Auth';
-    storedStudent.name = decoded.name;
-    storedStudent.password = 'google_oauth_placeholder';
-    localStorage.setItem('academyStudentProfile', JSON.stringify(storedStudent));
-    if (loginMessage) loginMessage.textContent = 'Google Login successful. Redirecting...';
-    setTimeout(() => { window.location.reload(); }, 1000);
+    if (loginMessage) {
+      loginMessage.textContent = 'Authenticating...';
+      loginMessage.style.color = '#fff';
+    }
+    
+    // Import the auth module dynamically to use the credential sign-in
+    const { loginWithGoogleCredential } = await import('./auth.js');
+    
+    // Check if there was an enroll intent when clicking sign-in
+    const intent = window._pendingEnrollIntent 
+      ? { type: 'enroll', course: window._pendingEnrollIntent }
+      : { type: 'profile' };
+      
+    await loginWithGoogleCredential(response.credential, intent);
+    
   } catch (err) {
     console.error(err);
+    const loginMessage = document.getElementById('googleLoginMessage');
+    if (loginMessage) {
+      loginMessage.textContent = 'Sign in failed. Please try again.';
+      loginMessage.style.color = '#f87171';
+    }
   }
 };
