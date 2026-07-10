@@ -77,88 +77,12 @@
         <h2 id="googleLoginTitle">Student Login</h2>
         <p>Sign in with your Google account to access courses, track progress, and manage your profile.</p>
       </div>
-<<<<<<< HEAD
-      <form id="loginForm" class="login-modal-form">
-        <!-- Google Sign-In Button Container using HTML API -->
-        <div id="g_id_onload"
-             data-client_id="YOUR_GOOGLE_CLIENT_ID_HERE"
-             data-context="signin"
-             data-ux_mode="popup"
-             data-callback="handleGoogleSignIn"
-             data-auto_prompt="false">
-        </div>
-        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-          <div class="g_id_signin"
-               data-type="standard"
-               data-shape="rectangular"
-               data-theme="outline"
-               data-text="signin_with"
-               data-size="large"
-               data-logo_alignment="left">
-          </div>
-        </div>
-        
-        <div style="text-align: center; margin-bottom: 20px; color: #94A3B8; font-size: 14px; position: relative;">
-          <span style="background: white; padding: 0 10px; position: relative; z-index: 1;">OR LOGIN MANUALLY</span>
-          <div style="position: absolute; top: 50%; left: 0; right: 0; border-top: 1px solid #E2E8F0; z-index: 0;"></div>
-        </div>
-
-        <label for="loginEmail">Email address</label>
-        <input type="email" id="loginEmail" required placeholder="john@example.com">
-
-        <label for="loginPhone">Phone number</label>
-        <input type="tel" id="loginPhone" required placeholder="+12345678901">
-
-        <label for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" required placeholder="Enter a password">
-
-        <label for="courseSelect">Current course</label>
-        <select id="courseSelect">
-          <option value="Adobe Photoshop & Illustrator Mastery">Adobe Photoshop & Illustrator Mastery</option>
-          <option value="Graphic Design Core Principles">Graphic Design Core Principles</option>
-        </select>
-
-        <button type="submit" class="btn btn-primary">Login / Create Profile</button>
-        <p class="account-link-text">Forgot your password? <button type="button" class="link-button"
-            id="forgotPasswordLink">Reset it here</button>.</p>
-        <p class="form-message" id="loginMessage"></p>
-      </form>
-
-      <div class="reset-panel" id="resetRequest" style="display:none;">
-        <h3>Reset Your Password</h3>
-        <p>Enter the email address connected to your profile. A reset link will appear below so you can continue to the
-          password reset form.</p>
-        <form id="resetRequestForm">
-          <label for="resetEmail">Email address</label>
-          <input type="email" id="resetEmail" required placeholder="john@example.com">
-          <button type="submit" class="btn btn-secondary">Send reset link</button>
-        </form>
-        <div class="email-reset-notice" id="resetNotice" style="display:none;">
-          <p>A reset link was created for <strong id="resetEmailPreview"></strong>. Click the link below to continue.
-          </p>
-          <a href="#resetPasswordForm" class="btn btn-primary" id="emailResetLink">Open reset password form</a>
-        </div>
-      </div>
-
-      <div class="reset-panel" id="resetPasswordForm" style="display:none;">
-        <h3>Set a New Password</h3>
-        <p>Enter your new password and confirm it. This updates your student account immediately.</p>
-        <form id="resetPasswordSubmitForm">
-          <label for="newPassword">New password</label>
-          <input type="password" id="newPassword" required placeholder="New password">
-          <label for="confirmPassword">Confirm password</label>
-          <input type="password" id="confirmPassword" required placeholder="Confirm new password">
-          <button type="submit" class="btn btn-primary">Save new password</button>
-        </form>
-        <p class="form-message" id="resetMessage"></p>
-=======
       <div style="text-align: center; padding: 20px 0;">
         <button type="button" id="googleSignInBtn" class="btn btn-primary"
           style="padding: 14px 32px; font-size: 15px; display: inline-flex; align-items: center; gap: 10px;">
           <i class="fa-brands fa-google"></i> Sign in with Google
         </button>
         <p id="googleLoginMessage" class="form-message" style="margin-top: 16px;"></p>
->>>>>>> 8f5444b73ddbf556582c54dea1e6e982071307c5
       </div>
     </div>
   </div>
