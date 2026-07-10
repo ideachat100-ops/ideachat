@@ -78,10 +78,24 @@
         <p>Sign in with your Google account to access courses, track progress, and manage your profile.</p>
       </div>
       <div style="text-align: center; padding: 20px 0;">
-        <button type="button" id="googleSignInBtn" class="btn btn-primary"
-          style="padding: 14px 32px; font-size: 15px; display: inline-flex; align-items: center; gap: 10px;">
-          <i class="fa-brands fa-google"></i> Sign in with Google
-        </button>
+        <!-- Google Sign-In Button Container using HTML API -->
+        <div id="g_id_onload"
+             data-client_id="470316559974-vfakpq2mne72sno62s06pb0um8i7n3pi.apps.googleusercontent.com"
+             data-context="signin"
+             data-ux_mode="popup"
+             data-callback="handleGoogleSignIn"
+             data-auto_prompt="false">
+        </div>
+        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+          <div class="g_id_signin"
+               data-type="standard"
+               data-shape="rectangular"
+               data-theme="outline"
+               data-text="signin_with"
+               data-size="large"
+               data-logo_alignment="left">
+          </div>
+        </div>
         <p id="googleLoginMessage" class="form-message" style="margin-top: 16px;"></p>
       </div>
     </div>

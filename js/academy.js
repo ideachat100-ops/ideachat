@@ -335,3 +335,26 @@ const updateProgress = async () => {
   }
 };
 
+
+
+window.handleGoogleSignIn = (response) => {
+  try {
+    const loginMessage = document.getElementById('googleLoginMessage');
+    const base64Url = response.credential.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    const decoded = JSON.parse(jsonPayload);
+    const storedStudent = JSON.parse(localStorage.getItem('academyStudentProfile') || 'null') || { createdAt: new Date().toISOString() };
+    storedStudent.email = decoded.email;
+    storedStudent.phone = 'Google Auth';
+    storedStudent.name = decoded.name;
+    storedStudent.password = 'google_oauth_placeholder';
+    localStorage.setItem('academyStudentProfile', JSON.stringify(storedStudent));
+    if (loginMessage) loginMessage.textContent = 'Google Login successful. Redirecting...';
+    setTimeout(() => { window.location.reload(); }, 1000);
+  } catch (err) {
+    console.error(err);
+  }
+};
