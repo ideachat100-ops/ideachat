@@ -9,7 +9,7 @@ import { loginWithGoogle, onStudentAuthChanged, setNavAccountState } from './aut
 // ================= GOOGLE LOGIN MODAL =================
 
 const openGoogleLoginModal = () => {
-  const modal = document.getElementById('googleLoginModal');
+  const modal = document.getElementById('googleLoginModal') || document.getElementById('loginModal');
   if (!modal) return;
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
@@ -17,7 +17,7 @@ const openGoogleLoginModal = () => {
 };
 
 const closeGoogleLoginModal = () => {
-  const modal = document.getElementById('googleLoginModal');
+  const modal = document.getElementById('googleLoginModal') || document.getElementById('loginModal');
   if (!modal) return;
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
@@ -222,8 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Modal close handlers ---
-  const backdrop = document.getElementById('googleLoginBackdrop');
-  const closeBtn = document.getElementById('closeGoogleLoginModal');
+  const backdrop = document.getElementById('googleLoginBackdrop') || document.getElementById('loginModalBackdrop');
+  const closeBtn = document.getElementById('closeGoogleLoginModal') || document.getElementById('closeLoginModal');
   if (backdrop) backdrop.addEventListener('click', closeGoogleLoginModal);
   if (closeBtn) closeBtn.addEventListener('click', closeGoogleLoginModal);
 
