@@ -82,16 +82,123 @@ const showPhoneModal = () => {
 const hidePhoneModal = () => {
   const m = document.getElementById(MODAL_ID);
   if (m) { m.style.opacity = '0'; m.style.pointerEvents = 'none'; }
+/**
+ * auth.js — Shared Google Authentication Module
+ *
+ * Centralises all Google Sign-In logic, phone-number collection,
+ * and post-login redirect routing for the IdeaChat Academy.
+ *
+ * Usage from any page:
+ *   import { loginWithGoogle, logout, onStudentAuthChanged, getCurrentStudent } from './auth.js';
+ */
+
+import {
+  auth, googleProvider, signInWithPopup, signOut, onAuthStateChanged,
+  database, ref, get, set, child, update
+} from './firebase-config.js';
+
+// ---------------------------------------------------------------------------
+// Internal state
+// ---------------------------------------------------------------------------
+let _currentUser = null;   // Firebase Auth user object
+let _studentData = null;   // Student record from DB (students/{uid})
+const _authCallbacks = [];
+
+// ---------------------------------------------------------------------------
+// Phone-number modal (injected into the DOM once, shared across pages)
+// ---------------------------------------------------------------------------
+const MODAL_ID = 'authPhoneModal';
+
+const ensurePhoneModal = () => {
+  if (document.getElementById(MODAL_ID)) return;
+
+  const modal = document.createElement('div');
+  modal.id = MODAL_ID;
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  modal.style.cssText = `
+    position:fixed; inset:0; background:rgba(0,0,0,0.75);
+    display:flex; align-items:center; justify-content:center;
+    z-index:10000; opacity:0; pointer-events:none;
+    transition:opacity .3s ease;
+  `;
+  modal.innerHTML = `
+    <div style="
+      background:var(--bg-card,#1e293b); padding:40px; border-radius:16px;
+      border:1px solid rgba(148,163,184,.15); max-width:420px; width:92%;
+      box-shadow:0 25px 50px rgba(0,0,0,.5);
+    ">
+      <h3 style="margin:0 0 12px; font-size:22px; color:var(--text-light,#e2e8f0);">
+        Complete Your Profile
+      </h3>
+      <p style="color:var(--text-muted,#94a3b8); margin-bottom:24px; line-height:1.6; font-size:14px;">
+        Please enter your mobile number to finish registration.
+      </p>
+      <form id="authPhoneForm">
+        <label for="authPhoneInput"
+          style="display:block; margin-bottom:8px; color:var(--text-light,#e2e8f0); font-weight:500; font-size:14px;">
+          Mobile Number
+        </label>
+        <input type="tel" id="authPhoneInput" placeholder="e.g. 0712345678" required
+          style="
+            width:100%; padding:12px 16px;
+            background:rgba(15,23,42,.5); border:1px solid rgba(148,163,184,.2);
+            color:var(--text-light,#e2e8f0); border-radius:8px; font-family:inherit;
+            font-size:15px; box-sizing:border-box;
+          ">
+        <p id="authPhoneError" style="color:#f87171; font-size:13px; margin:8px 0 0; display:none;"></p>
+        <button type="submit" class="btn btn-primary"
+          style="width:100%; margin-top:18px; padding:13px; font-size:15px;">
+          Save &amp; Continue
+        </button>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(modal);
+};
+
+const showPhoneModal = () => {
+  ensurePhoneModal();
+  const m = document.getElementById(MODAL_ID);
+  if (m) { m.style.opacity = '1'; m.style.pointerEvents = 'auto'; }
+};
+
+const hidePhoneModal = () => {
+  const m = document.getElementById(MODAL_ID);
+  if (m) { m.style.opacity = '0'; m.style.pointerEvents = 'none'; }
 };
 
 // ---------------------------------------------------------------------------
 // DB helpers
 // ---------------------------------------------------------------------------
 
-/** Fetch the student record for a given uid. Returns null if none exists. */
-const fetchStudentRecord = async (uid) => {
+/** Fetch the student record for a given uid, migrating approvedCourses from a matching email if needed. */
+const fetchStudentRecord = async (uid, email = null) => {
   const snap = await get(child(ref(database), `students/${uid}`));
-  return snap.exists() ? snap.val() : null;
+  let student = snap.exists() ? snap.val() : null;
+
+  // If we don't have courses on this UID but we have an email, try to find an existing manual record
+  if (email && (!student || !student.approvedCourses || student.approvedCourses.length === 0)) {
+    const allStudentsSnap = await get(child(ref(database), `students`));
+    if (allStudentsSnap.exists()) {
+      const allStudents = allStudentsSnap.val();
+      for (const key in allStudents) {
+        if (key !== uid && allStudents[key].email === email && allStudents[key].approvedCourses && allStudents[key].approvedCourses.length > 0) {
+          if (student) {
+             student.approvedCourses = allStudents[key].approvedCourses;
+             await set(ref(database, `students/${uid}/approvedCourses`), student.approvedCourses);
+          } else {
+             student = allStudents[key];
+             student.uid = uid; // update to new uid
+             await set(ref(database, `students/${uid}`), student);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  return student;
 };
 
 /** Create or update a student record. */
@@ -119,7 +226,7 @@ export const loginWithGoogle = async (redirectIntent = { type: 'profile' }) => {
     _currentUser = user;
 
     // Check if student already exists in DB
-    let student = await fetchStudentRecord(user.uid);
+    let student = await fetchStudentRecord(user.uid, user.email);
 
     if (student && student.phone) {
       // Existing student with phone — skip modal, go directly to redirect
@@ -265,7 +372,7 @@ export const getCurrentStudent = async () => {
       unsub();
       if (user) {
         _currentUser = user;
-        _studentData = await fetchStudentRecord(user.uid);
+        _studentData = await fetchStudentRecord(user.uid, user.email);
         if (_studentData) {
           _persistSession(user, _studentData);
           resolve({ user, student: _studentData });
@@ -301,7 +408,7 @@ export const onStudentAuthChanged = (callback) => {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       _currentUser = user;
-      _studentData = await fetchStudentRecord(user.uid);
+      _studentData = await fetchStudentRecord(user.uid, user.email);
       if (_studentData) _persistSession(user, _studentData);
       callback({ user, student: _studentData });
     } else {
@@ -333,7 +440,7 @@ export const loginWithGoogleCredential = async (idToken, redirectIntent = { type
     const credential = GoogleAuthProvider.credential(idToken);
     const result = await signInWithCredential(auth, credential);
     const user = result.user;
-    let student = await fetchStudentRecord(user.uid);
+    let student = await fetchStudentRecord(user.uid, user.email);
     if (student && student.phone) {
       _persistSession(user, student);
       _performRedirect(redirectIntent, student);
