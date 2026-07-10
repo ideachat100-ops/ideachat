@@ -40,7 +40,7 @@
           <li><a href="contact.html" class="nav-link">Contact</a></li>
           <!-- Admin button hidden on academic page -->
           <li>
-            <a href="profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
+            <a href="/profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
               <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
               <span class="sr-only">Open student login</span>
             </a>
@@ -67,16 +67,17 @@
     </div>
   </section>
 
-  <!-- Login Modal -->
-  <div class="login-modal" id="loginModal" aria-hidden="true">
-    <div class="login-modal-backdrop" id="loginModalBackdrop"></div>
-    <div class="login-modal-card" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
-      <button type="button" class="modal-close" id="closeLoginModal" aria-label="Close login form"><i
+  <!-- Google Login Modal -->
+  <div class="login-modal" id="googleLoginModal" aria-hidden="true">
+    <div class="login-modal-backdrop" id="googleLoginBackdrop"></div>
+    <div class="login-modal-card" role="dialog" aria-modal="true" aria-labelledby="googleLoginTitle">
+      <button type="button" class="modal-close" id="closeGoogleLoginModal" aria-label="Close login form"><i
           class="fa-solid fa-xmark"></i></button>
       <div class="login-modal-header">
-        <h2 id="loginModalTitle">Student Login</h2>
-        <p>Use your email and phone number to log in. A profile is created automatically after successful login.</p>
+        <h2 id="googleLoginTitle">Student Login</h2>
+        <p>Sign in with your Google account to access courses, track progress, and manage your profile.</p>
       </div>
+<<<<<<< HEAD
       <form id="loginForm" class="login-modal-form">
         <!-- Google Sign-In Button Container using HTML API -->
         <div id="g_id_onload"
@@ -150,9 +151,18 @@
           <button type="submit" class="btn btn-primary">Save new password</button>
         </form>
         <p class="form-message" id="resetMessage"></p>
+=======
+      <div style="text-align: center; padding: 20px 0;">
+        <button type="button" id="googleSignInBtn" class="btn btn-primary"
+          style="padding: 14px 32px; font-size: 15px; display: inline-flex; align-items: center; gap: 10px;">
+          <i class="fa-brands fa-google"></i> Sign in with Google
+        </button>
+        <p id="googleLoginMessage" class="form-message" style="margin-top: 16px;"></p>
+>>>>>>> 8f5444b73ddbf556582c54dea1e6e982071307c5
       </div>
     </div>
   </div>
+
 
   <!-- Courses List Section -->
   <section class="academy-courses-section section-padding">
@@ -164,8 +174,94 @@
           your browser.</p>
       </div>
 
-      <div class="courses-grid-wrapper" id="academyCoursesGrid">
-        <!-- Courses will be dynamically injected here via JS from the PHP API -->
+      <div class="courses-grid-wrapper">
+
+        <!-- Course 01: Photoshop & Illustrator -->
+        <div class="course-card reveal fade-up" id="coursePhotoshopCard">
+          <div class="course-card-img-box">
+            <span class="course-badge">Beginner to Advanced</span>
+            <img src="images/academy/photoshop.jpg" alt="Adobe Photoshop &amp; Illustrator Course Cover">
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">Adobe Photoshop &amp; Illustrator Mastery</h3>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
+              Master basic visual manipulation layers, vector drawings, custom logo drafting, and printing layout export
+              presets.
+            </p>
+
+            <div class="course-meta">
+              <span><i class="fa-solid fa-clock"></i> 8 Weeks</span>
+              <span><i class="fa-solid fa-book-open"></i> 32 Lessons</span>
+              <span><i class="fa-solid fa-star" style="color:#F59E0B;"></i> 4.9 Rating</span>
+            </div>
+
+            <!-- Dynamic progress tracker element -->
+            <div class="course-card-progress-wrapper" id="progressPhotoshopContainer" style="display:none;">
+              <div class="course-card-progress-text">
+                <span>Course Progress</span>
+                <span id="progressPhotoshopValue">0%</span>
+              </div>
+              <div class="course-card-progress-track">
+                <div class="course-card-progress-bar" id="progressPhotoshopBar"></div>
+              </div>
+            </div>
+
+            <div class="course-tutor">
+              <div class="course-tutor-img">JD</div>
+              <div style="flex-grow:1;">
+                <h5 style="font-size:14px; font-weight:700;">John Doe</h5>
+                <p style="font-size:11px; color:var(--text-muted);">Lead Graphic Instructor</p>
+              </div>
+              <a href="#" class="btn btn-primary enroll-button" data-course-id="photoshop"
+                data-course-name="Adobe Photoshop & Illustrator Mastery"
+                style="padding:10px 20px; font-size:13px;">Enroll Now</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 02: Graphic Design Principles -->
+        <div class="course-card reveal fade-up delay-100" id="coursePrinciplesCard">
+          <div class="course-card-img-box">
+            <span class="course-badge advanced">Theory &amp; Layout</span>
+            <img src="images/academy/principles.jpg" alt="Graphic Design Principles Course Cover">
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">Graphic Design Core Principles</h3>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
+              Study visual guidelines, contrast rules, alignment grids, font pairings, negative space structures, and
+              golden spiral rules.
+            </p>
+
+            <div class="course-meta">
+              <span><i class="fa-solid fa-clock"></i> 6 Weeks</span>
+              <span><i class="fa-solid fa-book-open"></i> 24 Lessons</span>
+              <span><i class="fa-solid fa-star" style="color:#F59E0B;"></i> 4.8 Rating</span>
+            </div>
+
+            <!-- Dynamic progress tracker element -->
+            <div class="course-card-progress-wrapper" id="progressPrinciplesContainer" style="display:none;">
+              <div class="course-card-progress-text">
+                <span>Course Progress</span>
+                <span id="progressPrinciplesValue">0%</span>
+              </div>
+              <div class="course-card-progress-track">
+                <div class="course-card-progress-bar" id="progressPrinciplesBar"></div>
+              </div>
+            </div>
+
+            <div class="course-tutor">
+              <div class="course-tutor-img" style="background-color: var(--secondary);">SS</div>
+              <div style="flex-grow:1;">
+                <h5 style="font-size:14px; font-weight:700;">Sarah Smith</h5>
+                <p style="font-size:11px; color:var(--text-muted);">Lead Design Theorist</p>
+              </div>
+              <a href="#" class="btn btn-primary enroll-button" data-course-id="principles"
+                data-course-name="Graphic Design Core Principles" style="padding:10px 20px; font-size:13px;">Enroll
+                Now</a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -240,7 +336,7 @@
   <!-- JS Scripts -->
   <script src="js/navigation.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/academy.js"></script>
+  <script type="module" src="js/academy.js"></script>
 </body>
 
 </html>

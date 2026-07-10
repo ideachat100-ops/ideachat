@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -68,7 +68,10 @@
         <div class="profile-info" id="profileInfo">
           <div class="profile-info-row"><span>Email</span><strong id="profileEmail"></strong></div>
           <div class="profile-info-row"><span>Phone</span><strong id="profilePhone"></strong></div>
-          <div class="profile-info-row"><span>Current course</span><strong id="profileCourse"></strong></div>
+          <div class="profile-info-row" style="align-items:flex-start;">
+            <span>Enrolled Courses</span>
+            <div id="profileCoursesContainer" style="display:flex; flex-direction:column; gap:8px; align-items:flex-end; text-align:right;"></div>
+          </div>
           <div class="profile-info-row"><span>Joined</span><strong id="profileCreated"></strong></div>
         </div>
 
@@ -80,8 +83,8 @@
 
       <div class="profile-empty" id="profileEmpty" style="display:none;">
         <h3>No active student profile</h3>
-        <p>You are not logged in yet. Please open the Academy login icon and log in to view your profile.</p>
-        <a href="academy.html" class="btn btn-primary">Go to Academy login</a>
+        <p>You are not logged in yet. Please click the button below to log in securely with Google.</p>
+        <button id="googleLoginBtn" class="btn btn-primary"><i class="fa-brands fa-google" style="margin-right: 8px;"></i> Sign in with Google</button>
       </div>
     </div>
   </section>
@@ -150,11 +153,6 @@
 
   <script src="js/navigation.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/profile.js"></script>
+  <script type="module" src="js/profile.js"></script>
 </body>
 </html>
-
-
-
-
-

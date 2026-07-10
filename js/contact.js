@@ -3,6 +3,8 @@
  * Handles contact form client-side validations, WhatsApp API redirect link compilation, and FAQ accordion collapse.
  */
 
+import { database, ref, push, serverTimestamp } from './firebase-config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contactForm');
   const nameInput = document.getElementById('name');
@@ -103,28 +105,42 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (isValid) {
-        // Compile WhatsApp text template
         const nameText = nameInput.value.trim();
         const emailText = emailInput.value.trim();
         const phoneText = phoneInput.value.trim();
         const detailsText = messageInput.value.trim();
         
-        const messageTemplate = `*New Project Enquiry from IdeaChat Form*\n\n` + 
-          `*Name:* ${nameText}\n` +
-          `*Email:* ${emailText}\n` +
-          `*Phone:* ${phoneText}\n\n` +
-          `*Project Details:*\n${detailsText}`;
+        // Save to Firebase first
+        const contactRef = ref(database, 'contacts');
+        push(contactRef, {
+            name: nameText,
+            email: emailText,
+            phone: phoneText,
+            message: detailsText,
+            status: 'New',
+            createdAt: serverTimestamp()
+        }).then(() => {
+            // Compile WhatsApp text template
+            const messageTemplate = `*New Project Enquiry from IdeaChat Form*\n\n` + 
+              `*Name:* ${nameText}\n` +
+              `*Email:* ${emailText}\n` +
+              `*Phone:* ${phoneText}\n\n` +
+              `*Project Details:*\n${detailsText}`;
 
-        // Format direct WhatsApp URL redirection
-        // Destination WhatsApp number is Sri Lanka +94 788009907 (url formatted as 94788009907)
-        const whatsappNumber = '94788009907';
-        const encodedMsg = encodeURIComponent(messageTemplate);
-        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMsg}`;
+            // Format direct WhatsApp URL redirection
+            // Destination WhatsApp number is Sri Lanka +94 788009907 (url formatted as 94788009907)
+            const whatsappNumber = '94788009907';
+            const encodedMsg = encodeURIComponent(messageTemplate);
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMsg}`;
 
-        // Alert user of redirect and trigger window reload
-        alert('Form details validated successfully! Opening WhatsApp chat to send project details.');
-        window.open(whatsappUrl, '_blank');
-        form.reset();
+            // Alert user of redirect and trigger window reload
+            alert('Form details validated successfully! Opening WhatsApp chat to send project details.');
+            window.open(whatsappUrl, '_blank');
+            form.reset();
+        }).catch(err => {
+            console.error('Error saving contact to Firebase:', err);
+            alert('There was an error submitting your request. Please try again.');
+        });
       }
     });
 

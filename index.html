@@ -223,39 +223,9 @@
         <p class="section-description">A curated selection of our creative branding, layout flyers, and modern website
           interfaces.</p>
       </div>
-      <div class="portfolio-grid"
+      <div class="portfolio-grid" id="homePortfolioGrid"
         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 50px;">
-        <!-- Show first 6 cards -->
-        <div class="portfolio-preview-card reveal fade-up"
-          style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md);">
-          <img src="images/portfolio/p1.svg" alt="Geometric Logo Design"
-            style="width: 100%; height: auto; transition: var(--transition-slow);">
-        </div>
-        <div class="portfolio-preview-card reveal fade-up delay-100"
-          style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md);">
-          <img src="images/portfolio/p2.svg" alt="Campaign Social Post"
-            style="width: 100%; height: auto; transition: var(--transition-slow);">
-        </div>
-        <div class="portfolio-preview-card reveal fade-up delay-200"
-          style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md);">
-          <img src="images/portfolio/p3.svg" alt="Event Flyer Layout"
-            style="width: 100%; height: auto; transition: var(--transition-slow);">
-        </div>
-        <div class="portfolio-preview-card reveal fade-up"
-          style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md);">
-          <img src="images/portfolio/p4.svg" alt="SaaS Dashboard UI"
-            style="width: 100%; height: auto; transition: var(--transition-slow);">
-        </div>
-        <div class="portfolio-preview-card reveal fade-up delay-100"
-          style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md);">
-          <img src="images/portfolio/p5.svg" alt="Brand Identity Guidelines"
-            style="width: 100%; height: auto; transition: var(--transition-slow);">
-        </div>
-        <div class="portfolio-preview-card reveal fade-up delay-200"
-          style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-md);">
-          <img src="images/portfolio/p6.svg" alt="Premium Business Cards Layout"
-            style="width: 100%; height: auto; transition: var(--transition-slow);">
-        </div>
+        <!-- Dynamic items will be populated here -->
       </div>
       <div style="text-align: center;">
         <a href="portfolio.html" class="btn btn-primary">View Full Portfolio</a>
@@ -611,6 +581,7 @@
   <script src="js/main.js"></script>
   <script src="js/slider.js"></script>
   <script src="js/contact.js"></script>
+  <script type="module" src="js/home-portfolio.js"></script>
 </body>
 
 </html>

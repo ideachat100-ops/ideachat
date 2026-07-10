@@ -1,90 +1,116 @@
 /**
- * Course Purchase Page Script
- * Loads selected course data and handles bank slip upload.
+ * purchase.js — Course Purchase & Bank Slip Upload
+ * Uses Firebase Auth (via auth.js) to identify the student.
  */
 
-const getPurchases = () => {
-  try {
-    return JSON.parse(localStorage.getItem('academyPurchases') || '[]');
-  } catch {
-    return [];
-  }
-};
+import { database, ref, push, set, IMGBB_API_KEY } from './firebase-config.js';
+import { getCurrentStudent, onStudentAuthChanged, setNavAccountState } from './auth.js';
 
-const savePurchases = (purchases) => {
-  localStorage.setItem('academyPurchases', JSON.stringify(purchases));
-};
+document.addEventListener('DOMContentLoaded', async () => {
+  const purchaseCourseName  = document.getElementById('purchaseCourseName');
+  const purchaseDescription = document.getElementById('purchaseDescription');
+  const purchasePrice       = document.getElementById('purchasePrice');
+  const purchaseBank        = document.getElementById('purchaseBank');
+  const purchaseAccount     = document.getElementById('purchaseAccount');
+  const purchaseIfsc        = document.getElementById('purchaseIfsc');
+  const bankSlipForm        = document.getElementById('bankSlipForm');
+  const bankSlipUpload      = document.getElementById('bankSlipUpload');
+  const purchaseMessage     = document.getElementById('purchaseMessage');
 
-const addPurchaseRequest = (course, student, slipFileName) => {
-  if (!course || !student) return;
-  const purchases = getPurchases();
-  const existing = purchases.find((item) => item.studentEmail === student.email && item.courseName === course.name);
-  if (existing) return;
-
-  purchases.push({
-    id: `purchase_${Date.now()}`,
-    studentEmail: student.email,
-    studentPhone: student.phone,
-    courseName: course.name,
-    coursePrice: course.price,
-    courseDescription: course.description,
-    bankSlip: slipFileName || 'Uploaded',
-    status: 'pending',
-    requestedAt: new Date().toISOString()
+  // Update nav icon based on auth state
+  onStudentAuthChanged((authData) => {
+    setNavAccountState(!!(authData && authData.student));
   });
 
-  savePurchases(purchases);
-};
+  // Load selected course from localStorage
+  const selectedCourse = JSON.parse(localStorage.getItem('academySelectedCourse') || 'null');
 
-const loadPurchaseDetails = () => {
-  const course = JSON.parse(localStorage.getItem('academySelectedCourse') || 'null');
-  const student = JSON.parse(localStorage.getItem('academyStudentProfile') || 'null');
-  const purchaseCourseName = document.getElementById('purchaseCourseName');
-  const purchaseDescription = document.getElementById('purchaseDescription');
-  const purchasePrice = document.getElementById('purchasePrice');
-  const purchaseBank = document.getElementById('purchaseBank');
-  const purchaseAccount = document.getElementById('purchaseAccount');
-  const purchaseIfsc = document.getElementById('purchaseIfsc');
-  const purchaseMessage = document.getElementById('purchaseMessage');
-
-  if (!student) {
-    window.location.href = 'academy.html';
-    return;
-  }
-
-  if (!course) {
+  if (!selectedCourse) {
     if (purchaseCourseName) purchaseCourseName.textContent = 'No course selected';
-    if (purchaseDescription) purchaseDescription.textContent = 'Please return to the Academy page and choose a course to enroll.';
-    if (purchasePrice) purchasePrice.textContent = '-';
-    if (purchaseBank) purchaseBank.textContent = '-';
-    if (purchaseAccount) purchaseAccount.textContent = '-';
-    if (purchaseIfsc) purchaseIfsc.textContent = '-';
+    if (bankSlipForm) {
+      const btn = bankSlipForm.querySelector('button');
+      if (btn) btn.disabled = true;
+    }
     return;
   }
 
-  if (purchaseCourseName) purchaseCourseName.textContent = course.name;
-  if (purchaseDescription) purchaseDescription.textContent = course.description;
-  if (purchasePrice) purchasePrice.textContent = course.price;
-  if (purchaseBank) purchaseBank.textContent = course.bankName;
-  if (purchaseAccount) purchaseAccount.textContent = course.accountNumber;
-  if (purchaseIfsc) purchaseIfsc.textContent = course.ifsc;
+  if (purchaseCourseName)  purchaseCourseName.textContent  = selectedCourse.name;
+  if (purchaseDescription) purchaseDescription.textContent = selectedCourse.description;
+  if (purchasePrice)       purchasePrice.textContent       = selectedCourse.price;
+  if (purchaseBank)        purchaseBank.textContent        = selectedCourse.bankName;
+  if (purchaseAccount)     purchaseAccount.textContent     = selectedCourse.accountNumber;
+  if (purchaseIfsc)        purchaseIfsc.textContent        = selectedCourse.ifsc;
 
-  const bankSlipForm = document.getElementById('bankSlipForm');
-  if (bankSlipForm) {
-    bankSlipForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const bankSlipInput = document.getElementById('bankSlipUpload');
-      if (!bankSlipInput || !bankSlipInput.files || bankSlipInput.files.length === 0) {
-        if (purchaseMessage) purchaseMessage.textContent = 'Please upload your bank transfer slip.';
+  // Upload to ImgBB
+  const uploadToImgBB = async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+      method: 'POST',
+      body: formData
+    });
+    const result = await res.json();
+    if (result.success) {
+      return result.data.url;
+    }
+    throw new Error(result.error?.message || 'ImgBB upload failed');
+  };
+
+  // Bank slip form submission
+  if (bankSlipForm && bankSlipUpload && purchaseMessage) {
+    bankSlipForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const file = bankSlipUpload.files[0];
+      if (!file) {
+        purchaseMessage.textContent = 'Please select a file to upload.';
+        purchaseMessage.style.color = '#FCA5A5';
         return;
       }
 
-      const fileName = bankSlipInput.files[0].name;
-      addPurchaseRequest(course, student, fileName);
-      if (purchaseMessage) purchaseMessage.textContent = 'Bank slip uploaded successfully. We will verify your payment shortly.';
-      bankSlipForm.reset();
+      // Check auth via Firebase
+      const authData = await getCurrentStudent();
+      if (!authData || !authData.student) {
+        purchaseMessage.textContent = 'You must be logged in to purchase a course.';
+        purchaseMessage.style.color = '#FCA5A5';
+        return;
+      }
+
+      const student = authData.student;
+      const submitBtn = bankSlipForm.querySelector('button');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Uploading slip...';
+      purchaseMessage.textContent = '';
+
+      try {
+        const imgUrl = await uploadToImgBB(file);
+
+        const purchasesRef = ref(database, 'purchases');
+        const newPurchaseRef = push(purchasesRef);
+        await set(newPurchaseRef, {
+          studentUid:   student.uid,
+          studentEmail: student.email,
+          studentPhone: student.phone || '',
+          studentName:  student.name  || '',
+          courseName:   selectedCourse.name,
+          bankSlip:     imgUrl,
+          status:       'pending',
+          createdAt:    new Date().toISOString()
+        });
+
+        purchaseMessage.textContent = 'Upload successful! Waiting for admin approval.';
+        purchaseMessage.style.color = '#A7F3D0';
+        bankSlipForm.reset();
+
+      } catch (error) {
+        console.error(error);
+        purchaseMessage.textContent = 'Upload failed. ' + error.message;
+        purchaseMessage.style.color = '#FCA5A5';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Upload Slip';
+      }
     });
   }
-};
-
-document.addEventListener('DOMContentLoaded', loadPurchaseDetails);
+});

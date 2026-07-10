@@ -111,9 +111,10 @@
                 <table>
                   <thead>
                     <tr>
+                      <th>Name</th>
                       <th>Email</th>
                       <th>Phone</th>
-                      <th>Course</th>
+                      <th>Approved Courses</th>
                       <th>Status</th>
                       <th>Joined</th>
                     </tr>
@@ -183,12 +184,12 @@
                 <input type="text" id="syllabusTitleInput" placeholder="e.g. Introduction to Vector Grids" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
 
                 <h3 style="margin: 10px 0 0; color: var(--text-dark);">Box 2 (Downloads &amp; Links)</h3>
-                <label for="syllabusNoteInput" style="font-weight: 700;">Lecture Note File (PDF, Image)</label>
-                <input type="file" id="syllabusNoteInput" accept=".pdf, image/*" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+                <label for="syllabusNoteInput" style="font-weight: 700;">Lecture Note Link (Google Drive, PDF)</label>
+                <input type="url" id="syllabusNoteInput" placeholder="e.g. https://drive.google.com/..." style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
                 <div id="syllabusNotePreview" style="font-size: 12px; color: #94A3B8; margin-top: -10px; margin-bottom: 10px;"></div>
 
-                <label for="syllabusToolInput" style="font-weight: 700;">Practical Tool File (ZIP, RAR, Image, etc.)</label>
-                <input type="file" id="syllabusToolInput" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
+                <label for="syllabusToolInput" style="font-weight: 700;">Practical Tool Link (Google Drive, ZIP)</label>
+                <input type="url" id="syllabusToolInput" placeholder="e.g. https://drive.google.com/..." style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
                 <div id="syllabusToolPreview" style="font-size: 12px; color: #94A3B8; margin-top: -10px; margin-bottom: 10px;"></div>
 
                 <label for="syllabusZoomInput" style="font-weight: 700;">Zoom Recording Link</label>
@@ -263,16 +264,6 @@
 
   <script src="js/navigation.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/admin.js"></script>
-
-  <!-- Wire the Export Backup button to IdeaChatDB -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const exportBtn = document.getElementById('adminExportBtn');
-      if (exportBtn && window.IdeaChatDB) {
-        exportBtn.addEventListener('click', () => IdeaChatDB.exportSnapshot());
-      }
-    });
-  </script>
+  <script type="module" src="js/admin.js"></script>
 </body>
 </html>
