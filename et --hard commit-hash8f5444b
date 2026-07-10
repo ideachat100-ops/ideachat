@@ -1,0 +1,28 @@
+[33m9ab041d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'main' of https://github.com/ideachat100-ops/ideachat
+[33m0e6c5b8[m add google sing
+[33m8f5444b[m login google auth
+[33m0decfa3[m fix: student profile
+[33m155cdcd[m add: firebase
+[33mce135fd[m Implement admin portfolio upload system with MongoDB integration
+[33me0f6d99[m Complete MongoDB integration setup with connection guide and frontend handlers
+[33m9f08012[m Restore academy.js enroll button functionality from ca8b284
+[33m2a1b4db[m Restore academy.html enroll options from ca8b284
+[33ma081595[m Restore images from ca8b284 - Fix missing image assets
+[33m36773e6[m Merge branch 'main' of https://github.com/ideachat100-ops/ideachat
+[33m1766937[m Reset to commit ca8b284 (Responsive 2)
+[33maeb4a1c[m[33m ([m[1;31morigin/agents/mongodb-connection-setup[m[33m)[m as
+[33me5d5fc4[m sql add
+[33mc32ff58[m database File create
+[33mca8b284[m Responsive 2
+[33m6ac3754[m 5 is Humbaker Icon edit
+[33m5113ea3[m 4
+[33m25ea3c7[m 4
+[33m71ca7e9[m 3
+[33m740937b[m 2
+[33m73af1d3[m 1
+[33mc3b23e7[m Responsive 1
+[33m23f6a11[m After the video add
+[33m7121e16[m 2nd commit
+[33m4b39cbc[m Database link
+[33mb633bdf[m First update
+[33m76a8c49[m Initial commit
