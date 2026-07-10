@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/academy.css">
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
@@ -76,6 +78,30 @@
         <p>Use your email and phone number to log in. A profile is created automatically after successful login.</p>
       </div>
       <form id="loginForm" class="login-modal-form">
+        <!-- Google Sign-In Button Container using HTML API -->
+        <div id="g_id_onload"
+             data-client_id="YOUR_GOOGLE_CLIENT_ID_HERE"
+             data-context="signin"
+             data-ux_mode="popup"
+             data-callback="handleGoogleSignIn"
+             data-auto_prompt="false">
+        </div>
+        <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+          <div class="g_id_signin"
+               data-type="standard"
+               data-shape="rectangular"
+               data-theme="outline"
+               data-text="signin_with"
+               data-size="large"
+               data-logo_alignment="left">
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 20px; color: #94A3B8; font-size: 14px; position: relative;">
+          <span style="background: white; padding: 0 10px; position: relative; z-index: 1;">OR LOGIN MANUALLY</span>
+          <div style="position: absolute; top: 50%; left: 0; right: 0; border-top: 1px solid #E2E8F0; z-index: 0;"></div>
+        </div>
+
         <label for="loginEmail">Email address</label>
         <input type="email" id="loginEmail" required placeholder="john@example.com">
 

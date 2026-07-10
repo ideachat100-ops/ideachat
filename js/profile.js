@@ -27,6 +27,14 @@ const showProfile = (student) => {
 
   profileEmail.textContent = student.email;
   profilePhone.textContent = student.phone;
+  if (student.phone === 'Google Auth' && student.name) {
+    if (profilePhone.previousSibling) {
+      profilePhone.previousSibling.textContent = 'Name';
+    } else if (profilePhone.previousElementSibling) {
+      profilePhone.previousElementSibling.textContent = 'Name';
+    }
+    profilePhone.textContent = student.name;
+  }
   profileCourse.textContent = student.course;
   profileCreated.textContent = new Date(student.createdAt).toLocaleDateString();
 

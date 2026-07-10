@@ -77,6 +77,56 @@ const scrollToElement = (id) => {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
+// Google Sign-In Callback
+window.handleGoogleSignIn = (response) => {
+  try {
+    const loginMessage = document.getElementById('loginMessage');
+    
+    // Decode JWT token
+    const base64Url = response.credential.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    const decoded = JSON.parse(jsonPayload);
+
+    const email = decoded.email;
+    const name = decoded.name;
+
+    const storedStudent = getStoredStudent() || {
+      createdAt: new Date().toISOString()
+    };
+    
+    storedStudent.email = email;
+    storedStudent.phone = 'Google Auth'; // placeholder
+    storedStudent.name = name;
+    storedStudent.password = 'google_oauth_placeholder';
+    
+    const courseSelect = document.getElementById('courseSelect');
+    storedStudent.course = (courseSelect ? courseSelect.value : '') || storedStudent.course || 'None selected';
+    
+    saveStoredStudent(storedStudent);
+    updateAccountIcon(true);
+    
+    const pendingCourse = JSON.parse(localStorage.getItem('academyEnrollPendingCourse') || 'null');
+    if (pendingCourse) {
+      localStorage.setItem('academySelectedCourse', JSON.stringify(pendingCourse));
+      localStorage.removeItem('academyEnrollPendingCourse');
+      window.location.href = 'purchase.html';
+      return;
+    }
+    
+    if (loginMessage) loginMessage.textContent = 'Google Login successful. Your profile has been created.';
+    closeLoginModal();
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) loginForm.reset();
+  } catch (error) {
+    const loginMessage = document.getElementById('loginMessage');
+    if (loginMessage) loginMessage.textContent = 'Failed to process Google Sign-In. Please try again.';
+    console.error("Google Sign-In Error: ", error);
+  }
+};
+
 const initLoginAndReset = () => {
   const loginForm = document.getElementById('loginForm');
   const resetRequestForm = document.getElementById('resetRequestForm');
