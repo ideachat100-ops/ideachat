@@ -1,11 +1,9 @@
-import { database, ref, get, child } from './firebase-config.js';
-
 document.addEventListener('DOMContentLoaded', async () => {
   const homePortfolioGrid = document.getElementById('homePortfolioGrid');
   
   if (homePortfolioGrid) {
     try {
-      const snap = await get(child(ref(database), 'portfolio'));
+      const snap = await firebase.database().ref('portfolio').once('value');
       
       if (snap.exists()) {
         let storedData = [];

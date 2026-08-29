@@ -1,0 +1,251 @@
+/*
+=========================================
+  IDEACHAT — GLOBAL DARK UI OVERRIDES
+  Applied site-wide to replace all old
+  light/muted component styles with the
+  new vibrant dark design language.
+=========================================
+*/
+
+/* ─── Body & page defaults ─── */
+body {
+  background-color: #0B1220;
+  color: #E6EEF8;
+}
+
+/* ─── Header: always glass-dark ─── */
+header {
+  background: transparent;
+}
+header.sticky {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ─── Hamburger lines: always white ─── */
+.hamburger-line { background-color: #ffffff !important; }
+
+/* ─── Nav CTA button ─── */
+.nav-btn {
+  background: linear-gradient(135deg, #2563EB, #10B981) !important;
+  color: white !important;
+  border: none !important;
+}
+.nav-btn:hover {
+  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.4) !important;
+}
+.nav-btn::after { display: none !important; }
+
+/* ─── Section padding base ─── */
+.section-padding { padding: 100px 0; }
+
+/* ─── Section header subtitle ─── */
+.section-subtitle {
+  background: linear-gradient(135deg, #2563EB, #10B981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Section title ─── */
+.section-title { color: #E6EEF8; }
+
+/* ─── Section description ─── */
+.section-description { color: #94A3B8; }
+
+/* ─── Glass cards: dark-styled ─── */
+.glass-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.glass-card:hover {
+  border-color: rgba(37, 99, 235, 0.25);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+}
+.glass-card h3, .glass-card h4 { color: #E6EEF8; }
+
+/* ─── Buttons ─── */
+.btn-primary {
+  background: linear-gradient(135deg, #2563EB, #1D4ED8);
+  color: white;
+  box-shadow: 0 6px 20px rgba(37,99,235,0.35);
+  border: none;
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(37,99,235,0.5);
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: white;
+  backdrop-filter: blur(8px);
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.14);
+  color: white;
+  transform: translateY(-3px);
+}
+.btn-accent {
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: white;
+  box-shadow: 0 6px 20px rgba(16,185,129,0.35);
+  border: none;
+}
+.btn-accent:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(16,185,129,0.5);
+}
+
+/* ─── Preloader: dark bg ─── */
+#preloader { background: #0A0F1E; }
+
+/* ─── Scrollbar: dark ─── */
+::-webkit-scrollbar-track { background: #0B1220; }
+::-webkit-scrollbar-thumb { background: rgba(37,99,235,0.3); border-color: #0B1220; }
+
+/* ─── Footer: dark ─── */
+footer {
+  background: #071029;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+footer p, .footer-brand p { color: #94A3B8; }
+.footer-heading { color: #E6EEF8; }
+.footer-link-item a { color: #94A3B8; }
+.footer-link-item a:hover { color: #60A5FA; padding-left: 6px; }
+.footer-bottom { color: #64748B; border-top: 1px solid rgba(255,255,255,0.05); }
+.footer-bottom-links a:hover { color: #10B981; }
+.newsletter-form {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+.newsletter-form input { color: #E6EEF8; }
+.newsletter-form input::placeholder { color: #64748B; }
+.social-icon {
+  background: rgba(255,255,255,0.05);
+  color: #94A3B8;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.social-icon:hover { background: var(--blue); color: white; }
+
+/* ─── Back-to-top button ─── */
+#backToTop {
+  background: linear-gradient(135deg, #2563EB, #10B981);
+}
+
+/* ─── Rainbow CTA section (used across pages) ─── */
+.cta-section {
+  background: #071029 !important;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--blue), var(--red), var(--yellow), var(--green));
+}
+.cta-section h2 { color: white !important; }
+
+/* ─── About page: skills bar ─── */
+.skill-bar-wrapper {
+  background-color: rgba(255,255,255,0.08) !important;
+}
+
+/* ─── About page: timeline card ─── */
+.timeline-card {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  color: #E6EEF8;
+}
+.timeline-date { color: #60A5FA !important; }
+
+/* ─── Portfolio: filter buttons ─── */
+.filter-btn {
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  color: #94A3B8 !important;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--blue) !important;
+  color: white !important;
+  border-color: var(--blue) !important;
+}
+
+/* ─── Contact: form section bg ─── */
+.contact-main-section { background: #0B1220; }
+.contact-form-box {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+.contact-info { color: #E6EEF8; }
+
+/* ─── FAQ accordion ─── */
+.faq-item {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+.faq-question { color: #E6EEF8 !important; }
+.faq-content { color: #94A3B8 !important; }
+
+/* ─── Academy hero ─── */
+.academy-hero {
+  background: #0A0F1E !important;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.academy-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(37,99,235,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 85%, rgba(16,185,129,0.18) 0%, transparent 45%);
+  pointer-events: none;
+}
+.academy-hero h1 {
+  color: white !important;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+/* ─── Profile page ─── */
+.profile-section, .login-section { background: #0B1220; }
+
+/* ─── Modals ─── */
+.modal-content-box, .lightbox-overlay { background: #0D1629 !important; }
+
+/* ─── Responsive section bg colours ─── */
+.bg-light, [style*="background-color: var(--bg-light)"] {
+  background-color: #0D1629 !important;
+}
+
+/* ─── Counter numbers on about page ─── */
+.counter-number {
+  background: linear-gradient(135deg, #60A5FA, #6EE7B7) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+.stat-suffix { color: #60A3FA !important; }
+.stat-label { color: #94A3B8 !important; }
+
+/* ─── Hero eyebrow tag on about / contact / portfolio ─── */
+.section-subtitle {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  color: #60A5FA;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}

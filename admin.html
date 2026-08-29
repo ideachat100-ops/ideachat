@@ -3,267 +3,597 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Admin panel for IdeaChat Academy to manage student registrations and payment approvals.">
-  <title>Admin Panel | IdeaChat Academy</title>
+  <meta name="description" content="IdeaChat Portfolio Admin - Add and manage portfolio projects.">
+  <title>Portfolio Admin | IdeaChat</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css?v=1.1">
   <link rel="stylesheet" href="css/responsive.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    /* ── Admin Panel Styles ── */
+    body { background: #071029; color: #E6EEF8; }
+
+    .admin-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    /* Login */
+    .login-box {
+      max-width: 440px;
+      margin: 120px auto;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 24px;
+      padding: 48px 40px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .login-box h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #6EE7B7, #3B82F6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .login-box p { color: #94A3B8; margin-bottom: 24px; font-size: 14px; }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.25);
+      background: rgba(15,23,42,0.8);
+      color: #E6EEF8;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+    .form-input:focus { border-color: #3B82F6; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #2563EB, #10B981);
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .error-msg { color: #FCA5A5; font-size: 13px; margin-top: 10px; }
+    .success-msg { color: #6EE7B7; font-size: 13px; margin-top: 10px; }
+
+    /* Dashboard */
+    .dashboard { display: none; }
+
+    .dash-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px 0 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .dash-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      background: linear-gradient(135deg, #6EE7B7, #3B82F6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .btn-logout {
+      padding: 10px 24px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      background: transparent;
+      color: #94A3B8;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-logout:hover { background: rgba(255,255,255,0.08); color: #E6EEF8; }
+
+    /* Add Form Card */
+    .add-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .add-card h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      margin-bottom: 24px;
+      color: #E6EEF8;
+    }
+    .add-card h2 i { color: #10B981; margin-right: 8px; }
+
+    .form-grid {
+      display: grid;
+      gap: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      color: #94A3B8;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+    }
+    .file-input-wrapper input[type="file"] {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 2px dashed rgba(148,163,184,0.25);
+      background: rgba(15,23,42,0.5);
+      color: #94A3B8;
+      font-size: 14px;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    .file-input-wrapper input[type="file"]:hover { border-color: #3B82F6; }
+
+    .img-preview {
+      margin-top: 10px;
+      border-radius: 12px;
+      max-height: 200px;
+      object-fit: cover;
+      display: none;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Portfolio Grid */
+    .items-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .items-header h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      color: #E6EEF8;
+    }
+    .items-header h2 i { color: #3B82F6; margin-right: 8px; }
+    .item-count {
+      background: rgba(59,130,246,0.15);
+      color: #93C5FD;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+
+    .portfolio-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .portfolio-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+
+    .portfolio-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    .portfolio-card-body {
+      padding: 16px;
+    }
+    .portfolio-card-body h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #F1F5F9;
+      margin-bottom: 4px;
+    }
+    .portfolio-card-body .cat {
+      font-size: 12px;
+      color: #94A3B8;
+      text-transform: capitalize;
+      margin-bottom: 12px;
+    }
+    .portfolio-card-body a {
+      display: block;
+      color: #93C5FD;
+      font-size: 12px;
+      text-decoration: underline;
+      word-break: break-all;
+      margin-bottom: 12px;
+    }
+    .btn-delete {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 10px;
+      background: rgba(239,68,68,0.08);
+      color: #FCA5A5;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-delete:hover { background: rgba(239,68,68,0.2); color: #FCA5A5; }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #64748B;
+      grid-column: 1 / -1;
+    }
+    .empty-state i { font-size: 48px; margin-bottom: 16px; display: block; color: #334155; }
+
+    /* Loading spinner */
+    .spinner-small {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Website link group toggle */
+    .hidden { display: none !important; }
+
+    @media (max-width: 600px) {
+      .login-box { margin: 60px 16px; padding: 32px 24px; }
+      .add-card { padding: 20px; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .dash-header h1 { font-size: 24px; }
+    }
+  </style>
 </head>
 <body>
-  <div id="preloader">
-    <div class="spinner"></div>
+
+  <div class="admin-container">
+
+    <!-- ════════════ LOGIN ════════════ -->
+    <div class="login-box" id="loginBox">
+      <h2><i class="fa-solid fa-shield-halved"></i> Admin Login</h2>
+      <p>Enter password to access Portfolio Manager</p>
+      <form id="loginForm" onsubmit="return false;">
+        <input type="password" id="passwordInput" class="form-input" placeholder="Enter admin password" required autofocus>
+        <button type="submit" class="btn-submit" id="loginBtn">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </button>
+        <p id="loginError" class="error-msg" style="display:none;"></p>
+      </form>
+    </div>
+
+    <!-- ════════════ DASHBOARD ════════════ -->
+    <div class="dashboard" id="dashboard">
+
+      <div class="dash-header">
+        <h1><i class="fa-solid fa-palette"></i> Portfolio Manager</h1>
+        <button class="btn-logout" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</button>
+      </div>
+
+      <!-- Add New Item -->
+      <div class="add-card">
+        <h2><i class="fa-solid fa-plus-circle"></i> Add New Project</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="catSelect">Category</label>
+            <select id="catSelect" class="form-input">
+              <option value="graphic-design">Graphic Design</option>
+              <option value="logo">Logo</option>
+              <option value="social-media">Social Media</option>
+              <option value="web-design">Web Design</option>
+              <option value="brand-identity">Brand Identity</option>
+              <option value="flyers">Flyers</option>
+              <option value="business-cards">Business Cards</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="titleInput">Project Title</label>
+            <input type="text" id="titleInput" class="form-input" placeholder="e.g. Minimalist Brand Logo">
+          </div>
+          <div class="form-group hidden" id="websiteGroup">
+            <label for="websiteInput">Website URL</label>
+            <input type="url" id="websiteInput" class="form-input" placeholder="e.g. https://example.com">
+          </div>
+          <div class="form-group">
+            <label>Project Image</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="imageInput" accept="image/*">
+            </div>
+            <img id="imgPreview" class="img-preview" alt="Preview">
+          </div>
+          <button class="btn-submit" id="addBtn" style="margin-top:8px;">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Add to Portfolio
+          </button>
+          <p id="addMsg" style="display:none;"></p>
+        </div>
+      </div>
+
+      <!-- Uploaded Items -->
+      <div class="items-header">
+        <h2><i class="fa-solid fa-images"></i> Uploaded Projects</h2>
+        <span class="item-count" id="itemCount">0 items</span>
+      </div>
+      <div class="portfolio-grid" id="portfolioGrid">
+        <div class="empty-state">
+          <i class="fa-solid fa-folder-open"></i>
+          <p>No portfolio items yet. Add your first project above!</p>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <header>
-    <div class="container nav-wrapper">
-      <a href="index.html" class="logo-link">
-        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
-        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
-      </a>
-      <nav aria-label="Main Navigation">
-        <ul class="nav-menu">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="academy.html" class="nav-link">Academy</a></li>
-          <li>
-            <a href="profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
-              <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
-              <span class="sr-only">Open student login</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="hamburger" aria-expanded="false" aria-label="Toggle menu">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </div>
-    </div>
-  </header>
+  <!-- Firebase SDK (compat mode - works without module system) -->
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
 
-  <main class="admin-main">
+  <script>
+    // ══════════════════════════════════════════════════════
+    //  FIREBASE CONFIG
+    // ══════════════════════════════════════════════════════
+    const firebaseConfig = {
+      apiKey: "AIzaSyDO3TONbFh4895cy5W869vSCtuNwf2uYj4",
+      authDomain: "idea-chat-c32fb.firebaseapp.com",
+      databaseURL: "https://idea-chat-c32fb-default-rtdb.firebaseio.com",
+      projectId: "idea-chat-c32fb",
+      storageBucket: "idea-chat-c32fb.firebasestorage.app",
+      messagingSenderId: "339495381977",
+      appId: "1:339495381977:web:12bae601dcdbb5690547c8"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const portfolioRef = db.ref('portfolio');
+    const IMGBB_KEY = 'bf7a5ef08123bdb799fa62ded551cf3e';
+    const ADMIN_PASS = 'admin123';
 
-    <!-- ── Login Gate ────────────────────────────────────────────────── -->
-    <section class="section-padding admin-login-section" id="adminLoginSection">
-      <div class="container admin-card" id="adminLoginCard">
-        <h2>Admin Login</h2>
-        <p>Enter the admin password to view student registrations and payment requests.</p>
-        <form id="adminLoginForm" class="admin-login-form">
-          <label for="adminPassword">Password</label>
-          <input type="password" id="adminPassword" placeholder="Enter admin password" required>
-          <button type="submit" class="btn btn-primary">Sign In</button>
-          <p class="form-message" id="adminLoginMessage"></p>
-        </form>
-      </div>
-    </section>
+    // ══════════════════════════════════════════════════════
+    //  DOM ELEMENTS
+    // ══════════════════════════════════════════════════════
+    const $ = id => document.getElementById(id);
 
-    <!-- ── Dashboard (hidden until login) ───────────────────────────── -->
-    <section class="section-padding admin-dashboard-section" id="adminPanel" style="display:none;">
-      <div class="container">
+    const loginBox    = $('loginBox');
+    const dashboard   = $('dashboard');
+    const loginForm   = $('loginForm');
+    const passInput   = $('passwordInput');
+    const loginError  = $('loginError');
+    const logoutBtn   = $('logoutBtn');
+    const loginBtn    = $('loginBtn');
 
-        <!-- Header row -->
-        <div class="admin-header">
-          <div>
-            <span class="section-subtitle" style="color: var(--accent);">Administrator</span>
-            <h1>Dashboard</h1>
-            <p>Review registered students, pending payment slips, and approve enrollments for course access.</p>
-          </div>
-          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-            <button class="btn btn-secondary" id="adminExportBtn" title="Download a JSON backup of all site data">
-              <i class="fa-solid fa-download" style="margin-right:6px;"></i>Export Backup
+    const catSelect   = $('catSelect');
+    const titleInput  = $('titleInput');
+    const websiteGroup = $('websiteGroup');
+    const websiteInput = $('websiteInput');
+    const imageInput  = $('imageInput');
+    const imgPreview  = $('imgPreview');
+    const addBtn      = $('addBtn');
+    const addMsg      = $('addMsg');
+    const grid        = $('portfolioGrid');
+    const itemCount   = $('itemCount');
+
+    // ══════════════════════════════════════════════════════
+    //  LOGIN / LOGOUT
+    // ══════════════════════════════════════════════════════
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const pw = passInput.value.trim();
+      if (pw === ADMIN_PASS) {
+        loginBox.style.display = 'none';
+        dashboard.style.display = 'block';
+        loginError.style.display = 'none';
+        startListening();
+      } else {
+        loginError.textContent = 'Invalid password. Try again.';
+        loginError.style.display = 'block';
+        passInput.value = '';
+        passInput.focus();
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      dashboard.style.display = 'none';
+      loginBox.style.display = 'block';
+      passInput.value = '';
+    });
+
+    // ══════════════════════════════════════════════════════
+    //  CATEGORY TOGGLE (show website field for web-design)
+    // ══════════════════════════════════════════════════════
+    catSelect.addEventListener('change', () => {
+      if (catSelect.value === 'web-design') {
+        websiteGroup.classList.remove('hidden');
+      } else {
+        websiteGroup.classList.add('hidden');
+        websiteInput.value = '';
+      }
+    });
+
+    // ══════════════════════════════════════════════════════
+    //  IMAGE PREVIEW
+    // ══════════════════════════════════════════════════════
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          imgPreview.src = e.target.result;
+          imgPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        imgPreview.style.display = 'none';
+      }
+    });
+
+    // ══════════════════════════════════════════════════════
+    //  UPLOAD TO IMGBB
+    // ══════════════════════════════════════════════════════
+    async function uploadToImgBB(file) {
+      const fd = new FormData();
+      fd.append('image', file);
+      const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+        method: 'POST',
+        body: fd
+      });
+      const json = await res.json();
+      if (json.success) return json.data.url;
+      throw new Error(json.error?.message || 'ImgBB upload failed');
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  ADD PORTFOLIO ITEM
+    // ══════════════════════════════════════════════════════
+    addBtn.addEventListener('click', async () => {
+      // Validate
+      if (!titleInput.value.trim()) {
+        showMsg(addMsg, 'Please enter a project title.', 'error');
+        return;
+      }
+      if (!imageInput.files || imageInput.files.length === 0) {
+        showMsg(addMsg, 'Please select an image file.', 'error');
+        return;
+      }
+
+      addBtn.disabled = true;
+      addBtn.innerHTML = '<span class="spinner-small"></span> Uploading...';
+
+      try {
+        // 1. Upload image to ImgBB
+        const imageUrl = await uploadToImgBB(imageInput.files[0]);
+
+        // 2. Save to Firebase
+        const newRef = portfolioRef.push();
+        await newRef.set({
+          title: titleInput.value.trim(),
+          category: catSelect.value,
+          imageUrl: imageUrl,
+          link: catSelect.value === 'web-design' ? websiteInput.value.trim() : '',
+          createdAt: new Date().toISOString()
+        });
+
+        // 3. Reset form
+        titleInput.value = '';
+        imageInput.value = '';
+        websiteInput.value = '';
+        imgPreview.style.display = 'none';
+        showMsg(addMsg, '✓ Project added successfully!', 'success');
+      } catch (err) {
+        console.error(err);
+        showMsg(addMsg, 'Error: ' + (err.message || 'Upload failed'), 'error');
+      } finally {
+        addBtn.disabled = false;
+        addBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Add to Portfolio';
+      }
+    });
+
+    // ══════════════════════════════════════════════════════
+    //  LISTEN TO FIREBASE & RENDER PORTFOLIO
+    // ══════════════════════════════════════════════════════
+    function startListening() {
+      portfolioRef.on('value', (snapshot) => {
+        const items = [];
+        snapshot.forEach(child => {
+          items.push({ id: child.key, ...child.val() });
+        });
+        renderGrid(items);
+      });
+    }
+
+    function renderGrid(items) {
+      grid.innerHTML = '';
+      itemCount.textContent = items.length + ' item' + (items.length !== 1 ? 's' : '');
+
+      if (items.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-folder-open"></i>
+            <p>No portfolio items yet. Add your first project above!</p>
+          </div>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'portfolio-card';
+
+        let linkHtml = '';
+        if (item.link) {
+          linkHtml = `<a href="${item.link}" target="_blank">${item.link}</a>`;
+        }
+
+        card.innerHTML = `
+          <img src="${item.imageUrl}" alt="${item.title}" loading="lazy">
+          <div class="portfolio-card-body">
+            <h3>${item.title}</h3>
+            <p class="cat">${item.category.replace(/-/g, ' ')}</p>
+            ${linkHtml}
+            <button class="btn-delete" onclick="deleteItem('${item.id}')">
+              <i class="fa-solid fa-trash-can"></i> Delete
             </button>
-            <button class="btn btn-secondary" id="adminLogoutButton">Sign Out</button>
           </div>
-        </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
 
-        <!-- Tab navigation -->
-        <div class="admin-nav-buttons" style="margin-bottom: 24px; display: flex; gap: 16px; flex-wrap: wrap;">
-          <button class="btn btn-primary"   id="navDashboardBtn">Dashboard</button>
-          <button class="btn btn-secondary" id="navPaymentsBtn">Payment Requests</button>
-          <button class="btn btn-secondary" id="navSyllabusBtn">Syllabus Editor</button>
-          <button class="btn btn-secondary" id="navPortfolioBtn">Portfolio Manager</button>
-        </div>
+    // ══════════════════════════════════════════════════════
+    //  DELETE ITEM
+    // ══════════════════════════════════════════════════════
+    async function deleteItem(id) {
+      if (!confirm('Are you sure you want to delete this project?')) return;
+      try {
+        await portfolioRef.child(id).remove();
+      } catch (err) {
+        console.error('Delete error:', err);
+        alert('Failed to delete. Check console for details.');
+      }
+    }
 
-        <!-- ── View: Dashboard ──────────────────────────────────────── -->
-        <div id="adminDashboardView">
-          <div class="admin-summary-grid">
-            <div class="admin-summary-card">
-              <h3 id="summaryStudents">0</h3>
-              <p>Registered Students</p>
-            </div>
-            <div class="admin-summary-card">
-              <h3 id="summaryPayments">0</h3>
-              <p>Payment Requests</p>
-            </div>
-            <div class="admin-summary-card">
-              <h3 id="summaryPending">0</h3>
-              <p>Pending Approvals</p>
-            </div>
-          </div>
+    // ══════════════════════════════════════════════════════
+    //  HELPERS
+    // ══════════════════════════════════════════════════════
+    function showMsg(el, text, type) {
+      el.textContent = text;
+      el.className = type === 'error' ? 'error-msg' : 'success-msg';
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 4000);
+    }
+  </script>
 
-          <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
-            <div class="admin-table-card">
-              <div class="admin-table-header">
-                <h2>Student Registry</h2>
-                <p>All students who have created profiles or submitted registration details.</p>
-              </div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Approved Courses</th>
-                      <th>Status</th>
-                      <th>Joined</th>
-                    </tr>
-                  </thead>
-                  <tbody id="studentTableBody"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── View: Payment Requests ───────────────────────────────── -->
-        <div id="adminPaymentsView" style="display: none;">
-          <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
-            <div class="admin-table-card">
-              <div class="admin-table-header">
-                <h2>Payment Requests</h2>
-                <p>Review uploaded bank slips and approve student enrollment access.</p>
-              </div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Student</th>
-                      <th>Course</th>
-                      <th>Slip</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="paymentTableBody"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── View: Syllabus Editor ────────────────────────────────── -->
-        <div id="adminSyllabusView" style="display: none;">
-          <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
-            <div class="admin-table-card">
-              <div class="admin-table-header">
-                <h2>Syllabus Editor</h2>
-                <p>Edit the course syllabus, lecture notes, and practical tools for the selected course.</p>
-              </div>
-              <div class="table-wrap" style="display: grid; gap: 16px;">
-                <label for="syllabusCourseSelect" style="font-weight: 700;">Course</label>
-                <select id="syllabusCourseSelect" style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.35); background: var(--bg-dark); color: var(--text-dark);">
-                  <option value="Adobe Photoshop &amp; Illustrator Mastery">Adobe Photoshop &amp; Illustrator Mastery</option>
-                  <option value="Graphic Design Core Principles">Graphic Design Core Principles</option>
-                </select>
-
-                <label for="syllabusMonthSelect" style="font-weight: 700;">Month</label>
-                <select id="syllabusMonthSelect" style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.35); background: var(--bg-dark); color: var(--text-dark);">
-                  <option value="0">Month 1</option>
-                  <option value="1">Month 2</option>
-                  <option value="2">Month 3</option>
-                  <option value="3">Month 4</option>
-                  <option value="4">Month 5</option>
-                  <option value="5">Month 6</option>
-                </select>
-
-                <label for="syllabusDayInput" style="font-weight: 700;">Day</label>
-                <input type="text" id="syllabusDayInput" placeholder="e.g. Day 1" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
-
-                <label for="syllabusTitleInput" style="font-weight: 700;">Title</label>
-                <input type="text" id="syllabusTitleInput" placeholder="e.g. Introduction to Vector Grids" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
-
-                <h3 style="margin: 10px 0 0; color: var(--text-dark);">Box 2 (Downloads &amp; Links)</h3>
-                <label for="syllabusNoteInput" style="font-weight: 700;">Lecture Note Link (Google Drive, PDF)</label>
-                <input type="url" id="syllabusNoteInput" placeholder="e.g. https://drive.google.com/..." style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
-                <div id="syllabusNotePreview" style="font-size: 12px; color: #94A3B8; margin-top: -10px; margin-bottom: 10px;"></div>
-
-                <label for="syllabusToolInput" style="font-weight: 700;">Practical Tool Link (Google Drive, ZIP)</label>
-                <input type="url" id="syllabusToolInput" placeholder="e.g. https://drive.google.com/..." style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
-                <div id="syllabusToolPreview" style="font-size: 12px; color: #94A3B8; margin-top: -10px; margin-bottom: 10px;"></div>
-
-                <label for="syllabusZoomInput" style="font-weight: 700;">Zoom Recording Link</label>
-                <input type="url" id="syllabusZoomInput" placeholder="e.g. https://zoom.us/rec/play/..." style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
-
-                <button id="addSyllabusButton" class="btn btn-primary">Add Module to Month</button>
-                <p id="syllabusSaveMessage" style="font-size: 13px; color: #A7F3D0; margin: 0;"></p>
-              </div>
-
-              <div id="adminSyllabusList" style="margin-top: 40px; display: grid; gap: 16px;">
-                <!-- JavaScript will render the syllabus list here -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── View: Portfolio Manager ───────────────────────────────── -->
-        <div id="adminPortfolioView" style="display: none;">
-          <div class="admin-tables-grid" style="grid-template-columns: 1fr;">
-            <div class="admin-table-card">
-              <div class="admin-table-header">
-                <h2>Portfolio Image Update</h2>
-                <p>Upload new project images for the portfolio and specify categories.</p>
-              </div>
-              <div class="table-wrap" style="display: grid; gap: 16px;">
-                <label for="portfolioCategorySelect" style="font-weight: 700;">Category</label>
-                <select id="portfolioCategorySelect" style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(148,163,184,0.35); background: var(--bg-dark); color: var(--text-dark);">
-                  <option value="graphic-design">Graphic Design</option>
-                  <option value="logo">Logo</option>
-                  <option value="social-media">Social Media</option>
-                  <option value="web-design">Web Design</option>
-                  <option value="brand-identity">Brand Identity</option>
-                  <option value="flyers">Flyers</option>
-                  <option value="business-cards">Business Cards</option>
-                </select>
-
-                <label for="portfolioTitleInput" style="font-weight: 700;">Project Title</label>
-                <input type="text" id="portfolioTitleInput" placeholder="e.g. Minimalist Logo" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
-
-                <div id="portfolioWebsiteLinkGroup" style="display: none; flex-direction: column; gap: 16px;">
-                  <label for="portfolioWebsiteInput" style="font-weight: 700;">Website Link</label>
-                  <input type="url" id="portfolioWebsiteInput" placeholder="e.g. https://example.com" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
-                </div>
-
-                <label for="portfolioImageInput" style="font-weight: 700;">Project Image (JPG, PNG, WebP)</label>
-                <input type="file" id="portfolioImageInput" accept="image/*" style="width: 100%; padding: 14px 16px; border-radius: 14px; background: var(--bg-dark); color: var(--text-dark); border: 1px solid rgba(148,163,184,0.35);" />
-
-                <button id="addPortfolioButton" class="btn btn-primary">Add to Portfolio</button>
-                <p id="portfolioSaveMessage" style="font-size: 13px; color: #A7F3D0; margin: 0;"></p>
-              </div>
-
-              <div class="admin-table-header" style="margin-top: 40px;">
-                <h2>Uploaded Items</h2>
-              </div>
-              <div id="adminPortfolioList" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
-                <!-- JavaScript will render the portfolio list here -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container footer-bottom">
-      <p>&copy; 2026 IdeaChat. Admin tools are available for payment approval only.</p>
-    </div>
-  </footer>
-
-
-  <script src="js/navigation.js"></script>
-  <script src="js/main.js"></script>
-  <script type="module" src="js/admin.js"></script>
 </body>
 </html>

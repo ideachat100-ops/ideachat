@@ -5,19 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="IdeaChat Portfolio - Check out our 24 creative design layouts, modern logos, social media banners, website interfaces, and business stationeries.">
   <title>Our Portfolio | IdeaChat - Branding Gallery</title>
-  <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css?v=1.1">
-  <link rel="stylesheet" href="css/responsive.css">
-  <link rel="stylesheet" href="css/portfolio.css">
+  <link rel="stylesheet" href="css/style.css?v=2.0">
+  <link rel="stylesheet" href="css/responsive.css?v=2.0">
+  <link rel="stylesheet" href="css/portfolio.css?v=2.0">
+  <link rel="stylesheet" href="css/dark-ui.css?v=2.0">
 </head>
 <body>
 
-  <!-- Preloader -->
-  <div id="preloader">
-    <div class="spinner"></div>
-  </div>
+  <div id="preloader"><div class="spinner"></div></div>
 
   <!-- Header -->
   <header>
@@ -30,16 +26,9 @@
         <ul class="nav-menu">
           <li><a href="index.html" class="nav-link">Home</a></li>
           <li><a href="about.html" class="nav-link">About</a></li>
-          <li><a href="academy.html" class="nav-link">Academy</a></li>
           <li><a href="services.html" class="nav-link">Services</a></li>
-          <li><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+          <li><a href="portfolio.html" class="nav-link active">Portfolio</a></li>
           <li><a href="contact.html" class="nav-link">Contact</a></li>
-          <li>
-            <a href="profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
-              <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
-              <span class="sr-only">Open student login</span>
-            </a>
-          </li>
           <li><a href="contact.html" class="nav-link nav-btn">Start Project</a></li>
         </ul>
       </nav>
@@ -51,21 +40,37 @@
     </div>
   </header>
 
-  <!-- Hero Banner -->
-  <section class="portfolio-hero">
-    <div class="container">
-      <span class="section-subtitle" style="color: var(--accent);">Our Creations</span>
-      <h1>Our Creative Portfolio</h1>
-      <p style="max-width: 650px; margin: 0 auto; color: #94A3B8; font-size: 16px;">
-        Browse through our 24 premium design layouts, logos, print materials, and custom website user interfaces.
+  <!-- ============================================================ HERO ============================================================ -->
+  <section class="portfolio-hero" id="portfolio-top">
+    <div class="container" style="position:relative;z-index:1;">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.20);backdrop-filter:blur(12px);color:white;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:8px 24px;border-radius:50px;margin-bottom:28px;">
+        <span style="width:8px;height:8px;background:#10B981;border-radius:50%;display:inline-block;animation:pulse 2s infinite;"></span>
+        Our Creations
+      </div>
+      <div style="display:flex;height:5px;max-width:160px;border-radius:4px;overflow:hidden;margin:0 auto 28px;">
+        <span style="flex:1;background:#2563EB;"></span>
+        <span style="flex:1;background:#EF4444;"></span>
+        <span style="flex:1;background:#F59E0B;"></span>
+        <span style="flex:1;background:#10B981;"></span>
+      </div>
+      <h1>Our <span style="color:#6EE7B7;">Creative</span> Portfolio</h1>
+      <p style="max-width:650px;margin:0 auto;color:rgba(255,255,255,0.7);font-size:17px;line-height:1.8;">
+        Browse through our premium design layouts, logos, print materials, social media creatives, and custom website interfaces — all crafted with precision.
       </p>
+      <!-- Badges -->
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px;">
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:50px;font-size:14px;font-weight:700;background:rgba(37,99,235,0.35);border:1px solid rgba(255,255,255,0.25);color:white;backdrop-filter:blur(10px);"><i class="fa-solid fa-pen-nib"></i> Graphic Design</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:50px;font-size:14px;font-weight:700;background:rgba(239,68,68,0.35);border:1px solid rgba(255,255,255,0.25);color:white;backdrop-filter:blur(10px);"><i class="fa-solid fa-globe"></i> Web Design</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:50px;font-size:14px;font-weight:700;background:rgba(245,158,11,0.35);border:1px solid rgba(255,255,255,0.25);color:white;backdrop-filter:blur(10px);"><i class="fa-brands fa-instagram"></i> Social Media</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:50px;font-size:14px;font-weight:700;background:rgba(16,185,129,0.35);border:1px solid rgba(255,255,255,0.25);color:white;backdrop-filter:blur(10px);"><i class="fa-solid fa-id-card"></i> Brand Identity</span>
+      </div>
     </div>
   </section>
 
-  <!-- Portfolio Section -->
-  <section class="portfolio-gallery-section section-padding">
+  <!-- ============================================================ PORTFOLIO GALLERY ============================================================ -->
+  <section class="portfolio-gallery-section section-padding" style="background:#0B1220;">
     <div class="container">
-      
+
       <!-- Filter Controls -->
       <div class="filter-wrapper">
         <button class="filter-btn active" data-filter="all">All Projects</button>
@@ -78,20 +83,15 @@
         <button class="filter-btn" data-filter="business-cards">Business Cards</button>
       </div>
 
-      <!-- Gallery Grid -->
-      <div class="portfolio-gallery-grid" id="portfolioGrid">
+      <!-- Gallery Grid (populated by portfolio.js) -->
+      <div class="portfolio-gallery-grid" id="portfolioGrid"></div>
 
-
-      </div>
-
-      <!-- Pagination Buttons -->
-      <div class="pagination-wrapper" id="portfolioPagination">
-        <!-- Generates dynamically via portfolio.js -->
-      </div>
+      <!-- Pagination -->
+      <div class="pagination-wrapper" id="portfolioPagination"></div>
     </div>
   </section>
 
-  <!-- Image Lightbox Popup Overlay Structure -->
+  <!-- Lightbox -->
   <div id="lightboxModal" class="lightbox-overlay" aria-hidden="true" role="dialog">
     <span class="lightbox-close" aria-label="Close lightbox">&times;</span>
     <button class="lightbox-nav-btn lightbox-prev" aria-label="Previous image">&#10094;</button>
@@ -105,17 +105,37 @@
     </div>
   </div>
 
+  <!-- ============================================================ CTA ============================================================ -->
+  <section style="padding:80px 0;background:#071029;">
+    <div class="container">
+      <div style="background:linear-gradient(135deg,#0A0F1E 0%,#1a1040 50%,#0A0F1E 100%);border-radius:var(--radius-xl);padding:72px 64px;position:relative;overflow:hidden;text-align:center;">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(16,185,129,0.22) 0%,transparent 50%),radial-gradient(ellipse at 75% 30%,rgba(37,99,235,0.18) 0%,transparent 45%);pointer-events:none;"></div>
+        <div style="position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#2563EB,#EF4444,#F59E0B,#10B981);"></div>
+        <div style="position:relative;z-index:1;">
+          <h2 style="font-size:clamp(26px,4vw,44px);font-weight:900;color:white;letter-spacing:-1.5px;margin-bottom:16px;">Like What You See?</h2>
+          <p style="font-size:16px;color:rgba(255,255,255,0.7);line-height:1.75;max-width:560px;margin:0 auto 36px;">Let's create something extraordinary together. Your vision + our expertise = world-class results.</p>
+          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+            <a href="contact.html" style="display:inline-flex;align-items:center;gap:10px;padding:18px 40px;background:linear-gradient(135deg,#2563EB,#10B981);color:white;font-family:var(--font-heading);font-size:16px;font-weight:700;border-radius:var(--radius-md);text-decoration:none;box-shadow:0 8px 28px rgba(37,99,235,0.4);transition:transform 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
+              <i class="fa-solid fa-rocket"></i> Start Your Project
+            </a>
+            <a href="services.html" style="display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.20);color:white;font-family:var(--font-heading);font-size:15px;font-weight:600;border-radius:var(--radius-md);text-decoration:none;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.14)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+              <i class="fa-solid fa-layer-group"></i> View Services
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer>
     <div class="container footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="logo-link">
-        <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
-        <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
-      </a>
-        <p>
-          We design professional graphics, build elegant custom websites, and provide industry-standard learning programs through our structured Graphic Design Academy.
-        </p>
+          <img src="images/logo/Logo_Dark_Mode.png" alt="IdeaChat Logo" class="logo-img dark-mode-logo">
+          <img src="images/logo/Log_light_mode.png" alt="IdeaChat Logo" class="logo-img light-mode-logo">
+        </a>
+        <p>We design professional graphics, build elegant custom websites, and provide industry-standard learning through our Design Academy.</p>
         <div class="social-links">
           <a href="#" class="social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
           <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
@@ -123,39 +143,33 @@
           <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
       </div>
-
       <div>
         <h4 class="footer-heading">Quick Links</h4>
         <ul class="footer-links">
           <li class="footer-link-item"><a href="index.html">Home</a></li>
           <li class="footer-link-item"><a href="about.html">About Us</a></li>
-          <li class="footer-link-item"><a href="academy.html">Academy LMS</a></li>
           <li class="footer-link-item"><a href="services.html">Our Services</a></li>
           <li class="footer-link-item"><a href="portfolio.html">Works Portfolio</a></li>
         </ul>
       </div>
-
       <div>
         <h4 class="footer-heading">Services</h4>
         <ul class="footer-links">
           <li class="footer-link-item"><a href="services.html">Graphic Design</a></li>
           <li class="footer-link-item"><a href="services.html">Web Development</a></li>
-          <li class="footer-link-item"><a href="services.html">Social Media Handling</a></li>
-          <li class="footer-link-item"><a href="academy.html">Design Courses</a></li>
+          <li class="footer-link-item"><a href="services.html">Social Media</a></li>
           <li class="footer-link-item"><a href="contact.html">Brand Consulting</a></li>
         </ul>
       </div>
-
       <div class="footer-newsletter">
         <h4 class="footer-heading">Newsletter</h4>
-        <p>Subscribe to receive news, design tips, and course discount coupons.</p>
-        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
+        <p>Subscribe to receive design tips and course discount coupons.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed!'); this.reset();">
           <input type="email" required placeholder="Your email address" aria-label="Email address">
           <button type="submit" aria-label="Subscribe"><i class="fa-solid fa-paper-plane"></i></button>
         </form>
       </div>
     </div>
-
     <div class="container footer-bottom">
       <p>&copy; 2026 IdeaChat. All Rights Reserved.</p>
       <div class="footer-bottom-links">
@@ -166,19 +180,25 @@
     </div>
   </footer>
 
-  <!-- Back to Top Button -->
-  <a href="#" id="backToTop" aria-label="Back to top">
-    <i class="fa-solid fa-arrow-up"></i>
-  </a>
+  <a href="#portfolio-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></a>
 
-  <!-- JS Scripts -->
   <script src="js/navigation.js"></script>
   <script src="js/main.js"></script>
-  <script type="module" src="js/portfolio.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
+  <script>
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        apiKey: "AIzaSyDO3TONbFh4895cy5W869vSCtuNwf2uYj4",
+        authDomain: "idea-chat-c32fb.firebaseapp.com",
+        databaseURL: "https://idea-chat-c32fb-default-rtdb.firebaseio.com",
+        projectId: "idea-chat-c32fb",
+        storageBucket: "idea-chat-c32fb.firebasestorage.app",
+        messagingSenderId: "339495381977",
+        appId: "1:339495381977:web:12bae601dcdbb5690547c8"
+      });
+    }
+  </script>
+  <script src="js/portfolio.js"></script>
 </body>
 </html>
-
-
-
-
-

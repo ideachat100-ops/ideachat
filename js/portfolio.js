@@ -3,14 +3,12 @@
  * Handles grid categorization filters, pagination rendering, and image lightbox.
  */
 
-import { database, ref, get, child } from './firebase-config.js';
-
-document.addEventListener('DOMContentLoaded', async () => {
+const initPortfolio = async () => {
   const portfolioGrid = document.getElementById('portfolioGrid');
   
   if (portfolioGrid) {
     try {
-      const snap = await get(child(ref(database), 'portfolio'));
+      const snap = await firebase.database().ref('portfolio').once('value');
       if (snap.exists()) {
         const storedData = [];
         snap.forEach(childSnap => {
@@ -247,4 +245,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     filteredCards = [...initialCards];
     renderGallery(initialCards);
   }
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPortfolio);
+} else {
+  initPortfolio();
+}

@@ -7,28 +7,36 @@
 /* 1. Header Hero */
 .portfolio-hero {
   position: relative;
-  background: linear-gradient(135deg, var(--bg-dark), #1E293B);
-  color: var(--text-light);
-  padding: 160px 0 100px 0;
+  background: #0A0F1E;
+  color: white;
+  padding: 170px 0 100px;
   text-align: center;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .portfolio-hero::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 50% 30%, rgba(var(--accent-rgb), 0.15) 0%, transparent 60%);
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(16, 185, 129, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 15% 70%, rgba(37, 99, 235, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 70%, rgba(245, 158, 11, 0.18) 0%, transparent 45%);
   pointer-events: none;
+  animation: heroShiftP 10s ease-in-out infinite alternate;
+}
+@keyframes heroShiftP {
+  0%   { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 1;   transform: scale(1.04); }
 }
 
 .portfolio-hero h1 {
-  font-size: 48px;
-  color: var(--text-light);
+  font-size: clamp(36px, 7vw, 68px);
+  color: white;
   margin-bottom: 20px;
+  font-weight: 900;
+  letter-spacing: -2px;
 }
 
 /* 2. Portfolio Filters */

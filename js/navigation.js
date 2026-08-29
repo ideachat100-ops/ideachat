@@ -43,63 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Theme toggle: inject button into nav and persist preference
-  const insertThemeToggle = () => {
-    const navWrapper = document.querySelector('.nav-wrapper');
-    if (!navWrapper) return;
+  // Theme: permanently dark — no toggle
+  document.body.classList.add('dark-theme');
 
-    // Avoid inserting twice
-    if (document.querySelector('.theme-toggle')) return;
 
-    const btn = document.createElement('button');
-    btn.className = 'theme-toggle';
-    btn.setAttribute('aria-label', 'Toggle dark mode');
-    btn.title = 'Toggle theme';
-    btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-
-    const themeNavItem = document.createElement('li');
-    themeNavItem.className = 'theme-toggle-nav-item';
-    themeNavItem.appendChild(btn);
-
-    // Place the toggle as a nav item so it sits inside the mobile menu drawer
-    navMenu.appendChild(themeNavItem);
-
-    const applyTheme = (theme) => {
-      if (theme === 'dark') {
-        document.body.classList.add('dark-theme');
-        btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-      } else {
-        document.body.classList.remove('dark-theme');
-        btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-      }
-    };
-
-    // Read stored preference; default to light on first visit
-    const stored = localStorage.getItem('ideachat_theme');
-    if (stored) {
-      applyTheme(stored);
-    } else {
-      applyTheme('light');
-    }
-
-    btn.addEventListener('click', () => {
-      const isDark = document.body.classList.toggle('dark-theme');
-      const newTheme = isDark ? 'dark' : 'light';
-      localStorage.setItem('ideachat_theme', newTheme);
-      applyTheme(newTheme);
-    });
-  };
-
-  insertThemeToggle();
 
   // 3. Highlight Active Link on Scroll / URL Match
   const currentPath = window.location.pathname;
   let pageName = currentPath.split('/').pop() || 'index.html';
-  
-  // Handle relative subdirectories (e.g. course files in courses/)
-  if (currentPath.includes('/courses/')) {
-    pageName = 'academy.html'; // Highlight Academy if we are inside a course detail page
-  }
 
   navLinks.forEach(link => {
     const linkHref = link.getAttribute('href');

@@ -30,8 +30,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Custom Stylesheets -->
-  <link rel="stylesheet" href="css/style.css?v=1.1">
-  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/style.css?v=2.0">
+  <link rel="stylesheet" href="css/responsive.css?v=2.0">
+  <link rel="stylesheet" href="css/dark-ui.css?v=2.0">
 
   <!-- Custom Home Styles (inlined directly in style.css or separate if needed. Using style.css) -->
 </head>
@@ -54,16 +55,9 @@
         <ul class="nav-menu">
           <li><a href="index.html" class="nav-link">Home</a></li>
           <li><a href="about.html" class="nav-link">About</a></li>
-          <li><a href="academy.html" class="nav-link">Academy</a></li>
           <li><a href="services.html" class="nav-link">Services</a></li>
           <li><a href="portfolio.html" class="nav-link">Portfolio</a></li>
           <li><a href="contact.html" class="nav-link">Contact</a></li>
-          <li>
-            <a href="profile.html" class="nav-link nav-icon" id="navAccountToggle" aria-label="Open student login">
-              <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
-              <span class="sr-only">Open student login</span>
-            </a>
-          </li>
           <li><a href="contact.html" class="nav-link nav-btn">Start Project</a></li>
         </ul>
       </nav>
@@ -76,30 +70,89 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="hero-section section-padding glow-effect"
-    style="padding-top: 160px; min-height: 100vh; display: flex; align-items: center;">
-    <div class="hero-content-grid container" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center;">
+  <!-- Premium Hero Section -->
+  <section class="hero-section premium-hero section-padding">
+    <!-- Animated Gradient Background Mesh -->
+    <div class="hero-bg-mesh">
+      <div class="mesh-blob blob-1"></div>
+      <div class="mesh-blob blob-2"></div>
+      <div class="mesh-blob blob-3"></div>
+    </div>
+    
+    <div class="container hero-container">
       <div class="hero-content reveal fade-up">
-        <h1 style="font-size: 52px; line-height: 1.2; margin-bottom: 24px;">
-          Creative Graphic Design &amp; Professional <span class="text-gradient">Web Solutions</span>
+        <div class="hero-badge">
+          <span class="badge-dot"></span> Available for new projects
+        </div>
+        
+        <h1 class="hero-title">
+          We Craft <span class="text-gradient">Digital Experiences</span> That Inspire
         </h1>
-        <p style="font-size: 18px; color: var(--text-muted); margin-bottom: 30px; line-height: 1.7;">
-          Helping businesses build powerful brands through creative design, professional websites, and practical graphic
-          design education in our <span class="typing-text" data-words='["Academy", "Agency", "Workspace"]'
-            style="font-weight: 700; color: var(--primary);"></span>.
+        
+        <p class="hero-description">
+          Elevate your brand with world-class web development and stunning graphic design. We blend creativity with cutting-edge technology to deliver pixel-perfect solutions.
         </p>
-        <div class="hero-buttons" style="display: flex; gap: 16px; flex-wrap: wrap;">
-          <a href="academy.html" class="btn btn-primary">Explore Academy</a>
-          <a href="services.html" class="btn btn-secondary">Our Services</a>
-          <a href="portfolio.html" class="btn btn-accent">View Portfolio</a>
+        
+        <div class="hero-actions">
+          <a href="services.html" class="btn-premium primary">
+            Explore Services
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="portfolio.html" class="btn-premium secondary">
+            View Our Work
+          </a>
+        </div>
+        
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">50+</span>
+            <span class="stat-label">Projects Delivered</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">99%</span>
+            <span class="stat-label">Client Satisfaction</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">5+</span>
+            <span class="stat-label">Years Experience</span>
+          </div>
         </div>
       </div>
-      <div class="hero-image-wrapper reveal fade-in delay-200" style="position: relative;">
-        <div
-          style="position: absolute; top: -20px; left: -20px; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(6, 182, 212, 0.1)); border-radius: var(--radius-lg); z-index: -1;">
+
+      <div class="hero-visual reveal fade-in delay-200">
+        <div class="glass-card main-visual-card">
+          <div class="card-header">
+            <div class="window-controls">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="window-title">ideachat.dev</div>
+          </div>
+          <div class="card-body">
+            <pre><code class="language-javascript">const buildFuture = async () => {
+  const brand = new IdeaChat();
+  
+  await brand.design(UI_UX);
+  await brand.develop(WEB_APP);
+  
+  return brand.launch({
+    success: true,
+    impact: "MAX"
+  });
+};
+
+buildFuture();</code></pre>
+          </div>
         </div>
-        <img src="images/hero/workspace.jpg" alt="Modern Graphic Designer Workspace"
-          style="border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); width: 100%; border: 1px solid var(--glass-border);">
+        
+        <!-- Floating Elements -->
+        <div class="floating-element float-1 glass-badge">
+          <i class="fa-brands fa-react"></i> React.js
+        </div>
+        <div class="floating-element float-2 glass-badge">
+          <i class="fa-brands fa-figma"></i> UI/UX
+        </div>
       </div>
     </div>
   </section>
@@ -193,23 +246,7 @@
             Explore Coding <i class="fa-solid fa-arrow-right-long"></i>
           </a>
         </div>
-        <!-- Card 3: Graphic Design Academy -->
-        <div class="glass-card reveal fade-up delay-200"
-          style="display: flex; flex-direction: column; align-items: flex-start;">
-          <div
-            style="width: 60px; height: 60px; border-radius: var(--radius-md); background: rgba(6, 182, 212, 0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: var(--accent); font-size: 24px;">
-            <i class="fa-solid fa-graduation-cap"></i>
-          </div>
-          <h3 style="font-size: 22px; margin-bottom: 16px;">Graphic Design Academy</h3>
-          <p style="color: var(--text-muted); font-size: 15px; line-height: 1.7; margin-bottom: 24px;">
-            Practical graphic design training with industry standards. Learn Photoshop, Illustrator, and structural
-            layout design.
-          </p>
-          <a href="academy.html"
-            style="font-weight: 600; color: var(--accent); display: inline-flex; align-items: center; gap: 8px;">
-            Start Learning <i class="fa-solid fa-arrow-right-long"></i>
-          </a>
-        </div>
+
       </div>
     </div>
   </section>
@@ -532,10 +569,8 @@
         <h4 class="footer-heading">Quick Links</h4>
         <ul class="footer-links">
           <li class="footer-link-item"><a href="index.html">Home</a></li>
-          <li class="footer-link-item"><a href="about.html">About Us</a></li>
-          <li class="footer-link-item"><a href="academy.html">Academy LMS</a></li>
-          <li class="footer-link-item"><a href="services.html">Our Services</a></li>
-          <li class="footer-link-item"><a href="portfolio.html">Works Portfolio</a></li>
+          <li class="footer-link-item"><a href="portfolio.html">Our Work</a></li>
+          <li class="footer-link-item"><a href="contact.html">Get a Quote</a></li>
         </ul>
       </div>
 
@@ -581,7 +616,22 @@
   <script src="js/main.js"></script>
   <script src="js/slider.js"></script>
   <script src="js/contact.js"></script>
-  <script type="module" src="js/home-portfolio.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
+  <script>
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        apiKey: "AIzaSyDO3TONbFh4895cy5W869vSCtuNwf2uYj4",
+        authDomain: "idea-chat-c32fb.firebaseapp.com",
+        databaseURL: "https://idea-chat-c32fb-default-rtdb.firebaseio.com",
+        projectId: "idea-chat-c32fb",
+        storageBucket: "idea-chat-c32fb.firebasestorage.app",
+        messagingSenderId: "339495381977",
+        appId: "1:339495381977:web:12bae601dcdbb5690547c8"
+      });
+    }
+  </script>
+  <script src="js/home-portfolio.js"></script>
 </body>
 
 </html>
