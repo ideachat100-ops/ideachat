@@ -168,3 +168,15 @@
   box-shadow: var(--shadow-md);
   border: 1px solid var(--glass-border);
 }
+
+/* Responsive Grid for Contact Main */
+.contact-grid {
+  grid-template-columns: 1fr 1.3fr;
+}
+
+@media (max-width: 992px) {
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+}
