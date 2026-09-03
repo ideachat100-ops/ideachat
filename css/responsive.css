@@ -30,6 +30,28 @@
     padding: 16px 0;
   }
 
+  header .nav-wrapper {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  header.sticky {
+    background: rgba(10, 14, 23, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+  }
+
+  header.sticky .nav-wrapper {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
   .logo-img {
     height: 65px;
     max-width: 250px;
