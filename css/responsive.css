@@ -35,16 +35,58 @@
     max-width: 250px;
   }
 
-  /* ── Hamburger: show and position correctly ── */
-  .hamburger {
+  /* ── Mobile Actions (Cart + Hamburger) ── */
+  .mobile-actions {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    gap: 15px;
     position: absolute;
     top: 50%;
     right: 30px;
     transform: translateY(-50%);
     z-index: 1010;
+  }
+
+  .mobile-cart-btn {
+    color: var(--text-light, #fff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: opacity 0.3s;
+  }
+  
+  .dark-theme .mobile-cart-btn {
+    color: #fff;
+  }
+  
+  :root:not(.dark-theme) .mobile-cart-btn {
+    color: var(--text-dark, #111);
+  }
+
+  .mobile-cart-btn:hover {
+    opacity: 0.8;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Overriding absolute */
+    top: auto;
+    right: auto;
+    transform: none;
+    width: 45px;
+    height: 45px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    padding: 0;
+  }
+
+  :root:not(.dark-theme) .hamburger {
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   /* ── Mobile Nav Drawer ── */

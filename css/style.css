@@ -407,8 +407,11 @@ header.sticky .nav-wrapper {
 }
 
 /* Mobile Toggle Hamburger */
-.hamburger {
+.mobile-actions {
   display: none;
+}
+
+.hamburger {
   cursor: pointer;
   z-index: 1010; /* Must exceed header z-index so it's always clickable */
   padding: 6px;
