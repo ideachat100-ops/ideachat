@@ -3,7 +3,7 @@
  * Handles contact form client-side validations, WhatsApp API redirect link compilation, and FAQ accordion collapse.
  */
 
-import { database, ref, push, serverTimestamp } from './firebase-config.js';
+// Using global firebase object (compat) instead of ES module imports
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contactForm');
@@ -111,14 +111,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const detailsText = messageInput.value.trim();
         
         // Save to Firebase first
-        const contactRef = ref(database, 'contacts');
-        push(contactRef, {
+        const contactRef = firebase.database().ref('contacts');
+        contactRef.push({
             name: nameText,
             email: emailText,
             phone: phoneText,
             message: detailsText,
             status: 'New',
-            createdAt: serverTimestamp()
+            createdAt: firebase.database.ServerValue.TIMESTAMP
         }).then(() => {
             // Compile WhatsApp text template
             const messageTemplate = `*New Project Enquiry from IdeaChat Form*\n\n` + 

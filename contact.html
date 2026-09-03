@@ -271,6 +271,21 @@
 
   <script src="js/navigation.js"></script>
   <script src="js/main.js"></script>
-  <script type="module" src="js/contact.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
+  <script>
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        apiKey: "AIzaSyDO3TONbFh4895cy5W869vSCtuNwf2uYj4",
+        authDomain: "idea-chat-c32fb.firebaseapp.com",
+        databaseURL: "https://idea-chat-c32fb-default-rtdb.firebaseio.com",
+        projectId: "idea-chat-c32fb",
+        storageBucket: "idea-chat-c32fb.firebasestorage.app",
+        messagingSenderId: "339495381977",
+        appId: "1:339495381977:web:12bae601dcdbb5690547c8"
+      });
+    }
+  </script>
+  <script src="js/contact.js"></script>
 </body>
 </html>
