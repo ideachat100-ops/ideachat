@@ -27,80 +27,24 @@
 
   /* ── Header ── */
   header {
-    padding: 20px 0 !important;
+    padding: 16px 0;
   }
 
-  header .nav-wrapper {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 0 20px; /* added padding to keep it from the edge */
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    justify-content: flex-end; /* Align hamburger to the right */
-    gap: 15px;
+  .logo-img {
+    height: 65px;
+    max-width: 250px;
   }
 
-  header.sticky {
-    padding: 20px 0 !important;
-  }
-
-  header.sticky .nav-wrapper {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 0 20px; /* matched with nav-wrapper padding */
-  }
-
-  /* ── Mobile Actions (Hamburger) ── */
-  .mobile-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    z-index: 1010;
-    margin-top: 5px; /* Adjusting a bit lower if needed, or remove if flex takes care of it */
-  }
-
-  .mobile-cart-btn {
-    color: var(--text-light, #fff);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    transition: opacity 0.3s;
-  }
-  
-  .dark-theme .mobile-cart-btn {
-    color: #fff;
-  }
-  
-  :root:not(.dark-theme) .mobile-cart-btn {
-    color: var(--text-dark, #111);
-  }
-
-  .mobile-cart-btn:hover {
-    opacity: 0.8;
-  }
-
+  /* ── Hamburger: show and position correctly ── */
   .hamburger {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    position: relative; /* Overriding absolute */
-    top: auto;
-    right: auto;
-    transform: none;
-    width: 45px;
-    height: 45px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    padding: 0;
-  }
-
-  :root:not(.dark-theme) .hamburger {
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    z-index: 1010;
   }
 
   /* ── Mobile Nav Drawer ── */
@@ -277,10 +221,6 @@
    MOBILE  (max 768px)
 ───────────────────────────────────────── */
 @media (max-width: 768px) {
-  .container {
-    padding: 0 24px;
-  }
-
   .section-padding {
     padding: 50px 0;
   }
@@ -496,7 +436,7 @@
 ───────────────────────────────────────── */
 @media (max-width: 480px) {
   .container {
-    padding: 0 24px;
+    padding: 0 14px;
   }
 
   header {
