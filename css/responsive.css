@@ -27,12 +27,12 @@
 
   /* ── Header ── */
   header {
-    padding: 16px 0;
+    padding: 30px 0;
   }
 
   .logo-img {
-    height: 65px;
-    max-width: 250px;
+    height: 55px;
+    max-width: 90px;
   }
 
   /* ── Hamburger: show and position correctly ── */
@@ -42,7 +42,7 @@
     justify-content: center;
     position: absolute;
     top: 50%;
-    right: 30px;
+    right: 40px;
     transform: translateY(-50%);
     z-index: 1010;
   }
@@ -528,22 +528,29 @@
     gap: 50px;
     text-align: center;
   }
+
   .hero-actions {
     justify-content: center;
   }
+
   .hero-stats {
     justify-content: center;
   }
+
   .hero-description {
     margin-left: auto;
     margin-right: auto;
   }
+
   .hero-badge {
     margin-left: auto;
     margin-right: auto;
   }
-  .float-1, .float-2 {
-    display: none; /* Hide floating badges on smaller screens for cleaner look */
+
+  .float-1,
+  .float-2 {
+    display: none;
+    /* Hide floating badges on smaller screens for cleaner look */
   }
 }
 
@@ -552,30 +559,38 @@
     padding-top: 100px;
     padding-bottom: 40px;
   }
+
   .hero-title {
     font-size: clamp(32px, 8vw, 42px);
   }
+
   .hero-actions {
     flex-direction: column;
     gap: 16px;
   }
+
   .hero-actions .btn-premium {
     width: 100%;
   }
+
   .hero-stats {
     flex-direction: column;
     gap: 20px;
   }
+
   .stat-divider {
     width: 60px;
     height: 1px;
   }
+
   .main-visual-card {
     border-radius: 12px !important;
   }
+
   .card-body {
     padding: 20px;
   }
+
   .card-body pre {
     font-size: 13px;
   }
