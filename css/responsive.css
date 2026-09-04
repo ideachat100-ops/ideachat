@@ -27,46 +27,38 @@
 
   /* ── Header ── */
   header {
-    padding: 16px 0;
+    padding: 20px 0 !important;
   }
 
   header .nav-wrapper {
     background: transparent;
     border: none;
     box-shadow: none;
-    padding: 0;
+    padding: 0 20px; /* added padding to keep it from the edge */
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+    justify-content: flex-end; /* Align hamburger to the right */
+    gap: 15px;
   }
 
   header.sticky {
-    background: rgba(10, 14, 23, 0.95) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
+    padding: 20px 0 !important;
   }
 
   header.sticky .nav-wrapper {
     background: transparent;
     border: none;
     box-shadow: none;
-    padding: 0;
+    padding: 0 20px; /* matched with nav-wrapper padding */
   }
 
-  .logo-img {
-    height: 65px;
-    max-width: 250px;
-  }
-
-  /* ── Mobile Actions (Cart + Hamburger) ── */
+  /* ── Mobile Actions (Hamburger) ── */
   .mobile-actions {
     display: flex;
     align-items: center;
     gap: 15px;
-    position: absolute;
-    top: 50%;
-    right: 30px;
-    transform: translateY(-50%);
     z-index: 1010;
+    margin-top: 5px; /* Adjusting a bit lower if needed, or remove if flex takes care of it */
   }
 
   .mobile-cart-btn {

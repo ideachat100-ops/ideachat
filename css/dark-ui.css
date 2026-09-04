@@ -25,6 +25,10 @@ header.sticky {
   -webkit-backdrop-filter: none !important;
 }
 
+@media (max-width: 992px) {
+  /* Removed sticky header override to disable glass effect on scroll as requested */
+}
+
 /* ─── Hamburger lines: always white ─── */
 .hamburger-line { background-color: #ffffff !important; }
 
