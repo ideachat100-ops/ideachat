@@ -27,7 +27,7 @@
 
   /* ── Header ── */
   header {
-    padding: 30px 0;
+    padding: px 0;
   }
 
   .logo-img {
@@ -62,7 +62,7 @@
     justify-content: center;
     align-items: center;
     gap: 28px;
-    padding: 60px 24px;
+    padding: 50px 10px;
     transition: right var(--transition-normal);
     z-index: 1000;
   }
