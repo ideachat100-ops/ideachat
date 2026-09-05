@@ -575,6 +575,8 @@
 
   .hero-actions {
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
   }
 
   .hero-stats {
