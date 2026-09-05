@@ -25,21 +25,34 @@
 ───────────────────────────────────────── */
 @media (max-width: 992px) {
 
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  html,
+  body {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
   /* ── Header ── */
-  header {
-    padding: 12px 16px;
-  }
-  
+  header,
   header.sticky {
-    padding: 12px 16px;
+    padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left));
+    width: 100%;
   }
-  
-  header .nav-wrapper {
-    padding: 10px 20px;
-  }
-  
+
+  header .nav-wrapper,
   header.sticky .nav-wrapper {
-    padding: 8px 20px;
+    padding: 0 20px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .logo-img {
