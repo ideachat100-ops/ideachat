@@ -25,53 +25,73 @@
 ───────────────────────────────────────── */
 @media (max-width: 992px) {
 
-  /* Hide scrollbar for Chrome, Safari and Opera */
+  /* ── Kill scrollbar track (the light strip) ── */
   ::-webkit-scrollbar,
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-thumb {
     display: none !important;
     width: 0 !important;
-    height: 0 !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
   }
 
-  /* Hide scrollbar for IE, Edge and Firefox */
-  html,
-  body {
-    -ms-overflow-style: none !important;
-    scrollbar-width: none !important;
+  html {
     overflow-x: hidden !important;
+    scrollbar-width: none !important;
+    /* Firefox */
+    -ms-overflow-style: none !important;
+    /* Edge / IE */
+  }
+
+  body {
+    overflow-x: hidden !important;
+    width: 100%;
     position: relative;
   }
 
-  /* ── Header ── */
+  /* ── Clamp vw blobs so they can't overflow the viewport ── */
+  .mesh-blob,
+  .blob-1,
+  .blob-2,
+  .blob-3 {
+    max-width: 100% !important;
+  }
+
+  /* ── Locked Header — identical in both states ── */
   header,
   header.sticky {
-    padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left)) !important;
-    width: 100%;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    padding: 10px 16px !important;
     z-index: 1050 !important;
-    transition: none !important;
-    /* Prevent morphing on scroll */
     background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: none !important;
+    /* Kill ALL morphing */
   }
 
+  /* ── Locked nav-wrapper — same in both states ── */
   header .nav-wrapper,
   header.sticky .nav-wrapper {
+    height: 56px !important;
     padding: 0 20px !important;
-    height: 64px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    transition: none !important;
-    /* Prevent morphing on scroll */
     background: rgba(10, 14, 23, 0.95) !important;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 50px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+    transition: none !important;
+    /* Kill ALL morphing */
   }
 
   .logo-img {
@@ -481,10 +501,6 @@
 @media (max-width: 480px) {
   .container {
     padding: 0 14px;
-  }
-
-  header {
-    padding: 10px 0;
   }
 
   .logo-img {
