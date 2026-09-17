@@ -105,9 +105,11 @@ header.sticky {
 /* ─── Preloader: dark bg ─── */
 #preloader { background: #0A0F1E; }
 
-/* ─── Scrollbar: dark ─── */
-::-webkit-scrollbar-track { background: #0B1220; }
-::-webkit-scrollbar-thumb { background: rgba(37,99,235,0.3); border-color: #0B1220; }
+/* ─── Scrollbar: dark (desktop only) ─── */
+@media (min-width: 993px) {
+  ::-webkit-scrollbar-track { background: #0B1220; }
+  ::-webkit-scrollbar-thumb { background: rgba(37,99,235,0.3); border-color: #0B1220; }
+}
 
 /* ─── Footer: dark ─── */
 footer {

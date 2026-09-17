@@ -31,22 +31,29 @@
   ::-webkit-scrollbar-thumb {
     display: none !important;
     width: 0 !important;
+    height: 0 !important;
     background: transparent !important;
     -webkit-appearance: none !important;
   }
 
   html {
     overflow-x: hidden !important;
+    overflow-y: overlay !important;
     scrollbar-width: none !important;
     /* Firefox */
     -ms-overflow-style: none !important;
     /* Edge / IE */
+    scrollbar-gutter: auto !important;
   }
 
   body {
     overflow-x: hidden !important;
-    width: 100%;
+    overflow-y: overlay !important;
+    width: 100% !important;
+    max-width: 100vw !important;
     position: relative;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: auto !important;
   }
 
   /* ── Clamp vw blobs so they can't overflow the viewport ── */
@@ -499,8 +506,104 @@
    SMALL PHONES  (max 480px)
 ───────────────────────────────────────── */
 @media (max-width: 480px) {
+
+  /* ══════════════════════════════════════
+     GLOBAL OVERFLOW FIX
+     Prevent ANY element from pushing
+     content beyond the viewport edge.
+  ══════════════════════════════════════ */
+  *,
+  *::before,
+  *::after {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Exclude elements that need natural sizing (icons, dots, controls) */
+  .badge-dot,
+  .hamburger-line,
+  .window-dot,
+  .social-icon,
+  i,
+  svg,
+  img {
+    max-width: none !important;
+  }
+
+  /* Image tags should still respect container */
+  img {
+    max-width: 100% !important;
+    height: auto;
+  }
+
+  html,
+  body {
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* ── Container: symmetric padding ── */
   .container {
-    padding: 0 14px;
+    padding: 0 16px !important;
+    width: 100% !important;
+  }
+
+  /* ── All sections: prevent overflow ── */
+  section,
+  .section-padding,
+  .premium-hero,
+  .hero-section,
+  .services-hero,
+  .about-hero,
+  .contact-hero,
+  .portfolio-hero,
+  .academy-hero,
+  .cta-section,
+  .contact-main-section,
+  footer {
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* ── Long text: prevent overflow ── */
+  h1, h2, h3, h4, h5, h6,
+  p,
+  .hero-title,
+  .hero-description,
+  .section-title,
+  .section-description {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* ── Inline badge/tag wrapping ── */
+  [style*="display:inline-flex"],
+  [style*="display: inline-flex"] {
+    flex-wrap: wrap !important;
+  }
+
+  /* ── Hero badge row wrapping ── */
+  .hero-badge {
+    max-width: 100% !important;
+  }
+
+  /* ── Hero actions: full width buttons ── */
+  .hero-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .hero-actions .btn-premium {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  /* ── Nav wrapper ── */
+  header .nav-wrapper,
+  header.sticky .nav-wrapper {
+    padding: 0 14px !important;
+    width: 100% !important;
   }
 
   .logo-img {
@@ -577,6 +680,60 @@
   .faq-container {
     gap: 12px !important;
   }
+
+  /* ── Glass card: tighter padding ── */
+  .glass-card {
+    padding: 20px 14px !important;
+  }
+
+  /* ── Footer grid ── */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  /* ── Service card ── */
+  .service-card-large {
+    padding: 20px !important;
+  }
+
+  /* ── Portfolio gallery ── */
+  .portfolio-gallery-grid {
+    gap: 14px !important;
+  }
+
+  /* ── Contact form box ── */
+  .contact-form-box {
+    padding: 20px 14px !important;
+  }
+
+  /* ── Modal ── */
+  .modal-content-box {
+    padding: 20px 14px !important;
+    width: 96% !important;
+  }
+
+  /* ── Timeline ── */
+  .timeline-item {
+    padding-right: 10px !important;
+  }
+
+  .timeline-card {
+    padding: 18px 14px !important;
+  }
+
+  /* ── CTA section ── */
+  .cta-section .container {
+    padding: 0 16px !important;
+  }
+
+  /* ── Premium hero: constrain blobs ── */
+  .blob-1,
+  .blob-2,
+  .blob-3 {
+    max-width: 80vw !important;
+    max-height: 80vw !important;
+  }
 }
 
 /* ==========================================================================
@@ -622,6 +779,23 @@
     padding-bottom: 40px;
   }
 
+  /* Constrain blobs to prevent overflow artifacts on edges */
+  .hero-bg-mesh {
+    overflow: hidden;
+  }
+
+  .blob-1,
+  .blob-2,
+  .blob-3 {
+    max-width: 90vw !important;
+    max-height: 90vw !important;
+  }
+
+  .blob-2 {
+    right: 0 !important;
+    bottom: 0 !important;
+  }
+
   .hero-title {
     font-size: clamp(32px, 8vw, 42px);
   }
@@ -638,11 +812,15 @@
   .hero-stats {
     flex-direction: column;
     gap: 20px;
+    align-items: center;
+    border-top: none;
+    padding-top: 0;
   }
 
   .stat-divider {
     width: 60px;
     height: 1px;
+    margin: 0 auto;
   }
 
   .main-visual-card {
